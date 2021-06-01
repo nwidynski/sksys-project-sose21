@@ -1,0 +1,71 @@
+datasource db {
+  provider = "mysql"
+  url      = "<YOUR MYSQL CONNECTION STRING HERE>"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name     String
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Recipes Recipe[]
+  MeetUps MeetUp[]
+}
+
+model Recipe {
+  id     String @id @default(uuid())
+  userId String
+
+  name      String
+  rating    Int     @default(0)
+  isPrivate Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User        User          @relation(fields: [userId], references: [id])
+  Ingredients Ingredients[]
+  MeetUps     MeetUp[]
+  Tags        Tag[]
+}
+
+model Ingredients {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Recipes Recipe[]
+}
+
+model Tag {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Recipes Recipe[]
+}
+
+model MeetUp {
+  id       String @id @default(uuid())
+  recipeId String
+
+  date DateTime
+
+  Recipe Recipe @relation(fields: [recipeId], references: [id])
+  Users  User[]
+}
