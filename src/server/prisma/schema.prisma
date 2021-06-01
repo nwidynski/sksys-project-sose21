@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = "<YOUR MYSQL CONNECTION STRING HERE>"
+  url      = "mysql://root:password@localhost:3306/SkSys"
 }
 
 generator client {

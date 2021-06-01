@@ -7,7 +7,6 @@ import { handleValidationResult } from "@server/middleware/validator";
 
 const router = express.Router();
 
-router.use(cors());
 router.use(express.json());
 router.use(isAuthenticated);
 
