@@ -8,6 +8,6 @@ export function isAuthenticated(
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect("http://localhost:8080/login", 301);
+    res.redirect(301, "http://localhost:8080/login");
   }
 }

@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "@prisma/client";
@@ -39,6 +40,7 @@ passport.deserializeUser((id: string | undefined, done) => {
 });
 
 app.use(cors());
+app.use(helmet());
 app.use(cookieParser());
 app.use(
   session({ secret: "keyboard cat", resave: false, saveUninitialized: true })
@@ -46,7 +48,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(AuthRouter);
+app.use("/", AuthRouter);
 
 app.use("/recipes", RecipeRouter);
 

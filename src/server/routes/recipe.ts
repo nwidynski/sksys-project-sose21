@@ -14,7 +14,7 @@ router.get("/", RecipeController.list);
 
 router.post(
   "/",
-  RecipeController.validateParams(),
+  RecipeController.validateBody(),
   handleValidationResult,
   RecipeController.create
 );

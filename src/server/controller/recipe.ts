@@ -176,10 +176,10 @@ namespace RecipeController {
   ) => {
     try {
       const user = req.user;
-      const { name, rating } = req.body;
+      const { name, rating, isPrivate } = req.body;
 
       const recipe = await prisma.recipe.create({
-        data: createRecipe(user, name, rating),
+        data: createRecipe(user, name, rating, isPrivate),
       });
 
       res.status(200).json(recipe);

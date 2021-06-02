@@ -2,35 +2,40 @@ import express from "express";
 import passport from "passport";
 
 import prisma from "@server/common/services/prisma.service";
+import UserController from "@server/controller/recipe";
+import { isAuthenticated } from "@server/middleware/auth";
+import { handleValidationResult } from "@server/middleware/validator";
 
 const router = express.Router();
 
 router.use(express.json());
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
-  const user = req.user;
+router.post(
+  "/login",
+  UserController.validateBody,
+  handleValidationResult,
+  passport.authenticate("local"),
+  UserController.get
+);
 
-  res.status(200).send({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-  });
-});
+router.post(
+  "/signup",
+  UserController.validateBody,
+  handleValidationResult,
+  UserController.create
+);
 
-router.post("/signup", async (req, res, next) => {
-  try {
-    const { name, email, password } = req.body;
+router.post(
+  "/deleteMyProfile",
+  isAuthenticated,
+  UserController.validateBody,
+  handleValidationResult,
+  UserController.remove
+);
 
-    const user = await prisma.user.create({ data: { name, email, password } });
-
-    res.status(200).send({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
-  } catch (err) {
-    next(err);
-  }
+router.get("/logout", isAuthenticated, (req, res) => {
+  req.logOut();
+  res.redirect(301, "http://localhost:8080/login");
 });
 
 export default router;
