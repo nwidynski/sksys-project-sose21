@@ -25,8 +25,16 @@ router.post(
   UserController.create
 );
 
-router.post(
-  "/deleteMyProfile",
+router.put(
+  "/profile",
+  isAuthenticated,
+  UserController.validateBody,
+  handleValidationResult,
+  UserController.edit
+);
+
+router.delete(
+  "/profile",
   isAuthenticated,
   UserController.validateBody,
   handleValidationResult,
