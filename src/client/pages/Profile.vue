@@ -8,7 +8,7 @@
              0 receips
         </div>
         <div class="user-cover mx-3"> </div>
-        <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> Set Up </b-button>
+      <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
 
         <div class="user-container">
           <div class="user-photo rounded-circle"></div>
@@ -120,7 +120,7 @@ export default {
             amount: "200g"
             },
             {
-            name: "Wallnüsse",
+            name: "Walnüsse",
             amount: "1 Packung"
             },
             {
@@ -153,7 +153,7 @@ export default {
 
 .profile-container {
   background-color: #E6FFC7;
-  height: 72vh;
+  height: 65vh;
 }
 .content-container {
   background-color: #E6FFC7;
@@ -209,7 +209,7 @@ export default {
   left: 0.5%
 }
 
-@media (max-width: 500px) {
+@media (max-width: 800px) {
   .main-container {
     width: 100%
   }
