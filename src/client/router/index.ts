@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../pages/Home.vue'
+import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
@@ -18,8 +18,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Login',
+    component: Login
   },
   {
     path: '/profile',
