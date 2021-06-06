@@ -35,7 +35,7 @@
     <b-card v-else class="mt-4 mx-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
       <template #header>
         <b-icon-pencil-fill class="mt-1" title="edit" style="margin-right:10px; float:right" @click="editClicked"></b-icon-pencil-fill>
-        <h4 class="mb-0">{{ name }}</h4>
+        <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
       </template>
 
       <b-card-text class="ingredients-container">
@@ -66,12 +66,12 @@
       </b-input-group>
 
       <b-card-text class="mt-3">
-        <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}}</div>
-        <div class="receipt-attribute" style="cursor: pointer"> {{time}} </div>
-
+        <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
+          <input @click="timeClicked" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
       </b-card-text>
 
-      <b-button @click="editClicked">Done</b-button>
+      <b-button class="mr-3" @click="editClicked">Save</b-button>
+      <b-button @click="editCancel">Cancel</b-button>
     </b-card>
   </div>
 
@@ -84,6 +84,17 @@ export default {
   data() {
     return {
       editing: false,
+      levels: ["hard","middle","easy"],
+      value: '',
+      backup: {
+        name: "",
+        level: "",
+        description: "",
+        rating: "",
+        time: "",
+        ingredients: "",
+        done: false
+      }
     }
   },
 
@@ -99,8 +110,40 @@ export default {
   methods: {
     editClicked() {
       this.editing = !this.editing;
+      if(!this.backup.done){
+        this.backup.name = this.name;
+        this.backup.description = this.description;
+        this.backup.time = this.time;
+        this.backup.level = this.level;
+        this.backup.rating = this.rating;
+        this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
+        this.backup.done = true;
+        console.log("backup finished")
+      }
+      if(!this.editing){
+        this.backup.done = false;
+        console.log("submit changes to server")
+      }
+    },
+    editCancel() {
+      this.name = this.backup.name
+      this.description = this.backup.description
+      this.level = this.backup.level
+      this.time = this.backup.time
+      this.rating = this.backup.rating
+      this.ingredients = this.backup.ingredients
+      this.editing = false;
+      this.backup.done = false;
+      console.log("backup reset")
     },
     levelClicked() {
+      if (this.levels.indexOf(this.level) == this.levels.length - 1)
+        this.level = this.levels[0]
+      else
+        this.level = this.levels[this.levels.indexOf(this.level) + 1]
+    },
+    timeClicked() {
+
     }
   }
 }
@@ -124,7 +167,7 @@ export default {
   border: 1px black solid;
   display: inline-block;
   border-radius: 50px;
-  width: 15%;
+  width: 10%;
   text-align: center;
   margin-right: 2%;
 }
@@ -140,6 +183,17 @@ export default {
   line-height: 2em;
 }
 
+.timepicker {
+  background-color: yellow;
+
+  position: absolute;
+}
+
+@media only screen and (max-width: 950px) {
+  .receipt-attribute {
+    width: 100px
+  }
+}
 
 
 </style>
