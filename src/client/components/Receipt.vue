@@ -3,7 +3,7 @@
 
       <b-card v-if="!editing" class="mt-4 mx-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
-          <b-icon-pencil-fill class="mt-1" title="edit" style="margin-right:10px; float:right" @click="editClicked"></b-icon-pencil-fill>
+          <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
         </template>
         <b-card-text class="ingredients-container">
@@ -34,7 +34,7 @@
 
     <b-card v-else class="mt-4 mx-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
       <template #header>
-        <b-icon-pencil-fill class="mt-1" title="edit" style="margin-right:10px; float:right" @click="editClicked"></b-icon-pencil-fill>
+        <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
         <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
       </template>
 
@@ -181,6 +181,12 @@ export default {
   border: 1px solid lightgray;
   border-radius: 5px;
   line-height: 2em;
+}
+
+.edit-button {
+  margin-right:10px;
+  float:right;
+  cursor: pointer
 }
 
 .timepicker {
