@@ -32,6 +32,9 @@
 
       <hr style="border-top: 1px solid black; margin: 0;">
 
+      <add-receipt
+      />
+
       <div class="receipt-container">
         <Receipt
           v-for="receipt in recipes"
@@ -54,11 +57,13 @@
 <script>
 
 import Receipt from "@client/components/Receipt";
+import addReceipt from "@client/modals/addReceipt";
 
 export default {
   name: 'Profile',
   components: {
-  Receipt
+  Receipt,
+  addReceipt
   },
   data() {
     return {
@@ -135,7 +140,10 @@ export default {
   methods: {
     paginate: function() {
       console.log("paginate")
-    }
+    },
+    addReceipt: function() {
+      console.log("test")
+    },
   }
 }
 </script>
@@ -208,6 +216,8 @@ export default {
   position: relative;
   left: 0.5%
 }
+
+
 
 @media (max-width: 800px) {
   .main-container {

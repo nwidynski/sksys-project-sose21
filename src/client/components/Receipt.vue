@@ -67,7 +67,7 @@
 
       <b-card-text class="mt-3">
         <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
-          <input @click="timeClicked" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
+          <input @click="timeClicked" placeholder="HH:MM" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
       </b-card-text>
 
       <b-button class="mr-3" @click="editClicked">Save</b-button>
