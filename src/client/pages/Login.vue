@@ -5,6 +5,7 @@
             <b-col sm="8" cols="10" md="6" lg="4" xl="3">
                 <div class="text-center">
                     <!-- input elements -->
+                    <b-form-input v-if="!isLogin" v-model="user.name" placeholder="username" class="my-2"></b-form-input>
                     <b-form-input v-model="user.email" placeholder="email" class="my-2" autofocus></b-form-input>
                     <b-form-input v-model="user.password" placeholder="password" class="my-2" type="password" :state="pwState"></b-form-input>
                         <!-- invalid feedback-->
@@ -33,7 +34,8 @@ export default {
             user: {
                 email: "",
                 password: "",
-                secPassword: ""
+                secPassword: "",
+                name: ""
             },
             isLogin: true,
             pwState: null,
@@ -61,11 +63,13 @@ export default {
         },
         logIn() {
             //login request
+            //TODO
         },
         signUp() {
             //check input
             this.checkInput();
             //signup request
+            //TODO
         },
         checkInput() {
             if(this.pwLength === false) {
