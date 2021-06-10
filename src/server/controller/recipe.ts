@@ -8,7 +8,7 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
 /**
  * Creates a new recipe for an existing user.
  *
- * @param User
+ * @param user
  * @param name
  * @param rating
  * @return {*}
@@ -58,7 +58,7 @@ namespace RecipeController {
     return [
       param("id", ValidationMessages.UNDEFINED)
         .exists()
-        .isInt()
+        .isString()
         .withMessage(ValidationMessages.WRONG_TYPE),
     ];
   };
