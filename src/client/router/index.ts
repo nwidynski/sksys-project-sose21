@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
+import Private from '../pages/Private.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Import Bootstrap an BootstrapVue CSS files
@@ -22,9 +23,20 @@ const routes = [
     component: Login
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
+    path: '/private',
+    name: 'Private',
+    component: Private,
+    children: [
+      {
+        path: '/',
+        redirect: 'profile'
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: Profile
+      }
+    ]
   }
 ]
 

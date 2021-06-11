@@ -72,7 +72,7 @@ export default {
             //access control
             if(this.$root.user !== undefined) {
                 console.log(this.$root.user)
-                this.$router.push({path: "profile"})
+                this.$router.push({path: "private"})
             }
         },
         signUp() {
