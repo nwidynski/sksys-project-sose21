@@ -62,8 +62,18 @@ export default {
             this.isLogin = !this.isLogin;
         },
         logIn() {
-            //login request
-            //TODO
+            //login request (sets user object in this.$root.user)
+            //dev object
+            this.$root.user = {
+                email: "test@gmail.com",
+                name: "testname",
+                secondName: "testsecond"
+            }
+            //access control
+            if(this.$root.user !== undefined) {
+                console.log(this.$root.user)
+                this.$router.push({path: "profile"})
+            }
         },
         signUp() {
             //check input

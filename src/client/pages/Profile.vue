@@ -4,7 +4,7 @@
   <div class="main-container">
     <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
-            <h4> Username </h4>
+            <h4> {{user.name}} </h4>
              0 receips
         </div>
         <div class="user-cover mx-3"> </div>
@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      user: this.$root.user,
       recipesMenu: true,
       recipes: [
         {
