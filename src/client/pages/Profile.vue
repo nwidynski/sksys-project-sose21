@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper">
-
-  <div class="main-container">
+  <div id="main" class="main-container">
     <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
             <h4> {{user.name}} </h4>
@@ -69,6 +68,7 @@ export default {
     return {
       user: this.$root.user,
       recipesMenu: true,
+      menuCollapsed: false,
       recipes: [
         {
           id:0,
@@ -145,7 +145,18 @@ export default {
     addReceipt: function() {
       console.log("test")
     },
-  }
+    onResize(){
+      if(window.innerWidth < 1000)
+        document.getElementById('main').style.marginLeft = '20px'
+      else
+        document.getElementById('main').style.marginLeft = '250px'
+    }
+  },
+  created(){
+    window.addEventListener('resize',this.onResize)
+    console.log("listener added")
+  },
+
 }
 </script>
 <style scoped>
@@ -154,8 +165,7 @@ export default {
 }
 .main-container {
   background-color: #E6FFC7;
-  width: 65%;
-  margin: auto;
+  margin-left: 250px;
   border-left: 1px solid black;
   border-right: 1px solid black
 }
