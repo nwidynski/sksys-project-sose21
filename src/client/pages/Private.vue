@@ -1,23 +1,24 @@
 <template>
     <div>
     <header>
-      <!--
-      <div id="nav">
+
+      <div id="nav" style="display:none">
         <b-navbar toggleable="sm" type="dark" variant="dark">
           <b-navbar-brand>Meet n Eat</b-navbar-brand>
           <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
           <b-collapse id="nav-text-collapse" is-nav>
             <b-navbar-nav>
-                <b-nav-item to="/">Home</b-nav-item>
-                <b-nav-item to="/private/profile">Profile</b-nav-item>
+              <b-nav-item to="/private/profile"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
+              <b-nav-item to=""><i class="fa fa-utensils mr-2"/>Receipt Page</b-nav-item>
+              <b-nav-item to=""><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
+              <b-nav-item to="/"><i class="fa fa-coffee mr-2"/>Login</b-nav-item>
+              <b-nav-item to=""><i class="fa fa-cog mr-2"/>Settings</b-nav-item>
             </b-navbar-nav>
           </b-collapse>
         </b-navbar>
       </div>
-      -->
-      <sidebar-menu :menu="menu" :width="'250px'" :collapsed="collapse">
-        <span slot="toggle-icon"><b-icon-arrow-left-right></b-icon-arrow-left-right></span>
 
+      <sidebar-menu :menu="menu" :width="'250px'" :collapsed="collapse" :hide-toggle="true">
       </sidebar-menu>
     </header>
     <router-view/>
@@ -79,5 +80,12 @@ export default {
 </script>
 
 <style>
-
+@media screen AND (max-width: 476px) {
+  .v-sidebar-menu {
+    display: none !important;
+  }
+  #nav {
+    display: block !important;
+  }
+}
 </style>

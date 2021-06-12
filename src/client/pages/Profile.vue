@@ -146,10 +146,13 @@ export default {
       console.log("test")
     },
     onResize(){
+      document.getElementById('main').style.marginLeft = '250px'
+
       if(window.innerWidth < 1000)
-        document.getElementById('main').style.marginLeft = '20px'
-      else
-        document.getElementById('main').style.marginLeft = '250px'
+        document.getElementById('main').style.marginLeft = '51px'
+      if(window.innerWidth < 476)
+        document.getElementById('main').style.marginLeft = '0px'
+
     }
   },
   created(){
@@ -166,8 +169,7 @@ export default {
 .main-container {
   background-color: #E6FFC7;
   margin-left: 250px;
-  border-left: 1px solid black;
-  border-right: 1px solid black
+
 }
 
 .profile-container {
@@ -230,10 +232,12 @@ export default {
 
 
 
-@media (max-width: 800px) {
+@media (max-width: 476px) {
   .main-container {
-    width: 100%
+    width: 100%;
+    margin-left: 0px;
   }
+
 }
 
 </style>
