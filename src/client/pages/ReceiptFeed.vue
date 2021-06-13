@@ -102,5 +102,13 @@ export default {
     margin-left: 0px;
   }
 
-}
+  #infos {
+    display: none !important;
+  }
+
+  #feed {
+    width: 100%
+  }
+
+  }
 </style>
