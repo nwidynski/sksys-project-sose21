@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
 import Private from '../pages/Private.vue'
+import ReceiptFeed from '../pages/ReceiptFeed.vue'
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
 
@@ -41,6 +43,11 @@ const routes = [
         path: 'profile',
         name: 'Profile',
         component: Profile
+      },
+      {
+        path: 'receiptfeed',
+        name:'ReceiptFeed',
+        component: ReceiptFeed
       }
     ]
   }
