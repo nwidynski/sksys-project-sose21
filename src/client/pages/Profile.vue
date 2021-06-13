@@ -32,6 +32,7 @@
       <hr style="border-top: 1px solid black; margin: 0;">
 
       <add-receipt
+          @add-event="addReceipt"
       />
 
       <div class="receipt-container">
@@ -158,8 +159,9 @@ export default {
     paginate: function() {
       console.log("paginate")
     },
-    addReceipt: function() {
+    addReceipt: function(newReceipt) {
       console.log("test")
+      this.recipes.push(newReceipt)
     },
     onResize(){
       document.getElementById('main').style.marginLeft = '250px'

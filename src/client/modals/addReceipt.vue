@@ -58,7 +58,7 @@
           <b-form-group
             label="Instruction"
           >
-            <b-form-textarea placeholder="tell me how... :)" rows="3"/>
+            <b-form-textarea v-model="instruction" placeholder="tell me how... :)" rows="3"/>
           </b-form-group>
           <b-row>
             <b-col>
@@ -148,6 +148,11 @@ export default {
       this.timeState = null;
       this.ingredients = '';
       this.ingredientsState = null;
+      this.ingredientsList = [{
+        name:"",
+        amount:"",
+        unit:null
+      }]
     },
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault()
@@ -175,10 +180,12 @@ export default {
           instruction: this.instruction,
           time: this.time,
           level: this.level,
-          rating: 0,
-          ingredients: this.extractIngredients()
+          rating: "0",
+          ingredients: this.ingredientsList
         }
+
         console.log("submit ",newreceipt)
+        this.$emit('add-event',newreceipt)
         this.$nextTick(() => {
           this.$bvModal.hide('add-receipt-modal')
         })
