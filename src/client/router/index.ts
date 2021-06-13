@@ -7,6 +7,7 @@ import ReceiptFeed from '../pages/ReceiptFeed.vue'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
+import Meetups from '../pages/Meetups.vue'
 
 // Import Bootstrap an BootstrapVue CSS files
 import 'bootstrap/dist/css/bootstrap.css'
@@ -48,6 +49,11 @@ const routes = [
         path: 'receiptfeed',
         name:'ReceiptFeed',
         component: ReceiptFeed
+      },
+      {
+        path: 'meetups',
+        name: 'Meetups',
+        component: Meetups
       }
     ]
   }

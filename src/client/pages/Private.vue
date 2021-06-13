@@ -47,8 +47,8 @@ export default {
             icon: 'fa fa-utensils'
           },
           {
-            href: {path: ''},
-            title: 'MeetUp',
+            href: {path: '/private/meetups'},
+            title: 'MeetUps',
             icon: 'fa fa-people-arrows'
           },
           {
