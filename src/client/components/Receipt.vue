@@ -13,12 +13,12 @@
               class="list-item"
           >
               <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
-              <span class="col-6">{{ ingredient.amount}}</span>
+              <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
           </b-list-group-item>
         </b-card-text>
 
         <b-card-text>
-          {{ description }}
+          {{ instruction }}
         </b-card-text>
 
         <b-input-group style="width:50%" size="sm" :append="rating">
@@ -44,18 +44,25 @@
             v-for="ingredient in ingredients"
             class="list-item"
         >
+          <!--
           <div style="width:50%; display:inline-block">
             <input class="input-ingredient" v-model="ingredient.name"/>
           </div>
           <span>
               <input class="input-ingredient" v-model="ingredient.amount"/>
           </span>
+          -->
+          <b-row>
+          <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
+          <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
+          <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
+          </b-row>
         </b-list-group-item>
       </b-card-text>
 
       <b-card-text >
         <b-form-textarea
-            v-model="description"
+            v-model="instruction"
             rows="10"
         >
         </b-form-textarea>
@@ -67,7 +74,7 @@
 
       <b-card-text class="mt-3">
         <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
-          <input @click="timeClicked" placeholder="HH:MM" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
+        <input @click="timeClicked" placeholder="1h 20min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
       </b-card-text>
 
       <b-button class="mr-3" @click="editClicked">Save</b-button>
@@ -89,19 +96,31 @@ export default {
       backup: {
         name: "",
         level: "",
-        description: "",
+        instruction: "",
         rating: "",
         time: "",
         ingredients: "",
         done: false
-      }
+      },
+      options:[
+        {value:"null",text:"unit",disabled:true},
+        {value:"kg",text:"kg"},
+        {value:"g",text:"g"},
+        {value:"l",text:"l"},
+        {value:"ml",text:"ml"},
+        {value:"tsp",text:"tsp"},
+        {value:"tbsp",text:"tbsp"},
+        {value:"handful",text:"handful"},
+        {value:"pinch of",text:"pinch of"},
+        {value:"none",text:"none"}
+      ]
     }
   },
 
   props: {
     name: String,
     level: String,
-    description: String,
+    instruction: String,
     rating: String,
     time: String,
     ingredients: Array
@@ -112,7 +131,7 @@ export default {
       this.editing = !this.editing;
       if(!this.backup.done){
         this.backup.name = this.name;
-        this.backup.description = this.description;
+        this.backup.instruction = this.instruction;
         this.backup.time = this.time;
         this.backup.level = this.level;
         this.backup.rating = this.rating;
@@ -127,7 +146,7 @@ export default {
     },
     editCancel() {
       this.name = this.backup.name
-      this.description = this.backup.description
+      this.instruction = this.backup.instruction
       this.level = this.backup.level
       this.time = this.backup.time
       this.rating = this.backup.rating
@@ -167,9 +186,9 @@ export default {
   border: 1px black solid;
   display: inline-block;
   border-radius: 50px;
-  width: 10%;
+  padding: 0 14px 0 14px;
   text-align: center;
-  margin-right: 2%;
+  margin-right: 2%
 }
 
 .receipt-attribute:hover {
@@ -197,7 +216,6 @@ export default {
 
 @media only screen and (max-width: 950px) {
   .receipt-attribute {
-    width: 100px
   }
 }
 

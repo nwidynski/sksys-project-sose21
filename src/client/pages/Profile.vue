@@ -40,7 +40,7 @@
           :name="receipt.name"
           :level="receipt.level"
           :rating="receipt.rating"
-          :description="receipt.description"
+          :instruction="receipt.instruction"
           :time="receipt.time"
           :ingredients="receipt.ingredients"
         >
@@ -72,9 +72,12 @@ export default {
       recipes: [
         {
           id:0,
+          author:"Lucy",
+          createdAt: "1623585305680",
+          updatedAt: "1623585305680",
           name: "Pizza",
-          time: "3h",
-          description: "Zunächst für den Pizzateig Mehl, Grieß und Salz gründlich vermengen. Die Hefe im warmen Wasser auflösen, 5 Minuten ruhen lassen und dann zur Mehlmischung geben. Die Zutaten so lange mit dem Knethaken des Handrührers, in der Küchenmaschine oder von Hand kneten, bis ein elastischer Teig entsteht, das dauert ungefähr 10 Minuten. Falls der Teig zu fest sein sollte einfach noch etwas warmes Wasser zugeben, wenn der Teig zu flüssig ist, etwas Mehl hinzugeben. Erst dann das Olivenöl unterkneten.\n" +
+          time: "3h 20min",
+          instruction: "Zunächst für den Pizzateig Mehl, Grieß und Salz gründlich vermengen. Die Hefe im warmen Wasser auflösen, 5 Minuten ruhen lassen und dann zur Mehlmischung geben. Die Zutaten so lange mit dem Knethaken des Handrührers, in der Küchenmaschine oder von Hand kneten, bis ein elastischer Teig entsteht, das dauert ungefähr 10 Minuten. Falls der Teig zu fest sein sollte einfach noch etwas warmes Wasser zugeben, wenn der Teig zu flüssig ist, etwas Mehl hinzugeben. Erst dann das Olivenöl unterkneten.\n" +
               "\n" +
               "Den Teig in Frischhaltefolie wickeln oder unter einem Geschirrtuch mindestens 30 Minuten gehen lassen. Der Teig lässt sich ebenfalls hervorragend im Hefeteig-Programm eines Brotbackautomaten zubereiten.\n" +
               "\n" +
@@ -85,53 +88,66 @@ export default {
           ingredients: [
             {
               name: "Mehl",
-              amount: "500g"
+              amount: "500",
+              unit: "g"
             },
             {
               name: "Salz",
-              amount: "1 TL"
+              amount: "1",
+              unit:"tsp"
             },
             {
               name: "Zucker",
-              amount: "200g"
+              amount: "200",
+              unit:"g"
             },
             {
               name: "Tomaten",
-              amount: "1 Packung"
+              amount: "1",
+              unit:"handful"
             },
             {
               name: "Käse",
-              amount: "infinity"
+              amount: "infinity",
+              unit:""
             }
           ]
         },
         {
           id:1,
+          author:"John",
+          createdAt: "1623585305680",
+          updatedAt: "1623585305680",
           name: "Cake",
           time: "50min",
-          description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+          instruction: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
           level: "middle",
           rating: "4",
           ingredients: [
             {
             name: "Mehl",
-            amount: "500g"
+            amount: "500",
+            unit:"g"
             },
             {
             name: "Eier",
-            amount: "3"
+            amount: "3",
+            unit:"none"
             },
             {
             name: "Zucker",
-            amount: "200g"
+            amount: "200",
+            unit:"g"
             },
             {
             name: "Walnüsse",
-            amount: "1 Packung"
+            amount: "1",
+            unit:"pinch of"
             },
             {
             name: "Gelatine",
-            amount: "1"
+            amount: "1",
+            unit:"pinch of"
             }
           ]
         }
