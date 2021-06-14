@@ -165,7 +165,7 @@ export default {
     },
     onResize(){
       document.getElementById('main').style.marginLeft = '250px'
-
+      console.log("onResize - Profile")
       if(window.innerWidth < 1000)
         document.getElementById('main').style.marginLeft = '51px'
       if(window.innerWidth < 476)
@@ -175,8 +175,12 @@ export default {
   },
   created(){
     window.addEventListener('resize',this.onResize)
-    console.log("listener added")
+    console.log("listener added - Profile")
   },
+  beforeDestroy() {
+    window.removeEventListener('resize',this.onResize)
+    console.log("listener removed - Profile")
+  }
 
 }
 </script>
@@ -187,7 +191,7 @@ export default {
 .main-container {
   background-color: #E6FFC7;
   margin-left: 250px;
-
+  transition: margin 325ms
 }
 
 .profile-container {

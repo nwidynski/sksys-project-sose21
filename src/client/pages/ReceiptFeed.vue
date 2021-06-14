@@ -30,7 +30,7 @@ export default {
   methods: {
     onResize(){
       document.getElementById('main').style.marginLeft = '250px'
-
+      console.log("onResize - ReceiptFeed")
       if(window.innerWidth < 1000)
         document.getElementById('main').style.marginLeft = '51px'
       if(window.innerWidth < 476)
@@ -43,8 +43,12 @@ export default {
   },
   created(){
     window.addEventListener('resize',this.onResize)
-    console.log("listener added")
+    console.log("listener added - ReceiptFeed")
   },
+  beforeDestroy(){
+    window.removeEventListener('resize',this.onResize);
+    console.log("listener removed - ReceiptFeed")
+  }
 }
 
 </script>
@@ -56,6 +60,7 @@ export default {
   height: 100vh;
   display:flex;
   flex-wrap: nowrap;
+  transition: margin 325ms;
 }
 
 #feed {
@@ -93,6 +98,7 @@ export default {
 .search-btn {
   background-color: #2a2a2e;
 }
+
 
 
 

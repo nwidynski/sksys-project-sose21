@@ -10,7 +10,7 @@
             <b-navbar-nav>
               <b-nav-item to="/private/profile"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
               <b-nav-item to="/private/receiptfeed"><i class="fa fa-utensils mr-2"/>Receipt Feed</b-nav-item>
-              <b-nav-item to=""><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
+              <b-nav-item to="/private/meetups"><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
               <b-nav-item to="/"><i class="fa fa-coffee mr-2"/>Login</b-nav-item>
               <b-nav-item to=""><i class="fa fa-cog mr-2"/>Settings</b-nav-item>
             </b-navbar-nav>
