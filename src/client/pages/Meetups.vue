@@ -1,8 +1,11 @@
 <template>
     <div id="main" style="background-color: #E6FFC7">
-        <b-container>
+        <h3 class="title pl-4 pt-2 pb-1">Receipt Feed</h3>
+        <div style="width:100%; border-top: 1px solid black"/>
+
+        <b-container fluid style="margin: 0px">
             <b-row>
-                <b-col v-for="obj in meetupArray" :key="obj.id" cols="12" md="6">
+                <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
                     <Meetup :meetObj="obj"></Meetup>
                 </b-col>
             </b-row>
