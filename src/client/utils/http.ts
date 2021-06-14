@@ -17,20 +17,20 @@ namespace BackEndRouter {
     }
   };
 
-  export namespace TodoRouter {
-    const BASE_URL = `${getBaseUrl()}/todos`;
+  export namespace RequestRouter {
+    const BASE_URL = `${getBaseUrl()}`;
 
     const validateResponse = (response: Response) => {
       if (response.status !== 200) throw new Error("request failed");
       return response.json();
     };
 
-    const list = (): Promise<Todo[]> => {
-      return fetch(BASE_URL).then(validateResponse);
+    const list = <T>(path: string): Promise<T[]> => {
+      return fetch(BASE_URL + path).then(validateResponse);
     };
 
-    const create = (body: Todo): Promise<Todo> => {
-      return fetch(BASE_URL, {
+    const create = <T>(path: string, body: T): Promise<T> => {
+      return fetch(BASE_URL + path, {
         method: "POST",
         headers: {
           Accept: "Application/json",
@@ -41,8 +41,8 @@ namespace BackEndRouter {
     };
     const read = (id: number) => {};
 
-    const update = (id: number, body: Todo): Promise<Todo> => {
-      return fetch(`${BASE_URL}/${id}`, {
+    const update = <T>(path: string, id: number, body: T): Promise<T> => {
+      return fetch(`${BASE_URL + path}/${id}`, {
         method: "PUT",
         headers: {
           Accept: "Application/json",
@@ -52,8 +52,8 @@ namespace BackEndRouter {
       }).then(validateResponse);
     };
 
-    const remove = (id: number): Promise<Todo> => {
-      return fetch(`${BASE_URL}/${id}`, {
+    const remove = <T>(path: string, id: number): Promise<T> => {
+      return fetch(`${BASE_URL + path}/${id}`, {
         method: "DELETE",
       }).then(validateResponse);
     };
