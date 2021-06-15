@@ -19,7 +19,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   Recipes Recipe[]
-  MeetUps MeetUp[]
+  meetups MeetUp[]
 }
 
 model Recipe {
@@ -35,7 +35,6 @@ model Recipe {
 
   User        User          @relation(fields: [userId], references: [id])
   Ingredients Ingredients[]
-  MeetUps     MeetUp[]
   Tags        Tag[]
 }
 
@@ -62,15 +61,16 @@ model Tag {
 }
 
 model MeetUp {
-  id       String @id @default(uuid())
-  recipeId String
+  id        String   @id @default(uuid())
+  hostId    String
 
-  date DateTime
-  address String
+  date      DateTime
+  place     String
+  recipeId  String
+  maxGuests Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Recipe Recipe @relation(fields: [recipeId], references: [id])
-  Users  User[]
+  users     User[]
 }
