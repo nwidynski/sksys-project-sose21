@@ -1,7 +1,9 @@
 <template>
   <div>
+      <!-- Receipt Card -->
+    <div v-if="!editing && !onFeed" class="mt-3 mx-3 card-container">
 
-      <b-card v-if="!editing" class="mt-4 mx-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
+      <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
           <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
@@ -21,7 +23,7 @@
           {{ instruction }}
         </b-card-text>
 
-        <b-input-group style="width:50%" size="sm" :append="rating">
+        <b-input-group style="width: 65%" size="sm" :append="rating">
           <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
@@ -31,55 +33,112 @@
 
         </b-card-text>
       </b-card>
+    </div>
+     <!-- Editing Card -->
+    <div v-if="editing" class="mt-3 mx-3 card-container">
 
-    <b-card v-else class="mt-4 mx-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
-      <template #header>
-        <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
-        <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
-      </template>
+      <b-card  class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
+        <template #header>
+          <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
+          <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
+        </template>
 
-      <b-card-text class="ingredients-container">
-        <h5>Ingredients</h5>
-        <b-list-group-item
-            v-for="ingredient in ingredients"
-            class="list-item"
-        >
-          <!--
-          <div style="width:50%; display:inline-block">
-            <input class="input-ingredient" v-model="ingredient.name"/>
+        <b-card-text class="ingredients-container">
+          <h5>Ingredients</h5>
+          <b-list-group-item
+              v-for="ingredient in ingredients"
+              class="list-item"
+          >
+            <b-row>
+            <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
+            <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
+            <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
+            </b-row>
+          </b-list-group-item>
+        </b-card-text>
+
+        <b-card-text >
+          <b-form-textarea
+              v-model="instruction"
+              rows="10"
+          >
+          </b-form-textarea>
+        </b-card-text>
+
+        <b-input-group style="width:50%" size="sm" :append="rating">
+          <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+        </b-input-group>
+
+        <b-card-text class="mt-3">
+          <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
+          <input @click="timeClicked" placeholder="1h 20min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
+        </b-card-text>
+
+        <b-button class="mr-3" @click="editClicked">Save</b-button>
+        <b-button @click="editCancel">Cancel</b-button>
+      </b-card>
+    </div>
+
+    <!-- ReceiptFeedCard -->
+
+    <div v-if="onFeed" class="feed-receipt-container">
+        <div class="mt-4 mx-3 feed-user-top" style="display: flex">
+          <b-avatar class="mt-2" size="3rem"/>
+
+          <div class="mx-3" style="width: 100%">
+            <b-icon-three-dots class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
+
+            <!-- TODO -->
+            <div style="background-color: #2a2a2e; color: white; display:none">
+              <b-icon-x style="float:right"/>
+              <div>speichern</div>
+              <div>nicht interessiert</div>
+            </div>
+
+            <div>User</div>
+
+            <div class="feed-user-top-info"> posted at 6h</div>
           </div>
-          <span>
-              <input class="input-ingredient" v-model="ingredient.amount"/>
-          </span>
-          -->
-          <b-row>
-          <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
-          <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
-          <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
-          </b-row>
-        </b-list-group-item>
-      </b-card-text>
 
-      <b-card-text >
-        <b-form-textarea
-            v-model="instruction"
-            rows="10"
-        >
-        </b-form-textarea>
-      </b-card-text>
+        </div>
 
-      <b-input-group style="width:50%" size="sm" :append="rating">
-        <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
-      </b-input-group>
+      <div class="mt-3 mx-3 card-container">
+        <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
+            <template #header>
+              <h4 class="mb-0">{{ name }}</h4>
+            </template>
 
-      <b-card-text class="mt-3">
-        <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
-        <input @click="timeClicked" placeholder="1h 20min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
-      </b-card-text>
+            <b-card-text class="ingredients-container">
+              <h5>Ingredients</h5>
+              <b-list-group-item
+                  v-for="ingredient in ingredients"
+                  class="list-item"
+              >
+                <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
+                <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
+              </b-list-group-item>
+            </b-card-text>
 
-      <b-button class="mr-3" @click="editClicked">Save</b-button>
-      <b-button @click="editCancel">Cancel</b-button>
-    </b-card>
+          <div v-if="!collapsedFeed" class="mb-3">
+            <b-card-text>
+              {{ instruction }}
+            </b-card-text>
+          </div>
+            <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>
+            <b-input-group style="width:50%" size="sm" :append="rating">
+              <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+            </b-input-group>
+
+            <b-card-text class="mt-3">
+              <div class="receipt-attribute"> {{level}} </div>
+              <div class="receipt-attribute"> {{time}} </div>
+              <b-icon-arrow-down-circle-fill class="icon h3" v-if="collapsedFeed" style="float: right" @click="collapsing"/>
+              <b-icon-arrow-up-circle-fill class="icon h3" v-else style="float: right" @click="collapsing"/>
+            </b-card-text>
+          </b-card>
+      </div>
+    </div>
+
   </div>
 
 </template>
@@ -100,8 +159,10 @@ export default {
         rating: "",
         time: "",
         ingredients: "",
-        done: false
+        done: false,
       },
+      collapsedFeed: true,
+      showOptions: false,
       options:[
         {value:"null",text:"unit",disabled:true},
         {value:"kg",text:"kg"},
@@ -123,10 +184,21 @@ export default {
     instruction: String,
     rating: String,
     time: String,
-    ingredients: Array
+    ingredients: Array,
+    onFeed: {
+      type: Boolean,
+      default: false
+    }
 
   },
   methods: {
+    collapsing() {
+      this.collapsedFeed = !this.collapsedFeed
+      console.log("now: " + this.collapsedFeed)
+    },
+    feedOptions() {
+      this.showOptions = !this.showOptions
+    },
     editClicked() {
       this.editing = !this.editing;
       if(!this.backup.done){
@@ -202,6 +274,10 @@ export default {
   line-height: 2em;
 }
 
+.icon {
+  cursor: pointer
+}
+
 .edit-button {
   margin-right:10px;
   float:right;
@@ -212,6 +288,25 @@ export default {
   background-color: yellow;
 
   position: absolute;
+}
+
+.card-container {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.feed-receipt-container {
+}
+
+.feed-user-top {
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.feed-user-top-info {
+  font-size: large;
+  font-weight: 300;
 }
 
 @media only screen and (max-width: 950px) {
