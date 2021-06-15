@@ -9,14 +9,16 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * Creates a new user.
  *
  * @param email
- * @param name
+ * @param firstname
+ * @param surname
  * @param password
  * @return {*}
  */
-const createUser = (email: string, name: string, password: string) => {
+const createUser = (email: string, firstname: string, surname: string, password: string) => {
   return Prisma.validator<Prisma.UserCreateInput>()({
     email,
-    name,
+    firstname,
+    surname,
     password,
   });
 };
@@ -48,12 +50,14 @@ const updateUserPassword = (password?: string) => {
 /**
  * Updates an existing user's name.
  *
- * @param name
+ * @param firstname
+ * @param surname
  * @return {*}
  */
-const updateUserName = (name?: string) => {
+const updateUserName = (firstname?: string, surname?: string) => {
   return Prisma.validator<Prisma.UserUpdateInput>()({
-    name
+    firstname,
+    surname
   });
 };
 
@@ -69,10 +73,14 @@ namespace UserController {
         .withMessage(ValidationMessages.WRONG_TYPE)
         .isEmail()
         .withMessage(ValidationMessages.WRONG_VALUE),
-      body("name", ValidationMessages.UNDEFINED)
+      body("firstname", ValidationMessages.UNDEFINED)
         .exists()
         .isString()
         .withMessage(ValidationMessages.WRONG_TYPE),
+      body("surname", ValidationMessages.UNDEFINED)
+          .exists()
+          .isString()
+          .withMessage(ValidationMessages.WRONG_TYPE),
       body("password", ValidationMessages.UNDEFINED)
         .exists()
         .isString()
@@ -127,7 +135,11 @@ namespace UserController {
    */
   export const validateBodyUpdateName = () => {
     return [
-      body("newName", ValidationMessages.UNDEFINED)
+      body("firstname", ValidationMessages.UNDEFINED)
+          .exists()
+          .isString()
+          .withMessage(ValidationMessages.WRONG_TYPE),
+      body("surname", ValidationMessages.UNDEFINED)
           .exists()
           .isString()
           .withMessage(ValidationMessages.WRONG_TYPE)
@@ -158,15 +170,16 @@ namespace UserController {
       next: NextFunction
   ) => {
     try {
-      const { email, name, password } = req.body;
+      const { email, firstname, surname, password } = req.body;
 
       const user = await prisma.user.create({
-        data: createUser(email, name, password)
+        data: createUser(email, firstname, surname, password)
       });
 
       res.status(200).json({
         id: user.id,
-        name: user.name,
+        firstname: user.firstname,
+        surname: user.surname,
         email: user.email,
         createdAt: user.createdAt,
       });
@@ -195,7 +208,8 @@ namespace UserController {
 
       res.status(200).json({
         id: loggedIn?.id,
-        name: loggedIn?.name,
+        firstname: loggedIn?.firstname,
+        surname: loggedIn?.surname,
         email: loggedIn?.email,
         createdAt: loggedIn?.createdAt,
       });
@@ -289,13 +303,13 @@ namespace UserController {
   ) => {
     try {
       const user = req.user;
-      const { newName } = req.body;
+      const { firstname, surname } = req.body;
 
       await prisma.user.update({
         where: {
           id: user.id
         },
-        data: updateUserName(newName)
+        data: updateUserName(firstname, surname)
       });
 
       res.status(200).json();
