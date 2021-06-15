@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { body } from "express-validator";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 import prisma from "@server/common/services/prisma.service";
 import { ValidationMessages } from "@server/common/enums/validationMessages.enum";
@@ -17,20 +17,39 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * @return {*}
  */
 const createMeetup = (
-    hostId: string,
+    host: User,
     date: string,
     place: string,
     recipeId: string,
     maxGuests: number
 ) => {
     return Prisma.validator<Prisma.MeetUpCreateInput>()({
-        hostId,
         date,
         place,
         recipeId,
         maxGuests,
-        users: {
-            connect: {id: hostId}
+        host: {
+            connect: host
+        }
+    });
+};
+
+/**
+ * Creates a new meetup.
+ *
+ * @param hostId
+ * @param date
+ * @param place
+ * @param recipeId
+ * @param maxGuests
+ * @return {*}
+ */
+const updateMeetUpGuests = (
+    guests: User[]
+) => {
+    return Prisma.validator<Prisma.MeetUpUpdateInput>()({
+        guests: {
+            connect: guests
         }
     });
 };
@@ -88,7 +107,7 @@ namespace MeetupController {
                 res.status(404).json("Recipe not found.");
             } else {
                 await prisma.meetUp.create({
-                    data: createMeetup(host.id, date, place, recipeId, maxGuests)
+                    data: createMeetup(host, date, place, recipeId, maxGuests)
                 });
 
                 res.status(200).json();
