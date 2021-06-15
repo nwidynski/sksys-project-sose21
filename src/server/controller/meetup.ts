@@ -98,8 +98,8 @@ namespace MeetupController {
             const host = req.user;
             const { id, guests } = req.body;
 
-            const found = await prisma.meetup.findOne({
-                where: { id }
+            const found = await prisma.meetup.findUnique({
+                where: { id },
                 include: { guests: true }
             });
 
