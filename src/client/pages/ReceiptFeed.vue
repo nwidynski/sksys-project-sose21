@@ -6,7 +6,7 @@
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="search-container">
-          <input v-model="toSearch" class="search-field" />
+          <input v-model="toSearch" class="search-field" placeholder="search a receipt name..." />
           <b-button @click="search" class="search-btn mr-1 mb-1 mt-1"> search </b-button>
         </div>
         <div style="width:100%; border-top: 1px solid black"/>
