@@ -87,7 +87,7 @@ namespace MeetupController {
 
 
     /**
-     * Creates a new meetup.
+     * Updates an existing meetup.
      */
     export const update = async (
         req: Request,
