@@ -10,15 +10,17 @@ generator client {
 model User {
   id String @id @default(uuid())
 
-  name     String
-  email    String @unique
-  password String
+  firstname String
+  surname   String
+  email     String @unique
+  password  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Recipes Recipe[]
-  MeetUps MeetUp[]
+  Recipes   Recipe[]
+  MeetUps   MeetUp[]
+  MyMeetUps MeetUp[] @relation("own")
 }
 
 model Recipe {
@@ -34,7 +36,6 @@ model Recipe {
 
   User        User          @relation(fields: [userId], references: [id])
   Ingredients Ingredients[]
-  MeetUps     MeetUp[]
   Tags        Tag[]
 }
 
@@ -61,11 +62,17 @@ model Tag {
 }
 
 model MeetUp {
-  id       String @id @default(uuid())
-  recipeId String
+  id        String   @id @default(uuid())
+  hostName  String
+  date      DateTime
+  place     String
+  recipeId  String
+  maxGuests Int
 
-  date DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  Recipe Recipe @relation(fields: [recipeId], references: [id])
-  Users  User[]
+  guests    User[]
+  host      User     @relation("own", fields: [hostId], references: [id])
+  hostId    String
 }
