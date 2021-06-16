@@ -126,29 +126,170 @@ export default {
           rating: "4",
           ingredients: [
             {
-            name: "Mehl",
-            amount: "500",
-            unit:"g"
+              name: "Mehl",
+              amount: "500",
+              unit:"g"
             },
             {
-            name: "Eier",
-            amount: "3",
-            unit:"none"
+              name: "Eier",
+              amount: "3",
+              unit:"none"
             },
             {
-            name: "Zucker",
-            amount: "200",
-            unit:"g"
+              name: "Zucker",
+              amount: "200",
+              unit:"g"
             },
             {
-            name: "Walnüsse",
-            amount: "1",
-            unit:"pinch of"
+              name: "Walnüsse",
+              amount: "1",
+              unit:"pinch of"
             },
             {
-            name: "Gelatine",
-            amount: "1",
-            unit:"pinch of"
+              name: "Gelatine",
+              amount: "1",
+              unit:"pinch of"
+            }
+          ]
+        },
+        {
+          id:2,
+          author: "Christian",
+          name: "Chocolate Cake",
+          time:"30min",
+          instruction: "easy peasy instruction",
+          level: "easy",
+          rating: "5",
+          ingredients: [
+            {
+              name: "sugar",
+              amount: "200",
+              unit:"g"
+            },
+            {
+              name:"chocolate",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"eggs",
+              amount:"3",
+              unit:"none"
+            }
+          ]
+        },
+        {
+          id:3,
+          author: "Lara",
+          name: "Spaghetti Bolognese",
+          time:"2h",
+          instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "onions",
+              amount: "2",
+              unit:"none"
+            },
+            {
+              name:"beef",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"olive oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"oregano",
+              amount:"2",
+              unit:"tsp"
+            },
+            {
+              name:"spaghetti",
+              amount:"500",
+              unit:"g"
+            }
+          ]
+        },
+        {
+          id:4,
+          author: "Thomas",
+          name: "Spaghetti Carbonara",
+          time:"2h",
+          instruction: "Die Pasta in reichlich Salzwasser bissfest kochen. Den Schinken in Würfel schneiden und in wenig Butter anbraten.\n" +
+              "\n" +
+              "Eigelb in einer großen Schüssel mit Salz, Pfeffer und Muskat verquirlen. Die Butter schaumig rühren und gut unter das Eigelb mischen. Die Schinkenwürfel und den geriebenen Käse gründlich unterrühren.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "ham",
+              amount: "225",
+              unit:"g"
+            },
+            {
+              name:"butter",
+              amount: "25",
+              unit: "g"
+            },
+            {
+              name:"oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"parmesan",
+              amount:"50",
+              unit:"g"
+            },
+            {
+              name:"pepper",
+              amount:"1",
+              unit:"tsp"
+            }
+          ]
+        },
+        {
+          id:5,
+          author: "Sophie",
+          name: "Bio Vegan Bolognese",
+          time:"2h",
+          instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "onions",
+              amount: "2",
+              unit:"none"
+            },
+            {
+              name:"soja",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"olive oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"oregano",
+              amount:"2",
+              unit:"tsp"
+            },
+            {
+              name:"spaghetti",
+              amount:"500",
+              unit:"g"
+            },
+            {
+              name:"tomatoes",
+              amount:"335",
+              unit:"g"
             }
           ]
         }

@@ -135,7 +135,181 @@ export default {
               unit:"pinch of"
             }
           ]
-        }
+        },
+        {
+          id:2,
+          author: "Christian",
+          name: "Chocolate Cake",
+          time:"30min",
+          instruction: "Den Backofen auf 160 °C Umluft (180 °C Ober-/Unterhitze) vorheizen. Den Boden von zwei Springformen ca. 15 cm (oder alternativ einer 22 cm Springform) mit Backpapier auslegen. Den Formrand fetten und mit Mehl bestäuben.\n" +
+              "\n" +
+              "Die Schokolade in grobe Stücke brechen und zusammen mit der Butter vorsichtig schmelzen. Abkühlen lassen.\n" +
+              "\n" +
+              "Eier und Zucker mit dem Schneebesen in ca. 5 Minuten schaumig schlagen. Die abgekühlte Butter-Schokoladenmischung dazugeben und leicht unterrühren. Mehl mit Kakaopulver, Backpulver und Salz in einer Schüssel mischen. Die Mehlmischung auf die Schaummasse sieben und im Wechsel mit der Buttermilch vorsichtig mit dem Teigschaber unterheben.",
+          level: "easy",
+          rating: "5",
+          ingredients: [
+            {
+              name: "sugar",
+              amount: "200",
+              unit:"g"
+            },
+            {
+              name:"chocolate",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"eggs",
+              amount:"3",
+              unit:"none"
+            }
+          ]
+        },
+        {
+          id:3,
+          author: "Lara",
+          name: "Spaghetti Bolognese",
+          time:"2h",
+          instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "onions",
+              amount: "2",
+              unit:"none"
+            },
+            {
+              name:"beef",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"olive oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"oregano",
+              amount:"2",
+              unit:"tsp"
+            },
+            {
+              name:"spaghetti",
+              amount:"500",
+              unit:"g"
+            }
+          ]
+        },
+        {
+          id:4,
+          author: "Thomas",
+          name: "Spaghetti Carbonara",
+          time:"2h",
+          instruction: "Die Pasta in reichlich Salzwasser bissfest kochen. Den Schinken in Würfel schneiden und in wenig Butter anbraten.\n" +
+              "\n" +
+              "Eigelb in einer großen Schüssel mit Salz, Pfeffer und Muskat verquirlen. Die Butter schaumig rühren und gut unter das Eigelb mischen. Die Schinkenwürfel und den geriebenen Käse gründlich unterrühren.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "ham",
+              amount: "225",
+              unit:"g"
+            },
+            {
+              name:"butter",
+              amount: "25",
+              unit: "g"
+            },
+            {
+              name:"oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"parmesan",
+              amount:"50",
+              unit:"g"
+            },
+            {
+              name:"pepper",
+              amount:"1",
+              unit:"tsp"
+            }
+          ]
+        },
+        {
+          id:5,
+          author: "Sophie",
+          name: "Bio Vegan Bolognese",
+          time:"2h",
+          instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
+          level: "middle",
+          rating: "3",
+          ingredients: [
+            {
+              name: "onions",
+              amount: "2",
+              unit:"none"
+            },
+            {
+              name:"soja",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"olive oil",
+              amount:"50",
+              unit:"ml"
+            },
+            {
+              name:"oregano",
+              amount:"2",
+              unit:"tsp"
+            },
+            {
+              name:"spaghetti",
+              amount:"500",
+              unit:"g"
+            },
+            {
+              name:"tomatoes",
+              amount:"335",
+              unit:"g"
+            }
+          ]
+        },
+        {
+          id:2,
+          author: "Emily",
+          name: "Chocolate Brownie",
+          time:"30min",
+          instruction: "Eine ca. 20 x 20 bzw. 28 x 15 cm große Form einfetten und kalt stellen. Die Bitterschokolade im Wasserbad schmelzen, die Butter unterrühren. Die Vollmilch- und die weiße Schokolade hacken.\n" +
+              "Den Ofen inzwischen auf 200 °C Ober-/Unterhitze vorheizen.\n" +
+              "\n" +
+              "Die Eier schaumig schlagen, den Zucker einrieseln lassen und weiterschlagen, bis die Masse cremig wird. Das Aroma unterrühren. Mehl und Kakao mischen, mit der Sahne unterrühren, die geschmolzene Schokolade und die Schokostücke unterheben. In die vorbereitete Form füllen und im vorgeheizten Ofen etwa 25 min backen, sodass ein Stäbchen bei der Stäbchenprobe noch leicht feucht herauskommt. In der Form auskühlen lassen.",
+          level: "easy",
+          rating: "5",
+          ingredients: [
+            {
+              name: "sugar",
+              amount: "200",
+              unit:"g"
+            },
+            {
+              name:"chocolate",
+              amount: "250",
+              unit: "g"
+            },
+            {
+              name:"eggs",
+              amount:"3",
+              unit:"none"
+            }
+          ]
+        },
       ]
     }
   },
@@ -166,7 +340,8 @@ export default {
   computed: {
     filteredRecipes() {
       let filtered = this.recipes.filter(recipe => {
-        if(recipe.name.toLowerCase() == this.toSearch.toLowerCase().trim()) return true;
+        let searchString = this.toSearch.toLowerCase().trim()
+        if(recipe.name.toLowerCase().includes(searchString) && searchString.length >=4) return true;
         else return false
       });
       console.log(filtered.length)
