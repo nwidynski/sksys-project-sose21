@@ -9,7 +9,8 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
 /**
  * Creates a new meetup.
  *
- * @param hostId
+ * @param hostName
+ * @param host
  * @param date
  * @param place
  * @param recipeId
@@ -17,19 +18,21 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * @return {*}
  */
 const createMeetUp = (
-    host: User,
+    hostName: string,
     date: string,
     place: string,
     recipeId: string,
-    maxGuests: number
+    maxGuests: number,
+    host: User
 ) => {
     return Prisma.validator<Prisma.MeetUpCreateInput>()({
+        hostName,
         date,
         place,
         recipeId,
         maxGuests,
         host: {
-            connect: host
+            connect: { id: host.id }
         }
     });
 };
@@ -37,18 +40,19 @@ const createMeetUp = (
 /**
  * Updates guests for a meetup.
  *
- * @param oldGuests
- * @param newGuests
+ * @param oldGuestIds
+ * @param newGuestId
  * @return {*}
  */
 const updateMeetUpGuests = (
-    oldGuestIds: string[]
-    newGuestIds: string[]
+    //oldGuestIds: User[],
+    newGuestId: string
 ) => {
     return Prisma.validator<Prisma.MeetUpUpdateInput>()({
         guests: {
-            disconnect: oldGuests.map(guest => {return {id: guest.id};}),
-            connect: newGuests.map(guest => {return {id: guest.id};})
+            //disconnect: oldGuestIds.map(guest => {return {id: guest.id};}),
+            connect: { id: newGuestId }
+            //newGuestIds.map(guest => {return {id: guest.id};})
         }
     });
 };
@@ -87,38 +91,6 @@ namespace MeetupController {
 
 
     /**
-     * Updates an existing meetup.
-     */
-    export const update = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) => {
-        try {
-            const host = req.user;
-            const { id, guests } = req.body;
-
-            const found = await prisma.meetup.findUnique({
-                where: { id },
-                include: { guests: true }
-            });
-
-            if (found == null) {
-                res.status(404).json("MeetUp not found.");
-            } else {
-                const meetUp = await prisma.meetUp.update({
-                    where: { id },
-                    data: updateMeetUpGuests(found.guests, guests)
-                });
-
-                res.status(200).json(meetUp);
-            }
-        } catch (err) {
-            return next(err);
-        }
-    };
-    
-    /**
      * Creates a new meetup.
      */
     export const create = async (
@@ -128,7 +100,7 @@ namespace MeetupController {
     ) => {
         try {
             const host = req.user;
-            const { date, place, recipeId, maxGuests, guests } = req.body;
+            const { date, place, recipeId, maxGuests } = req.body;
 
             const found = await prisma.recipe.findUnique({
                 where: { id: recipeId }
@@ -137,8 +109,41 @@ namespace MeetupController {
             if (found == null) {
                 res.status(404).json("Recipe not found.");
             } else {
-                const meetUp = await prisma.recipe.create({
-                    data: createMeetUp(host, date, place, recipeId, maxGuests)
+                const meetUp = await prisma.meetUp.create({
+                    data: createMeetUp(host.firstname + " " + host.surname, date, place, recipeId, maxGuests, host)
+                });
+
+                res.status(200).json(meetUp);
+            }
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+
+    /**
+     * Updates an existing meetup.
+     */
+    export const update = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const guest = req.user;
+            const { id } = req.body;
+
+            const found = await prisma.meetUp.findUnique({
+                where: { id },
+                include: { guests: true }
+            });
+
+            if (found == null) {
+                res.status(404).json("MeetUp not found.");
+            } else {
+                const meetUp = await prisma.meetUp.update({
+                    where: { id },
+                    data: updateMeetUpGuests(guest.id)
                 });
 
                 res.status(200).json(meetUp);

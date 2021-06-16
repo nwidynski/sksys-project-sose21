@@ -16,5 +16,13 @@ router.post(
     MeetupController.create
 );
 
+router.put(
+    "/",
+    isAuthenticated,
+    //MeetupController.validateBodyCreate(),
+    handleValidationResult,
+    MeetupController.update
+);
+
 
 export default router;

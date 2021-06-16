@@ -181,7 +181,7 @@ namespace UserController {
         firstname: user.firstname,
         surname: user.surname,
         email: user.email,
-        createdAt: user.createdAt,
+        createdAt: user.createdAt
       });
     } catch (err) {
       return next(err);
@@ -212,6 +212,7 @@ namespace UserController {
         surname: loggedIn?.surname,
         email: loggedIn?.email,
         createdAt: loggedIn?.createdAt,
+        updatedAt: loggedIn?.updatedAt
       });
     } catch (err) {
       return next(err);
@@ -220,6 +221,7 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's email
+   * @return  JSON Object
    */
   export const updateEmail = async (
       req: Request,
@@ -240,14 +242,21 @@ namespace UserController {
       if (found == null) {
         res.status(403).json("Invalid password.");
       } else {
-        await prisma.user.update({
+        const updated = await prisma.user.update({
           where: {
             id: user.id
           },
           data: updateUserEmail(email)
         });
 
-        res.status(200).json();
+        res.status(200).json({
+          id: updated.id,
+          firstname: updated.firstname,
+          surname: updated.surname,
+          email: updated.email,
+          createdAt: updated.createdAt,
+          updatedAt: updated.updatedAt
+        });
       }
     } catch (err) {
       return next(err);
@@ -256,6 +265,7 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's password
+   * @return  JSON Object
    */
   export const updatePassword = async (
       req: Request,
@@ -276,14 +286,21 @@ namespace UserController {
       if (found == null) {
         res.status(403).json("Invalid password.");
       } else {
-        await prisma.user.update({
+        const updated = await prisma.user.update({
           where: {
             id: user.id
           },
           data: updateUserPassword(newPassword)
         });
 
-        res.status(200).json();
+        res.status(200).json({
+          id: updated.id,
+          firstname: updated.firstname,
+          surname: updated.surname,
+          email: updated.email,
+          createdAt: updated.createdAt,
+          updatedAt: updated.updatedAt
+        });
       }
     } catch (err) {
       return next(err);
@@ -292,6 +309,7 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's name
+   * @return  JSON Object
    */
   export const updateName = async (
       req: Request,
@@ -302,14 +320,21 @@ namespace UserController {
       const user = req.user;
       const { firstname, surname } = req.body;
 
-      await prisma.user.update({
+      const updated = await prisma.user.update({
         where: {
           id: user.id
         },
         data: updateUserName(firstname, surname)
       });
 
-      res.status(200).json();
+      res.status(200).json({
+        id: updated.id,
+        firstname: updated.firstname,
+        surname: updated.surname,
+        email: updated.email,
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
+      });
     } catch (err) {
       return next(err);
     }
