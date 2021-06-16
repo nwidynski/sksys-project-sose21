@@ -203,7 +203,7 @@ namespace UserController {
       const loggedIn = await prisma.user.findUnique({
         where: {
           id: user.id,
-        },
+        }
       });
 
       res.status(200).json({
@@ -220,7 +220,6 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's email
-   * @return JSON Object
    */
   export const updateEmail = async (
       req: Request,
@@ -235,11 +234,11 @@ namespace UserController {
         where: {
           id: user.id,
           password: password
-        },
+        }
       });
 
       if (found == null) {
-        res.status(403).json();
+        res.status(403).json("Invalid password.");
       } else {
         await prisma.user.update({
           where: {
@@ -257,7 +256,6 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's password
-   * @return JSON Object
    */
   export const updatePassword = async (
       req: Request,
@@ -272,11 +270,11 @@ namespace UserController {
         where: {
           id: user.id,
           password: oldPassword
-        },
+        }
       });
 
       if (found == null) {
-        res.status(403).json();
+        res.status(403).json("Invalid password.");
       } else {
         await prisma.user.update({
           where: {
@@ -294,7 +292,6 @@ namespace UserController {
 
   /**
    * Updates the authenticated user's name
-   * @return JSON Object
    */
   export const updateName = async (
       req: Request,
@@ -320,7 +317,6 @@ namespace UserController {
 
   /**
    * Deletes the authenticated user
-   * @return JSON Object
    */
   export const remove = async (
     req: Request,
@@ -335,11 +331,11 @@ namespace UserController {
         where: {
           id: user.id,
           password: password
-        },
+        }
       });
 
       if (found == null) {
-        res.status(403).json();
+        res.status(403).json("Invalid password.");
       } else {
         await prisma.user.delete({
           where: {
