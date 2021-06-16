@@ -5,7 +5,8 @@
             <b-col sm="8" cols="10" md="6" lg="4" xl="3">
                 <div class="text-center">
                     <!-- input elements -->
-                    <b-form-input v-if="!isLogin" v-model="user.name" placeholder="username" class="my-2"></b-form-input>
+                    <b-form-input v-if="!isLogin" v-model="user.firstname" placeholder="firstname" class="my-2"></b-form-input>
+                    <b-form-input v-if="!isLogin" v-model="user.surname" placeholder="surname" class="my-2"></b-form-input>
                     <b-form-input v-model="user.email" placeholder="email" class="my-2" autofocus></b-form-input>
                     <b-form-input v-model="user.password" placeholder="password" class="my-2" type="password" :state="pwState"></b-form-input>
                         <!-- invalid feedback-->
@@ -27,6 +28,8 @@
 </template>
 
 <script>
+import BackendRouter from '@client/utils/http'
+
 export default {
     name: 'Login',
     data() {
@@ -35,7 +38,8 @@ export default {
                 email: "",
                 password: "",
                 secPassword: "",
-                name: ""
+                firstname: "",
+                surname: ""
             },
             isLogin: true,
             pwState: null,
@@ -64,21 +68,40 @@ export default {
         logIn() {
             //login request (sets user object in this.$root.user)
             //dev object
-            this.$root.user = {
-                email: "test@gmail.com",
-                name: "testname",
-                secondName: "testsecond"
+            //this.$root.user = {
+            //    email: "test@gmail.com",
+            //    name: "testname",
+            //    secondName: "testsecond"
+            //}
+            let user = {
+                email: this.user.email,
+                password: this.user.password
             }
-            //access control
-            if(this.$root.user !== undefined) {
-                console.log(this.$root.user)
-                this.$router.push({path: "private"})
-            }
+
+            BackendRouter.RequestRouter.EndPoints.CREATE('/auth/login', user)
+                .then(res => {
+                    this.$root.user = res;
+                    this.$router.push({path: "private"})
+                })
+                .catch(err => console.log("wrong password"))
         },
         signUp() {
             //check input
-            this.checkInput();
+            //this.checkInput();
             //signup request
+            let newUser = {
+                email: this.user.email,
+                firstname: this.user.firstname,
+                surname: this.user.surname,
+                password: this.user.password
+            }
+
+            BackendRouter.RequestRouter.EndPoints.CREATE('/user', newUser)
+                .then(res => {
+                    this.$root.user = res;
+                    this.$router.push({path: "private"})
+                })
+                .catch(err => console.log("something went wrong"))
             //TODO
         },
         checkInput() {
