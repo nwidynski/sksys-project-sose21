@@ -153,6 +153,24 @@ namespace MeetupController {
         }
     };
 
+
+    export const list = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+
+            const meetups = await prisma.meetUp.findMany({
+                //where: { OR: [{ User: user }, { isPrivate: false }] },
+            });
+
+            res.status(200).json(meetups);
+        } catch (err) {
+            return next(err);
+        }
+    };
+
 }
 
 export default MeetupController;
