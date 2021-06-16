@@ -13,7 +13,7 @@
 
         <div class="receipt-container">
           <Recipe
-              v-for="receipt in recipes"
+              v-for="receipt in filteredRecipes"
               :name="receipt.name"
               :level="receipt.level"
               :rating="receipt.rating"
@@ -21,6 +21,7 @@
               :time="receipt.time"
               :ingredients="receipt.ingredients"
               :on-feed="true"
+              :author="receipt.author"
           >
 
           </Recipe>
@@ -161,6 +162,19 @@ export default {
   beforeDestroy(){
     window.removeEventListener('resize',this.onResize);
     console.log("listener removed - ReceiptFeed")
+  },
+  computed: {
+    filteredRecipes() {
+      let filtered = this.recipes.filter(recipe => {
+        if(recipe.name.toLowerCase() == this.toSearch.toLowerCase().trim()) return true;
+        else return false
+      });
+      console.log(filtered.length)
+      if(filtered.length == 0) {
+        return this.recipes
+      }
+      return filtered;
+    }
   }
 }
 

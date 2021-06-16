@@ -95,9 +95,9 @@
               <div>nicht interessiert</div>
             </div>
 
-            <div>User</div>
+            <div> {{ author }}</div>
 
-            <div class="feed-user-top-info"> posted at 6h</div>
+            <div class="feed-user-top-info"> posted at {{ "7h" }}</div>
           </div>
 
         </div>
@@ -188,7 +188,8 @@ export default {
     onFeed: {
       type: Boolean,
       default: false
-    }
+    },
+    author: String
 
   },
   methods: {
