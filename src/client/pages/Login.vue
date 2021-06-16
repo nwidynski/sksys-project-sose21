@@ -3,6 +3,9 @@
     <b-container fluid>
         <b-row class="vh-100" align-h="center" align-v="center">
             <b-col sm="8" cols="10" md="6" lg="4" xl="3">
+                <div class="text-center mb-5">
+                    <b-button @click="switchToFeed" pill>Go to public feed</b-button>
+                </div>
                 <div class="text-center">
                     <!-- input elements -->
                     <b-form-input v-if="!isLogin" v-model="user.firstname" placeholder="firstname" class="my-2"></b-form-input>
@@ -118,6 +121,9 @@ export default {
             }
             this.inputWarning.showSame = false;
             this.pwState = true;
+        },
+        switchToFeed() {
+            this.$router.push({path: 'feed'});
         }
     },
 }

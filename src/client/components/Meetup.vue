@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card bg-variant="light" :header="meetObj.receipt">
+        <b-card border-variant="dark" :header="meetObj.receipt">
             <b-card-text>
                 <p>Place: {{meetObj.place}}</p>
                 <p>Date: {{meetObj.date}}</p>

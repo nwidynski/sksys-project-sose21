@@ -4,6 +4,7 @@ import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
 import Private from '../pages/Private.vue'
 import RecipeFeed from '../pages/RecipeFeed.vue'
+import Feed from '../pages/Feed.vue'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
@@ -30,6 +31,11 @@ const routes = [
     path: '/',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/feed',
+    name: 'Feed',
+    component: Feed
   },
   {
     path: '/private',
