@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
 import Private from '../pages/Private.vue'
-import ReceiptFeed from '../pages/ReceiptFeed.vue'
+import RecipeFeed from '../pages/RecipeFeed.vue'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
@@ -46,9 +46,9 @@ const routes = [
         component: Profile
       },
       {
-        path: 'receiptfeed',
-        name:'ReceiptFeed',
-        component: ReceiptFeed
+        path: 'recipefeed',
+        name:'RecipeFeed',
+        component: RecipeFeed
       },
       {
         path: 'meetups',

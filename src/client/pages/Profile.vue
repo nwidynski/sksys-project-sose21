@@ -4,7 +4,7 @@
     <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
             <h4> {{user.name}} </h4>
-             0 receips
+             2 recipes
         </div>
         <div class="user-cover mx-3"> </div>
       <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
@@ -31,12 +31,12 @@
 
       <hr style="border-top: 1px solid black; margin: 0;">
 
-      <add-receipt
-          @add-event="addReceipt"
+      <add-recipe
+          @add-event="addRecipe"
       />
 
       <div class="receipt-container">
-        <Receipt
+        <Recipe
           v-for="receipt in recipes"
           :name="receipt.name"
           :level="receipt.level"
@@ -46,7 +46,7 @@
           :ingredients="receipt.ingredients"
         >
 
-        </Receipt>
+        </Recipe>
       </div>
     </div>
   </div>
@@ -56,14 +56,14 @@
 
 <script>
 
-import Receipt from "@client/components/Receipt";
-import addReceipt from "@client/modals/addReceipt";
+import Recipe from "@client/components/Recipe";
+import addRecipe from "@client/modals/addRecipe";
 
 export default {
   name: 'Profile',
   components: {
-  Receipt,
-  addReceipt
+  Recipe,
+  addRecipe
   },
   data() {
     return {
@@ -159,9 +159,9 @@ export default {
     paginate: function() {
       console.log("paginate")
     },
-    addReceipt: function(newReceipt) {
+    addRecipe: function(newRecipe) {
       console.log("test")
-      this.recipes.push(newReceipt)
+      this.recipes.push(newRecipe)
     },
     onResize(){
       document.getElementById('main').style.marginLeft = '250px'

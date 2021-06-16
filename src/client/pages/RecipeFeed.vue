@@ -2,17 +2,17 @@
   <div>
     <div id="main" class="main-container">
       <div id="feed">
-        <h3 class="title pl-4 pt-2 pb-1"> Receipt Feed</h3>
+        <h3 class="title pl-4 pt-2 pb-1"> Recipe Feed</h3>
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="search-container">
-          <input v-model="toSearch" class="search-field" placeholder="search a receipt name..." />
+          <input v-model="toSearch" class="search-field" placeholder="search a recipe name..." />
           <b-button @click="search" class="search-btn mr-1 mb-1 mt-1"> search </b-button>
         </div>
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="receipt-container">
-          <Receipt
+          <Recipe
               v-for="receipt in recipes"
               :name="receipt.name"
               :level="receipt.level"
@@ -23,7 +23,7 @@
               :on-feed="true"
           >
 
-          </Receipt>
+          </Recipe>
         </div>
         <br>
         <br>
@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import Receipt from "@client/components/Receipt";
+import Recipe from "@client/components/Recipe";
 export default {
   name: 'ReceiptFeed',
   components: {
-    Receipt,
+    Recipe,
   },
   data() {
     return {
