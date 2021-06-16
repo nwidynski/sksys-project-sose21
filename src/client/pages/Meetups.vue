@@ -1,35 +1,37 @@
 <template>
     <div id="main" style="background-color: #E6FFC7">
-        <h3 class="title pl-4 pt-2 pb-1">Receipt Feed</h3>
+        <h3 class="title pl-4 pt-2 pb-1">Meetups</h3>
         <div style="width:100%; border-top: 1px solid black"/>
 
         <b-container fluid style="margin: 0px">
             <b-row>
                 <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                    <Meetup :meetObj="obj"></Meetup>
+                    <Meetup :meetObj="obj" @join-event="joinMeetup"></Meetup>
                 </b-col>
             </b-row>
         </b-container>
+        <add-meetup :receiptOptions="receiptOptions"></add-meetup>
     </div>
 </template>
 
 <script>
 import Meetup from '../components/Meetup.vue'
+import addMeetup from '../modals/addMeetup.vue'
 
 export default {
-  components: { Meetup },
+  components: { Meetup, addMeetup },
   
   data() {
       return {
           meetupArray: [
               {
                  id: 0, 
-                 author: "David",
-                 location: "Berlin",
+                 host: {firstname: "David"},
+                 place: "Berlin",
                  date: "2021-21-06",
-                 maxMember: 5,
+                 maxGuests: 5,
                  receipt: "Pizza",
-                 member: [
+                 guests: [
                      {
                         id: 0, 
                         name: "Sven"
@@ -41,13 +43,13 @@ export default {
                  ] 
               },
               {
-                 id: 0, 
-                 author: "David",
-                 location: "Berlin",
+                 id: 1, 
+                 host: {firstname: "David"},
+                 place: "Berlin",
                  date: "2021-21-06",
-                 maxMember: 5,
+                 maxGuests: 5,
                  receipt: "Pizza",
-                 member: [
+                 guests: [
                      {
                         id: 0, 
                         name: "Sven"
@@ -59,13 +61,13 @@ export default {
                  ] 
               },
               {
-                 id: 0, 
-                 author: "David",
-                 location: "Berlin",
+                 id: 2, 
+                 host: {firstname: "David"},
+                 place: "Berlin",
                  date: "2021-21-06",
-                 maxMember: 5,
+                 maxGuests: 5,
                  receipt: "Pizza",
-                 member: [
+                 guests: [
                      {
                         id: 0, 
                         name: "Sven"
@@ -76,10 +78,15 @@ export default {
                      }
                  ] 
               }
-          ]
+          ],
+          receiptOptions: [{value: 0, text: "pizza"}, {value: 1, text: "pasta"}]
       }
   },
   methods: {
+    joinMeetup(id) {
+      //TODO Backend request
+      console.log(id);
+    },
     onResize(){
       document.getElementById('main').style.marginLeft = '250px'
       console.log("onResize - Meetups")
@@ -96,6 +103,11 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize',this.onResize)
     console.log("listener removed - Meetups")
+  },
+  mounted() {
+      //access control
+      //Backend requests for meetups
+      //Backend reqeuest for receiptsOptions (receipts -> [{value: id, text: receipt.name}])
   }
 }
 </script>
