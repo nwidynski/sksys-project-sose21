@@ -123,5 +123,11 @@ export default {
             margin-left: 0px;
         }
     }
+    @media (max-width: 1000px) and (min-width: 477px) {
+      #main {
+        margin-left: 51px
+      }
+
+    }
 </style>
 

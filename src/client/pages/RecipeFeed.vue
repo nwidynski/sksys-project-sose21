@@ -426,4 +426,11 @@ export default {
     width: 100%
   }
 }
+
+@media (max-width: 1000px) and (min-width: 477px) {
+  .main-container {
+    margin-left: 51px
+  }
+
+}
 </style>

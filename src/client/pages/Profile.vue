@@ -4,7 +4,7 @@
     <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
             <h4> {{user.name}} </h4>
-             2 recipes
+             6 recipes
         </div>
         <div class="user-cover mx-3"> </div>
       <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
@@ -12,7 +12,7 @@
         <div class="user-container">
           <div class="user-photo rounded-circle"></div>
           <div class="user-data mt-3">
-            <h4> Username </h4>
+            <h4> {{ user.name }} </h4>
             <div class="ml-1" style="font-size: smaller">since April 2019</div>
             <div class="user-stats mt-5">
                 <span class="stat mr-4"> <b>0</b> Following </span>
@@ -399,6 +399,13 @@ export default {
   .main-container {
     width: 100%;
     margin-left: 0px;
+  }
+
+}
+
+@media (max-width: 1000px) and (min-width: 477px) {
+  .main-container {
+    margin-left: 51px
   }
 
 }
