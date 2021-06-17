@@ -13,6 +13,7 @@ import { User } from "@prisma/client";
 import AuthRouter from "@server/routes/auth";
 import RecipeRouter from "@server/routes/recipe";
 import MeetupRouter from "@server/routes/meetup";
+import TagRouter from "@server/routes/tag";
 import prisma from "@server/common/services/prisma.service";
 
 const app = express();
@@ -54,6 +55,8 @@ app.use("/", AuthRouter);
 app.use("/recipes", RecipeRouter);
 
 app.use("/meetups", MeetupRouter);
+
+app.use("/tags", TagRouter);
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

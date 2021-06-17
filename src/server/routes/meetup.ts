@@ -1,31 +1,38 @@
 import express from "express";
 
-import MeetupController from "@server/controller/meetup";
 import { isAuthenticated } from "@server/middleware/auth";
 import { handleValidationResult } from "@server/middleware/validator";
-import RecipeController from "@server/controller/recipe";
+import MeetupController from "@server/controller/meetup";
 
 const router = express.Router();
 
 router.use(express.json());
 
-router.post(
-    "/",
-    isAuthenticated,
-    MeetupController.validateBodyCreate(),
-    handleValidationResult,
-    MeetupController.create
-);
-
 router.get("/", MeetupController.list);
 
-router.put(
-    "/",
-    isAuthenticated,
-    //MeetupController.validateBodyCreate(),
-    handleValidationResult,
-    MeetupController.update
+router.post(
+  "/",
+  isAuthenticated,
+  MeetupController.validateBodyCreate(),
+  handleValidationResult,
+  MeetupController.create
 );
 
+router.put(
+  "/:id",
+  isAuthenticated,
+  MeetupController.validateParams(),
+  MeetupController.validateBodyCreate(),
+  handleValidationResult,
+  MeetupController.edit
+);
+
+// router.delete(
+//   "/:id",
+//   isAuthenticated,
+//   MeetupController.validateParams(),
+//   handleValidationResult,
+//   MeetupController.remove
+// );
 
 export default router;
