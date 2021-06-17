@@ -4,7 +4,7 @@
         <div class="text-center">
             <b-button @click="switchToLogin" pill>Go back to login</b-button>
         </div>
-        <b-row class="vh-100" align-h="center" align-v="center">
+        <b-row  align-h="center" align-v="center">
             <b-col v-for="objR in recipeArray" :key="objR.id" class="my-2" cols="10" lg="5">
                 <Recipe
                     :name="objR.name"
