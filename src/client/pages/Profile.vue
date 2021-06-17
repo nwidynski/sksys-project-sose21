@@ -303,26 +303,8 @@ export default {
     addRecipe: function(newRecipe) {
       console.log("test")
       this.recipes.push(newRecipe)
-    },
-    onResize(){
-      document.getElementById('main').style.marginLeft = '250px'
-      console.log("onResize - Profile")
-      if(window.innerWidth < 1000)
-        document.getElementById('main').style.marginLeft = '51px'
-      if(window.innerWidth < 476)
-        document.getElementById('main').style.marginLeft = '0px'
-
     }
-  },
-  created(){
-    window.addEventListener('resize',this.onResize)
-    console.log("listener added - Profile")
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize',this.onResize)
-    console.log("listener removed - Profile")
   }
-
 }
 </script>
 <style scoped>

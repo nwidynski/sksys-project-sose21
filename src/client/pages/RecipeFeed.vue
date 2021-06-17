@@ -315,27 +315,12 @@ export default {
   },
   methods: {
     onResize(){
-      document.getElementById('main').style.marginLeft = '250px'
 
-      console.log("onResize - ReceiptFeed")
-      if(window.innerWidth < 1000)
-        document.getElementById('main').style.marginLeft = '51px'
-
-      if(window.innerWidth < 476)
-        document.getElementById('main').style.marginLeft = '0px'
 
     },
     search(){
       console.log("search: ",this.toSearch)
     }
-  },
-  created(){
-    window.addEventListener('resize',this.onResize)
-    console.log("listener added - ReceiptFeed")
-  },
-  beforeDestroy(){
-    window.removeEventListener('resize',this.onResize);
-    console.log("listener removed - ReceiptFeed")
   },
   computed: {
     filteredRecipes() {
