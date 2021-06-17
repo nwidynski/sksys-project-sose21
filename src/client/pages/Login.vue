@@ -6,6 +6,7 @@
                 <div class="text-center mb-5">
                     <b-button @click="switchToFeed" pill>Go to public feed</b-button>
                 </div>
+                <b-img fluid :src="require('@/client/assets/logo.png')" ></b-img>
                 <div class="text-center">
                     <!-- input elements -->
                     <b-form-input v-if="!isLogin" v-model="user.firstname" placeholder="firstname" class="my-2"></b-form-input>
