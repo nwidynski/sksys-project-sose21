@@ -81,6 +81,11 @@ export default {
                 email: this.user.email,
                 password: this.user.password
             }
+            if(user.email == "demo") {
+                this.$root.user = user;
+                this.$router.push({path: "private"})
+                return;
+            }
 
             BackendRouter.RequestRouter.EndPoints.CREATE('/auth/login', user)
                 .then(res => {
