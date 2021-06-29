@@ -14,6 +14,10 @@
             @hidden="resetModal"
             @ok="handleOk"
         >
+            <!-- hostName -->
+            <label for="input-hostName">Your name</label>
+            <b-form-input id="input-hostName" v-model="newMeetup.hostName"></b-form-input>
+
             <!-- place -->
             <label for="input-place">Place</label>
             <b-form-input id="input-place" v-model="newMeetup.place"></b-form-input>
@@ -38,6 +42,7 @@ export default {
     data() {
         return {
             newMeetup: {
+                hostName: "",
                 place: "",
                 date: "",
                 maxGuests: 0,
@@ -49,7 +54,8 @@ export default {
     props: {
         receiptOptions: {
             required: true
-        }
+        },
+        meetup: {}
     },
     methods: {
         resetModal() {

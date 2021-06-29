@@ -6,7 +6,7 @@
         <b-container fluid style="margin: 0px">
             <b-row>
                 <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                    <Meetup :meetObj="obj" @join-event="joinMeetup"></Meetup>
+                    <Meetup :meetObj="obj" @join-event="joinMeetup" @edit-event="editMeetup"></Meetup>
                 </b-col>
             </b-row>
         </b-container>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import BackEndRouter from '@client/utils/http'
 import Meetup from '../components/Meetup.vue'
 import addMeetup from '../modals/addMeetup.vue'
 
@@ -23,62 +24,7 @@ export default {
   
   data() {
       return {
-          meetupArray: [
-              {
-                 id: 0, 
-                 host: {firstname: "David"},
-                 place: "Berlin",
-                 date: "2021-21-06",
-                 maxGuests: 5,
-                 receipt: "Pizza",
-                 guests: [
-                     {
-                        id: 0, 
-                        name: "Sven"
-                     },
-                     {
-                        id: 1,
-                        name: "Tom"
-                     }
-                 ] 
-              },
-              {
-                 id: 1, 
-                 host: {firstname: "David"},
-                 place: "Berlin",
-                 date: "2021-21-06",
-                 maxGuests: 5,
-                 receipt: "Pizza",
-                 guests: [
-                     {
-                        id: 0, 
-                        name: "Sven"
-                     },
-                     {
-                        id: 1,
-                        name: "Tom"
-                     }
-                 ] 
-              },
-              {
-                 id: 2, 
-                 host: {firstname: "David"},
-                 place: "Berlin",
-                 date: "2021-21-06",
-                 maxGuests: 5,
-                 receipt: "Pizza",
-                 guests: [
-                     {
-                        id: 0, 
-                        name: "Sven"
-                     },
-                     {
-                        id: 1,
-                        name: "Tom"
-                     }
-                 ] 
-              }
-          ],
+          meetupArray: [],
           receiptOptions: [{value: 0, text: "pizza"}, {value: 1, text: "pasta"}]
       }
   },
@@ -86,11 +32,26 @@ export default {
     joinMeetup(id) {
       //TODO Backend request
       console.log(id);
+    },
+    editMeetup(id) {
+        console.log("edit " + id);
+
+    },
+    passMeetup() {
+        return this.meetupArray.filter(ele => ele.id == id);
+    },
+    requestMeetups() {
+        BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
+            .then(res => {
+                this.meetupArray = res;
+            })
+            .catch(err => console.log("error"))
     }
   },
   mounted() {
       //access control
       //Backend requests for meetups
+      this.requestMeetups()
       //Backend reqeuest for receiptsOptions (receipts -> [{value: id, text: receipt.name}])
   }
 }

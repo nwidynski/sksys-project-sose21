@@ -87,12 +87,12 @@ export default {
                 return;
             }
 
-            BackendRouter.RequestRouter.EndPoints.CREATE('/auth/login', user)
+            BackendRouter.RequestRouter.EndPoints.CREATE('/login', user)
                 .then(res => {
                     this.$root.user = res;
                     this.$router.push({path: "private"})
                 })
-                .catch(err => console.log("wrong password"))
+                .catch(err => console.log(err))
         },
         signUp() {
             //check input
@@ -105,7 +105,7 @@ export default {
                 password: this.user.password
             }
 
-            BackendRouter.RequestRouter.EndPoints.CREATE('/user', newUser)
+            BackendRouter.RequestRouter.EndPoints.CREATE('/signup', newUser)
                 .then(res => {
                     this.$root.user = res;
                     this.$router.push({path: "private"})
