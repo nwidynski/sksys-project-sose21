@@ -4,6 +4,7 @@
             <b-card-text>
                 <p>Place: {{meetObj.place}}</p>
                 <p>Date: {{getDate()}}</p>
+                <p>Time: {{getTime()}}</p>
                 <p>Guests: {{meetObj.guests.length}}/{{meetObj.maxGuests}}</p>
                 <p>created by: {{meetObj.hostName}}</p>
             </b-card-text>
@@ -33,7 +34,10 @@ export default {
             this.$emit('edit-event', this.$props.meetObj.id);
         },
         getDate() {
-            return this.$props.meetObj.date.substring(0, 10)
+            return this.$props.meetObj.date.substring(0, 10);
+        },
+        getTime() {
+            return this.$props.meetObj.date.substring(11, 16);
         }
     }
 
