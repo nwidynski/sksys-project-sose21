@@ -13,26 +13,42 @@ router.get("/", MeetupController.list);
 router.post(
   "/",
   isAuthenticated,
-  MeetupController.validateBodyCreate(),
+  MeetupController.validateBody(),
   handleValidationResult,
   MeetupController.create
 );
 
 router.put(
-  "/:id",
+  "/:id/addGuest",
   isAuthenticated,
   MeetupController.validateParams(),
-  MeetupController.validateBodyCreate(),
   handleValidationResult,
-  MeetupController.edit
+  MeetupController.addGuest
 );
 
-// router.delete(
-//   "/:id",
-//   isAuthenticated,
-//   MeetupController.validateParams(),
-//   handleValidationResult,
-//   MeetupController.remove
-// );
+router.put(
+    "/:id/removeGuest",
+    isAuthenticated,
+    MeetupController.validateParams(),
+    handleValidationResult,
+    MeetupController.removeGuest
+);
+
+router.put(
+    "/:id/update",
+    isAuthenticated,
+    MeetupController.validateParams(),
+    MeetupController.validateBody(),
+    handleValidationResult,
+    MeetupController.update
+);
+
+router.delete(
+   "/:id",
+   isAuthenticated,
+   MeetupController.validateParams(),
+   handleValidationResult,
+   MeetupController.remove
+);
 
 export default router;
