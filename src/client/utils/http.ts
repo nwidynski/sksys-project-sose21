@@ -41,8 +41,8 @@ namespace BackEndRouter {
     };
     const read = (id: number) => {};
 
-    const update = <T>(path: string, id: number, body: T): Promise<T> => {
-      return fetch(`${BASE_URL + path}/${id}`, {
+    const update = <T>(path: string, body: T): Promise<T> => {
+      return fetch(BASE_URL + path, {
         method: "PUT",
         headers: {
           Accept: "Application/json",

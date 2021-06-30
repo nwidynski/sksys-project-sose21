@@ -11,6 +11,7 @@
             </b-row>
         </b-container>
         <add-meetup :recipeOptions="recipeOptions" @created-meetup="pushNewMeetup"></add-meetup>
+        <edit-meetup :recipeOptions="recipeOptions" :meetupsValues="toBeEdited" @edit-meetup="pushEditMeetup"></edit-meetup>
     </div>
 </template>
 
@@ -18,14 +19,16 @@
 import BackEndRouter from '@client/utils/http'
 import Meetup from '../components/Meetup.vue'
 import addMeetup from '../modals/addMeetup.vue'
+import EditMeetup from '@client/modals/editMeetup.vue'
 
 export default {
-  components: { Meetup, addMeetup },
+  components: { Meetup, addMeetup, EditMeetup },
   
   data() {
       return {
           meetupArray: [],
-          recipeOptions: []
+          recipeOptions: [],
+          toBeEdited: undefined
       }
   },
   methods: {
@@ -34,14 +37,23 @@ export default {
       console.log(id);
     },
     editMeetup(id) {
+        this.toBeEdited = this.meetupArray.filter(ele => ele.id==id)[0];
+        console.log(this.toBeEdited)
+        // if(this.toBeEdited.hostId !== this.$root.user.id) {
+        //     //TODO
+        //     console.log("you can only edit your own meetups!")
+        //     return;
+        // }
         console.log("edit " + id);
+        this.$bvModal.show("edit-meetup");
     },
     pushNewMeetup(newMeetup) {
         console.log(newMeetup);
         this.meetupArray.push(newMeetup);
     },
-    passMeetup() {
-        return this.meetupArray.filter(ele => ele.id == id);
+    pushEditMeetup(editMeetup) {
+        //maybe change this
+        this.meetupArray = this.getMeetups();
     },
     getMeetups() {
         BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
@@ -76,7 +88,7 @@ export default {
       //Backend requests for meetups
       this.getMeetups()
       //Backend reqeuest for recipesOptions (recipes -> [{value: id, text: recipe.name}])
-      this.setRecipeOptions();
+      //this.setRecipeOptions(); doesnt work, but worked fine for hours :(
   }
 }
 </script>
