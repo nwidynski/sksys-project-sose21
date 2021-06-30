@@ -58,6 +58,7 @@
 
 import Recipe from "@client/components/Recipe";
 import addRecipe from "@client/modals/addRecipe";
+import BackEndRouter from "@client/utils/http";
 
 export default {
   name: 'Profile',
@@ -303,7 +304,18 @@ export default {
     addRecipe: function(newRecipe) {
       console.log("test")
       this.recipes.push(newRecipe)
+    },
+    getRecipes: function() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
+          .then(res => {
+            this.recipes = res;
+          })
+          .catch(err => console.log("error"))
     }
+  },
+  mounted() {
+    //Backend requests for meetups
+    this.getRecipes()
   }
 }
 </script>

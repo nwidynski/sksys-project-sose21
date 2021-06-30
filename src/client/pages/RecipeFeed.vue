@@ -46,6 +46,7 @@
 
 <script>
 import Recipe from "@client/components/Recipe";
+import BackEndRouter from "@client/utils/http";
 export default {
   name: 'ReceiptFeed',
   components: {
@@ -320,6 +321,13 @@ export default {
     },
     search(){
       console.log("search: ",this.toSearch)
+    },
+    getRecipes: function() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
+          .then(res => {
+            this.recipes = res;
+          })
+          .catch(err => console.log("error"))
     }
   },
   computed: {
@@ -335,6 +343,10 @@ export default {
       }
       return filtered;
     }
+  },
+  mounted() {
+    //Backend requests for meetups
+    this.getRecipes()
   }
 }
 
