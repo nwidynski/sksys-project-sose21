@@ -10,7 +10,7 @@
                 </b-col>
             </b-row>
         </b-container>
-        <add-meetup :receiptOptions="receiptOptions"></add-meetup>
+        <add-meetup :recipeOptions="recipeOptions" @created-meetup="pushNewMeetup"></add-meetup>
     </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   data() {
       return {
           meetupArray: [],
-          receiptOptions: [{value: 0, text: "pizza"}, {value: 1, text: "pasta"}]
+          recipeOptions: []
       }
   },
   methods: {
@@ -35,24 +35,48 @@ export default {
     },
     editMeetup(id) {
         console.log("edit " + id);
-
+    },
+    pushNewMeetup(newMeetup) {
+        console.log(newMeetup);
+        this.meetupArray.push(newMeetup);
     },
     passMeetup() {
         return this.meetupArray.filter(ele => ele.id == id);
     },
-    requestMeetups() {
+    getMeetups() {
         BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
             .then(res => {
                 this.meetupArray = res;
             })
             .catch(err => console.log("error"))
+    },
+    setRecipeOptions() {
+        let self = this;
+        BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
+            .then(res => {
+                let newArr = res.map(ele => {
+                    delete ele.createdAt;
+                    delete ele.updatedAt;
+                    delete ele.isPrivate;
+                    delete ele.rating;
+                    delete ele.userId;
+                    return ele;
+                });
+                newArr.forEach(ele => {
+                    delete Object.assign(ele, {value: ele["id"] })["id"];
+                    delete Object.assign(ele, {text: ele["name"] })["name"];
+                })
+                self.recipeOptions = newArr;
+            })
+            .catch(err => console.log(err))
     }
   },
   mounted() {
       //access control
       //Backend requests for meetups
-      this.requestMeetups()
-      //Backend reqeuest for receiptsOptions (receipts -> [{value: id, text: receipt.name}])
+      this.getMeetups()
+      //Backend reqeuest for recipesOptions (recipes -> [{value: id, text: recipe.name}])
+      this.setRecipeOptions();
   }
 }
 </script>

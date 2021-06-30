@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card border-variant="dark" :header="meetObj.recipeId">
+        <b-card border-variant="dark" :header="meetObj.recipeName">
             <b-card-text>
                 <p>Place: {{meetObj.place}}</p>
                 <p>Date: {{getDate()}}</p>

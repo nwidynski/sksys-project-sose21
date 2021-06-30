@@ -24,20 +24,25 @@
 
             <!-- date -->
             <label for="input-date">Date</label>
-            <b-form-input id="input-date" v-model="newMeetup.date"></b-form-input>
+            <b-form-datepicker id="input-date" v-model="newMeetup.date"></b-form-datepicker>
+
+            <!-- time -->
+            <label for="input-time">Time</label>
+            <b-form-timepicker id="input-time" v-model="newMeetup.time"></b-form-timepicker>
 
             <!-- maxguests -->
             <label for="input-maxguests">Max. guests</label>
-            <b-form-input id="input-maxguests" v-model="newMeetup.maxGuests"></b-form-input>
+            <b-form-input id="input-maxguests" type="number" v-model="newMeetup.maxGuests"></b-form-input>
 
-            <!-- receipt -->
+            <!-- recipe -->
             <label for="input-receipeId">Recipe</label>
-            <b-form-select id="input-receipeId" v-model="newMeetup.recipeId" :options="receiptOptions"></b-form-select>
+            <b-form-select id="input-receipeId" v-model="newMeetup.recipeId" :options="recipeOptions"></b-form-select>
         </b-modal>
     </div>
 </template>
 
 <script>
+import BackEndRouter from '@client/utils/http';
 export default {
     data() {
         return {
@@ -45,17 +50,21 @@ export default {
                 hostName: "",
                 place: "",
                 date: "",
+                time: "",
                 maxGuests: 0,
-                recipeId: null,
-                hostId: null //set with user object
+                recipeId: null
             }
         }
     },
+    computed: {
+        fullDateString() {
+            return this.newMeetup.date + "T" + this.newMeetup.time + "Z";
+        }
+    },
     props: {
-        receiptOptions: {
+        recipeOptions: {
             required: true
-        },
-        meetup: {}
+        }
     },
     methods: {
         resetModal() {
@@ -65,7 +74,17 @@ export default {
             this.newMeetup.recipeId = null;
         },
         handleOk() {
+            let self = this;
             //TODO
+            let newObj = {
+                date: this.fullDateString,
+                place: this.newMeetup.place,
+                maxGuests: Number(this.newMeetup.maxGuests),
+                recipeId: this.newMeetup.recipeId
+            }
+            BackEndRouter.RequestRouter.EndPoints.CREATE("/meetups", newObj)
+                .then(res => self.$emit("created-meetup", res))
+                .catch(err => console.log(err))
         }
     }
 }
