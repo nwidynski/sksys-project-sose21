@@ -33,18 +33,19 @@ export default {
   },
   methods: {
     joinMeetup(id) {
-      //TODO Backend request
-      console.log(id);
+        let self = this;
+        //TODO Backend request
+        BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/addGuest")
+            .then(res => self.getMeetups())
+            .catch(err => console.log(err))
     },
     editMeetup(id) {
         this.toBeEdited = this.meetupArray.filter(ele => ele.id==id)[0];
-        console.log(this.toBeEdited)
         // if(this.toBeEdited.hostId !== this.$root.user.id) {
         //     //TODO
         //     console.log("you can only edit your own meetups!")
         //     return;
         // }
-        console.log("edit " + id);
         this.$bvModal.show("edit-meetup");
     },
     pushNewMeetup(newMeetup) {
@@ -53,7 +54,7 @@ export default {
     },
     pushEditMeetup(editMeetup) {
         //maybe change this
-        this.meetupArray = this.getMeetups();
+        this.getMeetups();
     },
     getMeetups() {
         BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")

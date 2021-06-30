@@ -5,7 +5,7 @@
             id="edit-meetup"
             ref="modal"
             title="Add new meetup"
-            @show="setValues"
+            @shown="setValues"
             @hidden="resetModal"
             @ok="handleOk"
         >
@@ -66,21 +66,17 @@ export default {
         },
         handleOk() {
             let self = this;
-            //TODO
             let editObj = {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
                 maxGuests: Number(this.newMeetup.maxGuests),
                 recipeId: "6d277323-efaf-4bc4-89f0-72a670b378ba" //doesnt work with options
             }
-            console.log(editObj);
             BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + this.meetupsValues.id + "/update", editObj)
                 .then(res => self.$emit("edit-meetup", res))
                 .catch(err => console.log(err))
         },
         setValues() {
-            console.log("hook")
-            console.log(this.meetupsValues);
             if(this.meetupsValues !== undefined) {
                 this.newMeetup.place = this.meetupsValues.place;
                 this.newMeetup.date = this.meetupsValues.date.substring(0,10);
