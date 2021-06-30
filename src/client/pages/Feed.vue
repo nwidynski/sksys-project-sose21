@@ -28,53 +28,13 @@
 <script>
 import Meetup from '../components/Meetup.vue'
 import Recipe from '../components/Recipe.vue'
+import BackEndRouter from '@client/utils/http'
 
 export default {
   components: { Meetup, Recipe },
     data() {
         return {
-            meetupArray: [
-              {
-                 id: 0, 
-                 host: {firstname: "David"},
-                 place: "Berlin",
-                 date: "2021-21-06",
-                 maxGuests: 5,
-                 receipt: "Pizza",
-                 guests: [
-                     {
-                        id: 0, 
-                        name: "RT"
-                     },
-                     {
-                        id: 1,
-                        name: "SV"
-                     },
-                     {
-                        id: 3,
-                        name: "LS"
-                     }
-                 ] 
-              },
-              {
-                 id: 1, 
-                 host: {firstname: "David"},
-                 place: "Berlin",
-                 date: "2021-21-06",
-                 maxGuests: 5,
-                 receipt: "Cake",
-                 guests: [
-                     {
-                        id: 0, 
-                        name: "LD"
-                     },
-                     {
-                        id: 1,
-                        name: "TM"
-                     }
-                 ] 
-              }
-            ],
+            meetupArray: [],
             recipeArray: [
                 {
           id:0,
@@ -163,7 +123,17 @@ export default {
     methods: {
         switchToLogin() {
             this.$router.push({path: '/'})
+        },
+        getMeetups() {
+          BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
+            .then(res => {
+                this.meetupArray = res;
+            })
+            .catch(err => console.log("error"))
         }
+    },
+    mounted() {
+        this.getMeetups();
     }
 }
 </script>
