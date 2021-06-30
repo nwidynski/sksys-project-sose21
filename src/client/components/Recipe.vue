@@ -86,18 +86,21 @@
           <b-avatar class="mt-2" size="3rem"/>
 
           <div class="mx-3" style="width: 100%">
-            <b-icon-three-dots class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
+            <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
 
             <!-- TODO -->
-            <div style="background-color: #2a2a2e; color: white; display:none">
-              <b-icon-x style="float:right"/>
-              <div>speichern</div>
-              <div>nicht interessiert</div>
+            <div v-if="showOptions" style="float: right; background-color: #2a2a2e; color: white; font-size: medium">
+              <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
+
+              <div class="feedOption">
+                <div>speichern</div>
+                <div>nicht interessiert</div>
+              </div>
             </div>
 
             <div> {{ author }}</div>
 
-            <div class="feed-user-top-info"> posted at {{ "7h" }}</div>
+            <div class="feed-user-top-info" style="position: absolute"> posted at {{ "7h" }}</div>
           </div>
 
         </div>
@@ -315,5 +318,15 @@ export default {
   }
 }
 
+.feedOption {
+  margin: 1em
+}
+
+.feedOption > div{
+  cursor: pointer
+}
+.feedOption > div:hover{
+  color: lightgray
+}
 
 </style>
