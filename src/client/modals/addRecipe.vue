@@ -2,91 +2,100 @@
   <div>
     <b-button v-b-modal.add-receipt-modal class="ml-4 mt-3 mb-n2 addRcpt"><b-icon-plus class="add-receipt" title="add receipt"> </b-icon-plus></b-button>
     <b-modal
-      id="add-receipt-modal"
-      ref="modal"
-      title="Add new receipt"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
-      :level="level"
+        id="add-receipt-modal"
+        ref="modal"
+        title="Add new receipt"
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+        :level="level"
     >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-          <b-form-group
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
             label="Receipt name"
             label-for="name-input"
             invalid-feedback="Name is required"
             :state="nameState"
-          >
-            <b-form-input
+        >
+          <b-form-input
               id="name-input"
               v-model="name"
               :state="nameState"
               required
               placeholder="yummy food name"
-            ></b-form-input>
-          </b-form-group>
+          ></b-form-input>
+        </b-form-group>
 
 
-          <b-form-group
+        <b-form-group
             label="Ingredients"
             label-for="ingredient-input"
             :invalid-feedback="ingredientsFeedback"
             :state="ingredientsState"
-          >
-            <!--
-            <b-form-input
-              id="ingredient-input"
-              v-model="ingredients"
-              :state="ingredientsState"
-              placeholder="chicken:200g water:100ml cheese:500g"
-              required
-            />
-            -->
+        >
+          <!--
+          <b-form-input
+            id="ingredient-input"
+            v-model="ingredients"
+            :state="ingredientsState"
+            placeholder="chicken:200g water:100ml cheese:500g"
+            required
+          />
+          -->
 
-            <b-row
+          <b-row
               v-for="ingredient in ingredientsList"
               class="mb-1"
-            >
-              <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
-              <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
-              <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
-            </b-row>
-          </b-form-group>
-          <b-button class="mr-1" @click="addIngredient">+</b-button>
-          <b-button @click="deleteIngredient">-</b-button>
-
-          <b-form-group
-            label="Instruction"
           >
-            <b-form-textarea v-model="instruction" placeholder="tell me how... :)" rows="3"/>
-          </b-form-group>
-          <b-row>
-            <b-col>
-              <b-form-group
-                label="Level"
-              >
-                <b-form-select
-                    v-model="level"
-                    :options="levelOptions">
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group
-                  label="Time"
-
-              >
-                <b-form-input
-                    v-model="time"
-                    placeholder="1h 30min"
-                />
-
-              </b-form-group>
-            </b-col>
+            <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
+            <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
+            <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
           </b-row>
-          <b-form-file v-model="img" accept=".jpg, .png, .gif"></b-form-file>
-        </form>
-     </b-modal>
+        </b-form-group>
+        <b-button class="mr-1" @click="addIngredient">+</b-button>
+        <b-button @click="deleteIngredient">-</b-button>
+
+        <b-form-group
+            label="Instruction"
+        >
+          <b-form-textarea v-model="instruction" placeholder="tell me how... :)" rows="3"/>
+        </b-form-group>
+        <b-form-group>
+          <b-form-checkbox
+              id="checkbox-1"
+              v-model="isPrivate"
+              name="checkbox-1"
+          >
+            private recipe
+          </b-form-checkbox>
+        </b-form-group>
+        <b-row>
+          <b-col>
+            <b-form-group
+                label="Level"
+            >
+              <b-form-select
+                  v-model="level"
+                  :options="levelOptions">
+              </b-form-select>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group
+                label="Time"
+
+            >
+              <b-form-input
+                  v-model="time"
+                  placeholder="1h 30min"
+              />
+
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <b-form-file v-model="img" accept=".jpg, .png, .gif"></b-form-file>
+      </form>
+    </b-modal>
   </div>
 
 </template>
@@ -97,19 +106,20 @@ export default {
   name: 'addReceipt',
   data() {
     return {
-      name: '',
+      name: null,
       nameState: null,
-      instruction: '',
+      instruction: null,
       instructionState: null,
       level: null,
       levelState: null,
-      time: '',
+      time: null,
       timeState: null,
-      ingredients: '',
+      ingredients: null,
       ingredientsState: null,
       ingredientsFeedback:"",
       levels: ["easy","middle","hard"],
       img: null,
+      isPrivate: false,
       ingredientsList: [{
         name: "",
         amount: "",
@@ -126,7 +136,7 @@ export default {
         {value:"tbsp",text:"tbsp"},
         {value:"handful",text:"handful"},
         {value:"pinch of",text:"pinch of"},
-        {value:"none",text:"none"}
+        {value:null,text:"none"}
       ],
       levelOptions:[
         {value:null, text:"switch me", disabled:true},
@@ -152,7 +162,8 @@ export default {
         name:"",
         amount:"",
         unit:null
-      }]
+      }];
+      this.isPrivate = false
     },
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault()
@@ -180,8 +191,9 @@ export default {
           instruction: this.instruction,
           time: this.time,
           level: this.level,
-          rating: "0",
-          ingredients: this.ingredientsList
+          rating: 0,
+          ingredients: this.ingredientsList,
+          isPrivate: this.isPrivate
         }
 
         console.log("submit ",newreceipt)

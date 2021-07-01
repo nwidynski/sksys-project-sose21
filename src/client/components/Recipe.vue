@@ -1,6 +1,6 @@
 <template>
   <div>
-      <!-- Receipt Card -->
+    <!-- Receipt Card -->
     <div v-if="!editing && !onFeed" class="mt-3 mx-3 card-container">
 
       <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
@@ -14,27 +14,27 @@
               v-for="ingredient in ingredients"
               class="list-item"
           >
-              <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
-              <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
+            <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
+            <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
           </b-list-group-item>
         </b-card-text>
 
-        <b-card-text>
+        <b-card-text v-if="this.instruction">
           {{ instruction }}
         </b-card-text>
 
-        <b-input-group style="width: 65%" size="sm" :append="rating">
+        <b-input-group style="width: 65%" size="sm" :append="rating.toString()">
           <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
-          <div class="receipt-attribute"> {{level}} </div>
-          <div class="receipt-attribute"> {{time}} </div>
+          <div v-if="this.level" class="receipt-attribute"> {{level}} </div>
+          <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
 
         </b-card-text>
       </b-card>
     </div>
-     <!-- Editing Card -->
+    <!-- Editing Card -->
     <div v-if="editing" class="mt-3 mx-3 card-container">
 
       <b-card  class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
@@ -50,14 +50,16 @@
               class="list-item"
           >
             <b-row>
-            <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
-            <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
-            <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
+              <b-col> <b-input v-model="ingredient.name" placeholder="ingredient"/></b-col>
+              <b-col> <b-input v-model="ingredient.amount" placeholder="amount"/></b-col>
+              <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
             </b-row>
           </b-list-group-item>
         </b-card-text>
 
         <b-card-text >
+          <h5>Instruction</h5>
+
           <b-form-textarea
               v-model="instruction"
               rows="10"
@@ -65,13 +67,13 @@
           </b-form-textarea>
         </b-card-text>
 
-        <b-input-group style="width:50%" size="sm" :append="rating">
+        <b-input-group style="width:50%" size="sm" :append="rating.toString()">
           <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
-          <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level}} </div>
-          <input @click="timeClicked" placeholder="1h 20min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
+          <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level ? level : "level"}} </div>
+          <input @click="timeClicked" placeholder="-h -min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
         </b-card-text>
 
         <b-button class="mr-3" @click="editClicked">Save</b-button>
@@ -82,63 +84,66 @@
     <!-- ReceiptFeedCard -->
 
     <div v-if="onFeed" class="feed-receipt-container">
-        <div class="mt-4 mx-3 feed-user-top" style="display: flex">
-          <b-avatar class="mt-2" size="3rem"/>
+      <div class="mt-4 mx-3 feed-user-top" style="display: flex">
+        <b-avatar class="mt-2" size="3rem"/>
 
-          <div class="mx-3" style="width: 100%">
-            <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
+        <div class="mx-3" style="width: 100%">
+          <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
 
-            <!-- TODO -->
-            <div v-if="showOptions" style="float: right; background-color: #2a2a2e; color: white; font-size: medium">
-              <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
+          <!-- TODO -->
+          <div v-if="showOptions" style="float: right; background-color: #2a2a2e; color: white; font-size: medium">
+            <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
 
-              <div class="feedOption">
-                <div>speichern</div>
-                <div>nicht interessiert</div>
-              </div>
+            <div class="feedOption">
+              <div>speichern</div>
+              <div>nicht interessiert</div>
             </div>
-
-            <div> {{ author }}</div>
-
-            <div class="feed-user-top-info" style="position: absolute"> posted at {{ "7h" }}</div>
           </div>
 
+          <div> {{ author }}</div>
+
+          <div class="feed-user-top-info" style="position: absolute"> posted at {{ "7h" }}</div>
         </div>
+
+      </div>
 
       <div class="mt-3 mx-3 card-container">
         <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
-            <template #header>
-              <h4 class="mb-0">{{ name }}</h4>
-            </template>
+          <template #header>
+            <h4 class="mb-0">{{ name }}</h4>
+          </template>
 
-            <b-card-text class="ingredients-container">
-              <h5>Ingredients</h5>
-              <b-list-group-item
-                  v-for="ingredient in ingredients"
-                  class="list-item"
-              >
-                <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
-                <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
-              </b-list-group-item>
-            </b-card-text>
-
-          <div v-if="!collapsedFeed" class="mb-3">
-            <b-card-text>
-              {{ instruction }}
-            </b-card-text>
-          </div>
+          <b-card-text class="ingredients-container">
+            <h5>Ingredients</h5>
+            <b-list-group-item
+                v-for="ingredient in ingredients"
+                class="list-item"
+            >
+              <div class="col-6" style="display:inline-block; width:50%">{{ingredient.name}}</div>
+              <span class="col-6">{{ ingredient.amount }} {{ingredient.unit == "none" ? "" : ingredient.unit}}</span>
+            </b-list-group-item>
+          </b-card-text>
+          <div v-if="this.instruction">
+            <div v-if="!collapsedFeed" class="mb-3">
+              <b-card-text>
+                {{ instruction }}
+              </b-card-text>
+            </div>
             <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>
-            <b-input-group style="width:50%" size="sm" :append="rating">
-              <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
-            </b-input-group>
+          </div>
+          <b-input-group style="width:50%" size="sm" :append="rating.toString()">
+            <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+          </b-input-group>
 
-            <b-card-text class="mt-3">
-              <div class="receipt-attribute"> {{level}} </div>
-              <div class="receipt-attribute"> {{time}} </div>
+          <b-card-text class="mt-3">
+            <div v-if="this.level" class="receipt-attribute"> {{level}} </div>
+            <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
+            <div v-if="this.instruction">
               <b-icon-arrow-down-circle-fill class="icon h3" v-if="collapsedFeed" style="float: right" @click="collapsing"/>
               <b-icon-arrow-up-circle-fill class="icon h3" v-else style="float: right" @click="collapsing"/>
-            </b-card-text>
-          </b-card>
+            </div>
+          </b-card-text>
+        </b-card>
       </div>
     </div>
 
@@ -182,11 +187,26 @@ export default {
   },
 
   props: {
-    name: String,
-    level: String,
-    instruction: String,
-    rating: String,
-    time: String,
+    name: {
+      type: String,
+      default: ""
+    },
+    level: {
+      type: String,
+      default: ""
+    },
+    instruction: {
+      type: String,
+      default: ""
+    },
+    rating: {
+      type: Number,
+      default: ""
+    },
+    time: {
+      type: String,
+      default: ""
+    },
     ingredients: Array,
     onFeed: {
       type: Boolean,

@@ -12,6 +12,7 @@
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="receipt-container">
+          <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
               v-for="receipt in filteredRecipes"
               :name="receipt.name"
@@ -25,9 +26,12 @@
           >
 
           </Recipe>
+          <br>
+          <br>          <br>
+          <br>          <br>
+          <br>          <br>
         </div>
-        <br>
-        <br>
+
 
       </div>
       <div id="infos">
@@ -55,7 +59,7 @@ export default {
   data() {
     return {
       toSearch:"",
-      recipes: [
+      recipes: /*[
         {
           id:0,
           author:"Lucy",
@@ -311,7 +315,7 @@ export default {
             }
           ]
         },
-      ]
+      ]*/ []
     }
   },
   methods: {
@@ -337,7 +341,6 @@ export default {
         if(recipe.name.toLowerCase().includes(searchString) && searchString.length >=4) return true;
         else return false
       });
-      console.log(filtered.length)
       if(filtered.length == 0) {
         return this.recipes
       }

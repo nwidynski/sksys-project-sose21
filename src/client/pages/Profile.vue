@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
-  <div id="main" class="main-container">
-    <div class="profile-container">
+    <div id="main" class="main-container">
+      <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
-            <h4> {{user.name}} </h4>
-             6 recipes
+          <h4> {{user.name}} </h4>
+          6 recipes
         </div>
         <div class="user-cover mx-3"> </div>
-      <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
+        <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
 
         <div class="user-container">
           <div class="user-photo rounded-circle"></div>
@@ -15,41 +15,45 @@
             <h4> {{ user.name }} </h4>
             <div class="ml-1" style="font-size: smaller">since April 2019</div>
             <div class="user-stats mt-5">
-                <span class="stat mr-4"> <b>0</b> Following </span>
-                <span class="stat"> <b>0</b> Followers </span>
+              <span class="stat mr-4"> <b>0</b> Following </span>
+              <span class="stat"> <b>0</b> Followers </span>
             </div>
           </div>
 
         </div>
 
-    </div>
-    <div class="content-container">
-      <div class="profile-menu">
-        <span v-on:click="paginate" style="cursor: pointer"> recipes </span>
-        <div v-if="recipesMenu"  class="recipes"></div>
       </div>
+      <div class="content-container">
+        <div class="profile-menu">
+          <span v-on:click="paginate" style="cursor: pointer"> recipes </span>
+          <div v-if="recipesMenu"  class="recipes"></div>
+        </div>
 
-      <hr style="border-top: 1px solid black; margin: 0;">
+        <hr style="border-top: 1px solid black; margin: 0;">
 
-      <add-recipe
-          @add-event="addRecipe"
-      />
+        <add-recipe
+            @add-event="addRecipe"
+        />
 
-      <div class="receipt-container">
-        <Recipe
-          v-for="receipt in recipes"
-          :name="receipt.name"
-          :level="receipt.level"
-          :rating="receipt.rating"
-          :instruction="receipt.instruction"
-          :time="receipt.time"
-          :ingredients="receipt.ingredients"
-        >
-
-        </Recipe>
+        <div class="receipt-container">
+          <div style="height: 100vh" v-if="recipes.length == 0"></div>
+          <Recipe
+              v-for="receipt in recipes"
+              :name="receipt.name"
+              :level="receipt.level"
+              :rating="receipt.rating"
+              :instruction="receipt.instruction"
+              :time="receipt.time"
+              :ingredients="receipt.ingredients"
+          >
+          </Recipe>
+          <br>
+          <br>          <br>
+          <br>          <br>
+          <br>          <br>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 
 </template>
@@ -59,19 +63,20 @@
 import Recipe from "@client/components/Recipe";
 import addRecipe from "@client/modals/addRecipe";
 import BackEndRouter from "@client/utils/http";
+import BackendRouter from "@client/utils/http";
 
 export default {
   name: 'Profile',
   components: {
-  Recipe,
-  addRecipe
+    Recipe,
+    addRecipe
   },
   data() {
     return {
       user: this.$root.user,
       recipesMenu: true,
       menuCollapsed: false,
-      recipes: [
+      recipes: /*[
         {
           id:0,
           author:"Lucy",
@@ -294,7 +299,7 @@ export default {
             }
           ]
         }
-      ]
+      ]*/ []
     }
   },
   methods: {
@@ -302,7 +307,12 @@ export default {
       console.log("paginate")
     },
     addRecipe: function(newRecipe) {
-      console.log("test")
+      BackendRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
+          .then(res => {
+            this.recipes.push(res);
+          })
+          .catch(err => console.log("something went wrong"))
+
       this.recipes.push(newRecipe)
     },
     getRecipes: function() {
