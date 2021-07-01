@@ -6,7 +6,7 @@
         <b-container fluid style="margin: 0px">
             <b-row>
                 <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                    <Meetup :meetObj="obj" @join-event="joinMeetup" @edit-event="editMeetup"></Meetup>
+                    <Meetup :meetObj="obj" @join-event="joinMeetup" @edit-event="editMeetup" @delete-event="deleteMeetup"></Meetup>
                 </b-col>
             </b-row>
         </b-container>
@@ -47,6 +47,16 @@ export default {
         //     return;
         // }
         this.$bvModal.show("edit-meetup");
+    },
+    deleteMeetup(id) {
+        let self = this;
+        console.log(id)
+        //Backend request
+        BackEndRouter.RequestRouter.EndPoints.DELETE("/meetups/" + id)
+            .then(res => {
+                console.log(res);
+                self.getMeetups()})
+            .catch(err => console.log(err))
     },
     pushNewMeetup(newMeetup) {
         console.log(newMeetup);

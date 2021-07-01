@@ -10,9 +10,10 @@
             </b-card-text>
             <b-button pill @click="joinClicked()">join</b-button>
             <b-button pill @click="editClicked()">edit</b-button>
+            <b-button pill variant="danger" @click="deleteClicked()">delete</b-button>
             
             <b-avatar-group class="float-right" size="2rem" variant="warning">
-                <b-avatar v-for="guest in meetObj.guests" :key="guest.id" :text="guest.name"></b-avatar>
+                <b-avatar v-for="guest in meetObj.guests" :key="guest.id" :text="getAcronym(guest)"></b-avatar>
             </b-avatar-group>
             
         </b-card>
@@ -33,11 +34,17 @@ export default {
         editClicked() {
             this.$emit('edit-event', this.$props.meetObj.id);
         },
+        deleteClicked() {
+            this.$emit('delete-event', this.$props.meetObj.id);
+        },
         getDate() {
             return this.$props.meetObj.date.substring(0, 10);
         },
         getTime() {
             return this.$props.meetObj.date.substring(11, 16);
+        },
+        getAcronym(guest) {
+            return guest.firstname.charAt(0) + guest.surname.charAt(0);
         }
     }
 

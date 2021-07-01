@@ -70,7 +70,7 @@ export default {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
                 maxGuests: Number(this.newMeetup.maxGuests),
-                recipeId: "6d277323-efaf-4bc4-89f0-72a670b378ba" //doesnt work with options
+                recipeId: "713974d3-eb27-4ebc-a979-e239d25748fd" //doesnt work with options
             }
             BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + this.meetupsValues.id + "/update", editObj)
                 .then(res => self.$emit("edit-meetup", res))

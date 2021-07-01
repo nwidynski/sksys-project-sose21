@@ -75,7 +75,7 @@ export default {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
                 maxGuests: Number(this.newMeetup.maxGuests),
-                recipeId: "6d277323-efaf-4bc4-89f0-72a670b378ba" //doesnt with options
+                recipeId: "713974d3-eb27-4ebc-a979-e239d25748fd" //doesnt with options
             }
             console.log(newObj)
             BackEndRouter.RequestRouter.EndPoints.CREATE("/meetups", newObj)

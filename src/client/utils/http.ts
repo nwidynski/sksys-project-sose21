@@ -52,8 +52,8 @@ namespace BackEndRouter {
       }).then(validateResponse);
     };
 
-    const remove = <T>(path: string, id: number): Promise<T> => {
-      return fetch(`${BASE_URL + path}/${id}`, {
+    const remove = <T>(path: string): Promise<T> => {
+      return fetch(BASE_URL + path, {
         method: "DELETE",
       }).then(validateResponse);
     };
