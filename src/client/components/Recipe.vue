@@ -5,6 +5,7 @@
 
       <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
+          <b-icon-trash class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
           <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
         </template>
@@ -39,6 +40,7 @@
 
       <b-card  class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
+          <b-icon-trash class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
           <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
         </template>
@@ -229,6 +231,17 @@ export default {
     },
     feedOptions() {
       this.showOptions = !this.showOptions
+    },
+    deleteRecipe() {
+      BackEndRouter.RequestRouter.EndPoints.DELETE("/recipes/" + this.id)
+          .then(res => {
+            {
+              console.log(res);
+              this.$emit('refresh')
+            };
+            })
+          .catch(err => console.log(err))
+
     },
     editClicked() {
       this.editing = !this.editing;

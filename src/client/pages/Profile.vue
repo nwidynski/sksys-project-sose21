@@ -47,6 +47,7 @@
               :time="receipt.time"
               :ingredients="receipt.ingredients"
               :isPrivate="receipt.isPrivate"
+              @refresh="refresh"
           >
           </Recipe>
           <br>
@@ -323,6 +324,9 @@ export default {
             this.recipes = res;
           })
           .catch(err => console.log("error"))
+    },
+    refresh(){
+      this.getRecipes()
     }
   },
   mounted() {
