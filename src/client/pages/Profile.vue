@@ -39,12 +39,14 @@
           <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
               v-for="receipt in recipes"
+              :id="receipt.id"
               :name="receipt.name"
               :level="receipt.level"
               :rating="receipt.rating"
               :instruction="receipt.instruction"
               :time="receipt.time"
               :ingredients="receipt.ingredients"
+              :isPrivate="receipt.isPrivate"
           >
           </Recipe>
           <br>
@@ -313,7 +315,7 @@ export default {
           })
           .catch(err => console.log("something went wrong"))
 
-      this.recipes.push(newRecipe)
+      //this.recipes.push(newRecipe)
     },
     getRecipes: function() {
       BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")

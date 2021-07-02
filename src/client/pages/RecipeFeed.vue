@@ -15,6 +15,7 @@
           <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
               v-for="receipt in filteredRecipes"
+              :id="receipt.id"
               :name="receipt.name"
               :level="receipt.level"
               :rating="receipt.rating"
@@ -23,6 +24,7 @@
               :ingredients="receipt.ingredients"
               :on-feed="true"
               :author="receipt.author"
+              :isPrivate="receipt.isPrivate"
           >
 
           </Recipe>

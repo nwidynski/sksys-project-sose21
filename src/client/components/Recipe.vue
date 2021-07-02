@@ -153,6 +153,8 @@
 
 <script>
 
+import BackEndRouter from "@client/utils/http";
+
 export default {
   name: 'Receipt',
   data() {
@@ -187,6 +189,7 @@ export default {
   },
 
   props: {
+    id: String,
     name: {
       type: String,
       default: ""
@@ -212,7 +215,8 @@ export default {
       type: Boolean,
       default: false
     },
-    author: String
+    author: String,
+    isPrivate: Boolean
 
   },
   methods: {
@@ -231,13 +235,33 @@ export default {
         this.backup.time = this.time;
         this.backup.level = this.level;
         this.backup.rating = this.rating;
-        this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
+        //this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
         this.backup.done = true;
         console.log("backup finished")
       }
       if(!this.editing){
         this.backup.done = false;
         console.log("submit changes to server")
+        let editObj = {
+          name: this.name,
+          instruction: this.instruction,
+          time: this.time,
+          rating: this.rating,
+          ingredients: this.ingredients,
+          author: this.author,
+          isPrivate: this.isPrivate
+        }
+        console.log(this.id)
+        console.log(editObj)
+        BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id, editObj)
+            .then(res => {
+              console.log("submit done");
+
+            })
+            .catch(err => {
+              console.log(err);
+              this.editCancel();
+            })
       }
     },
     editCancel() {
