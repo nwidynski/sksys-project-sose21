@@ -78,7 +78,7 @@ export default {
       user: this.$root.user,
       recipesMenu: true,
       menuCollapsed: false,
-      recipes: /*[
+      recipes: [
         {
           id:0,
           author:"Lucy",
@@ -301,7 +301,7 @@ export default {
             }
           ]
         }
-      ]*/ []
+      ]
     }
   },
   methods: {

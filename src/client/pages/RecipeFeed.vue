@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       toSearch:"",
-      recipes: /*[
+      recipes: [
         {
           id:0,
           author:"Lucy",
@@ -317,7 +317,7 @@ export default {
             }
           ]
         },
-      ]*/ []
+      ]
     }
   },
   methods: {

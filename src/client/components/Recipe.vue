@@ -55,6 +55,9 @@
               <b-col> <b-form-select v-model="ingredient.unit" :options="options"/></b-col>
             </b-row>
           </b-list-group-item>
+          <b-button class="mr-1 mt-2" @click="addIngredient">+</b-button>
+          <b-button class="mt-2" @click="deleteIngredient">-</b-button>
+
         </b-card-text>
 
         <b-card-text >
@@ -235,7 +238,8 @@ export default {
         this.backup.time = this.time;
         this.backup.level = this.level;
         this.backup.rating = this.rating;
-        //this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
+        this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
+        //console.log(this.backup.ingredients)
         this.backup.done = true;
         console.log("backup finished")
       }
@@ -282,6 +286,24 @@ export default {
         this.level = this.levels[this.levels.indexOf(this.level) + 1]
     },
     timeClicked() {
+
+    },
+    addIngredient() {
+      if(this.ingredients[this.ingredients.length - 1].name != "" && this.ingredients[this.ingredients.length - 1].amount != "" && this.ingredients[this.ingredients.length - 1].unit != null){
+
+        this.ingredients.push({name: '', amount: '', unit: null})
+      }
+      else {
+        alert("Please complete the last recipe")
+      }
+    },
+    deleteIngredient(){
+      if(this.ingredients.length == 1){
+        alert("You need minimum 1 ingredient")
+      }
+      else{
+        this.ingredients.pop()
+      }
 
     }
   }
