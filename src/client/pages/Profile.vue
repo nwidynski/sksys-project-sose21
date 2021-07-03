@@ -6,11 +6,14 @@
           <h4> {{user.name}} </h4>
           6 recipes
         </div>
-        <div class="user-cover mx-3"> </div>
+        <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.userCover +')'}">
+        </div>
+<!--        :style="{'background-image': 'url(' + require('./assets/media/img.jpg') + ')'}"-->
         <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
 
         <div class="user-container">
-          <div class="user-photo rounded-circle"></div>
+<!--          <div class="user-photo rounded-circle"></div>-->
+          <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
           <div class="user-data mt-3">
             <h4> {{ user.name }} </h4>
             <div class="ml-1" style="font-size: smaller">since April 2019</div>
@@ -79,6 +82,7 @@ export default {
       user: this.$root.user,
       recipesMenu: true,
       menuCollapsed: false,
+      userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
       recipes: [
         {
           id:0,
@@ -327,6 +331,11 @@ export default {
     },
     refresh(){
       this.getRecipes()
+    },
+    getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min +1)) + min;
     }
   },
   mounted() {
@@ -365,7 +374,7 @@ export default {
   position: relative;
   left: 10%;
   bottom: 105px;
-  width: 70%
+  width: 70%;
 }
 
 .user-photo {
@@ -381,9 +390,22 @@ export default {
   background-color: white;
   border: solid 1px black;
   height: 27vh;
+  overflow: hidden;
   background-image: url(../assets/coverimg.png);
+  /*background-image: url(https://picsum.photos/1024/400/?image=41);*/
   background-size: cover;
   background-position: center;
+
+}
+
+.child {
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+
 }
 
 .profile-btn {
