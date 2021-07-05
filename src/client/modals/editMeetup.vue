@@ -28,6 +28,7 @@
             <!-- recipe -->
             <label for="input-receipeId">Recipe</label>
             <b-form-select id="input-receipeId" v-model="newMeetup.recipeId" :options="recipeOptions"></b-form-select>
+            <b-alert :show="isWarning" variant="danger" class="my-2">Fully fill in the form!</b-alert>
         </b-modal>
     </div>
 </template>
@@ -43,7 +44,8 @@ export default {
                 time: "",
                 maxGuests: 0,
                 recipeId: null
-            }
+            },
+            isWarning: false
         }
     },
     computed: {
@@ -64,8 +66,18 @@ export default {
             this.newMeetup.maxGuests = "";
             this.newMeetup.recipeId = null;
         },
-        handleOk() {
+        handleOk(evt) {
             let self = this;
+            //prevent modal from closing
+            evt.preventDefault();
+
+            //check input
+            if(!this.checkInput()) {
+                this.isWarning = true;
+                return;
+            }
+            this.isWarning = false;
+
             let editObj = {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
@@ -75,6 +87,11 @@ export default {
             BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + this.meetupsValues.id + "/update", editObj)
                 .then(res => self.$emit("edit-meetup", res))
                 .catch(err => console.log(err))
+
+            //hide modal if successful
+            this.$nextTick(() => {
+                this.$bvModal.hide('edit-meetup')
+            })
         },
         setValues() {
             if(this.meetupsValues !== undefined) {
@@ -84,6 +101,16 @@ export default {
                 this.newMeetup.maxGuests = this.meetupsValues.maxGuests;
                 this.newMeetup.recipeId = this.meetupsValues.recipeId;
             }
+        },
+        checkInput() {
+            if(this.newMeetup.place == "" 
+            || this.newMeetup.date == "" 
+            || this.newMeetup.time == "" 
+            || this.newMeetup.maxGuests == 0 
+            || this.newMeetup.maxGuests == "") { // add this if recipes work || this.newMeetup.recipeId == null
+                return false
+            }
+            return true;
         }
     }
 }
