@@ -20,6 +20,7 @@ import BackEndRouter from '@client/utils/http'
 import Meetup from '../components/Meetup.vue'
 import addMeetup from '../modals/addMeetup.vue'
 import EditMeetup from '@client/modals/editMeetup.vue'
+import UserStorage from '@client/utils/userStorage'
 
 export default {
   components: { Meetup, addMeetup, EditMeetup },
@@ -34,6 +35,17 @@ export default {
   methods: {
     joinMeetup(id) {
         let self = this;
+
+        // hostid of meetup
+        let hostId = this.meetupArray.filter(ele => ele.id==id)[0].hostId;
+
+        // not own meetup
+        if(hostId === UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can not join your own meetups!")
+            return;
+        }
+
         //TODO Backend request
         BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/addGuest")
             .then(res => self.getMeetups())
@@ -41,16 +53,29 @@ export default {
     },
     editMeetup(id) {
         this.toBeEdited = this.meetupArray.filter(ele => ele.id==id)[0];
-        // if(this.toBeEdited.hostId !== this.$root.user.id) {
-        //     //TODO
-        //     console.log("you can only edit your own meetups!")
-        //     return;
-        // }
+
+        // only edit own meetup
+        if(this.toBeEdited.hostId !== UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can only edit your own meetups!")
+            return;
+        }
+
         this.$bvModal.show("edit-meetup");
     },
     deleteMeetup(id) {
         let self = this;
-        console.log(id)
+
+        // hostid of meetup
+        let hostId = this.meetupArray.filter(ele => ele.id==id)[0].hostId;
+        
+        // only delete own
+        if(hostId !== UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can only delete your own meetups!")
+            return;
+        }
+
         //Backend request
         BackEndRouter.RequestRouter.EndPoints.DELETE("/meetups/" + id)
             .then(res => {

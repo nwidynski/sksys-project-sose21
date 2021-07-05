@@ -33,6 +33,7 @@
 
 <script>
 import BackendRouter from '@client/utils/http'
+import UserStorage from '@client/utils/userStorage'
 
 export default {
     name: 'Login',
@@ -90,6 +91,7 @@ export default {
             BackendRouter.RequestRouter.EndPoints.CREATE('/login', user)
                 .then(res => {
                     this.$root.user = res;
+                    UserStorage.writeObj("user", res)
                     this.$router.push({path: "private"})
                 })
                 .catch(err => console.log(err))
