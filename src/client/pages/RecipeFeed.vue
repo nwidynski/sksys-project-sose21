@@ -45,12 +45,8 @@
       </div>
       <div id="infos">
         <h3 style="text-align: center; margin-top: 17% !important">Check mal die nächsten MeetUps!</h3>
-        <div class="meetup-container">
-          <div class="meetup m-3 p-2"><router-link to="meetups">meetup</router-link></div>
-          <div class="meetup m-3 p-2"><router-link to="meetups">meetup</router-link></div>
-          <div class="meetup m-3 p-2"><router-link to="meetups">meetup</router-link></div>
-          <div class="meetup m-3 p-2"><router-link to="meetups">meetup</router-link></div>
-          <div class="meetup m-3 p-2"><router-link to="meetups">meetup</router-link></div>
+        <div class="meetup-container" v-for="meetup in meetups.slice(0,6)">
+          <div class="meetup m-3 p-2"> <router-link style="color: snow; font-weight: 500" to="meetups">{{ meetup.recipeName + " - by " + meetup.hostName + " - in " + meetup.place }} <b-icon-arrow-right-square style="float: right; margin-top: 2px"></b-icon-arrow-right-square></router-link></div>
         </div>
       </div>
     </div>
@@ -325,7 +321,8 @@ export default {
             }
           ]
         },
-      ]
+      ],
+      meetups: []
     }
   },
   methods: {
@@ -354,6 +351,14 @@ export default {
             this.recipes = res;
           })
           .catch(err => console.log("error"))
+    },
+    getMeetups() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
+          .then(res => {
+            this.meetups = res;
+            console.log(this.meetups)
+          })
+          .catch(err => console.log("error"))
     }
   },
   computed: {
@@ -372,6 +377,7 @@ export default {
   mounted() {
     //Backend requests for meetups
     this.getRecipes()
+    this.getMeetups()
   }
 }
 
@@ -430,6 +436,11 @@ export default {
   background-color: #2a2a2e;
   color: white;
   border-radius: 5px;
+  font-size: 14px
+}
+
+.meetup:hover {
+  color: green
 }
 
 
