@@ -40,6 +40,7 @@
               :author="receipt.author"
               :isPrivate="receipt.isPrivate"
               :createdAt="receipt.createdAt"
+              @not-interessted="notInteressted"
           >
 
           </Recipe>
@@ -373,6 +374,9 @@ export default {
             console.log(this.meetups)
           })
           .catch(err => console.log("error"))
+    },
+    notInteressted(id) {
+      this.recipes = this.recipes.filter(recipe => id != recipe.id)
     }
   },
   computed: {

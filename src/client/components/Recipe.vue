@@ -100,8 +100,8 @@
             <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
 
             <div class="feedOption">
-              <div>speichern</div>
-              <div>nicht interessiert</div>
+              <div>save</div>
+              <div @click="notInteressted">not interessted</div>
             </div>
           </div>
 
@@ -222,7 +222,7 @@ export default {
     },
     author: String,
     isPrivate: Boolean,
-    createdAt: String
+    createdAt: String,
 
   },
   methods: {
@@ -319,6 +319,11 @@ export default {
         this.ingredients.pop()
       }
 
+    },
+    notInteressted() {
+      this.$emit('not-interessted',this.$props.id)
+      this.showOptions = false
+      console.log("first")
     }
   }
 }

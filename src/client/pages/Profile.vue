@@ -29,15 +29,18 @@
         <div class="profile-menu">
           <div style="display: flex">
             <div class="menuEntry">
-              <span v-on:click="paginate" style="cursor: pointer"> recipes </span>
+              <span v-on:click="paginate('recipes')" style="cursor: pointer"> recipes </span>
               <div :class="{menuShower: recipesMenu}"></div>
             </div>
 
             <div class="menuEntry">
-              <span v-on:click="paginate()" style="cursor: pointer"> meetups </span>
+              <span v-on:click="paginate('meetups')" style="cursor: pointer"> meetups </span>
               <div   :class="{ menuShower: meetupsMenu}"></div>
             </div>
-
+            <div class="menuEntry">
+              <span v-on:click="paginate('saved')" style="cursor: pointer"> saved </span>
+              <div   :class="{ menuShower: savedMenu}"></div>
+            </div>
           </div>
         </div>
 
@@ -68,7 +71,10 @@
           <br>          <br>
         </div>
         <div v-if="meetupsMenu">
-          <div> test</div>
+          <div> meetups</div>
+        </div>
+        <div v-if="savedMenu">
+          <div> saved </div>
         </div>
       </div>
     </div>
@@ -94,6 +100,7 @@ export default {
       user: UserStorage.readObj("user"),
       recipesMenu: true,
       meetupsMenu: false,
+      savedMenu: false,
       menuCollapsed: false,
       userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
       recipes: [
@@ -323,10 +330,22 @@ export default {
     }
   },
   methods: {
-    paginate: function() {
+    paginate: function(page) {
       console.log("paginate")
-      this.recipesMenu = !this.recipesMenu;
-      this.meetupsMenu = !this.meetupsMenu;
+      this.recipesMenu = false
+      this.meetupsMenu = false
+      this.savedMenu = false
+      switch (page) {
+        case "recipes":
+          this.recipesMenu = true
+          break
+        case "meetups":
+          this.meetupsMenu = true
+          break
+        case "saved":
+          this.savedMenu = true
+          break
+      }
     },
     addRecipe: function(newRecipe) {
       BackendRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
