@@ -107,7 +107,7 @@
 
           <div> {{ author }}</div>
 
-          <div class="feed-user-top-info" style="position: absolute"> posted at {{ "7h" }}</div>
+          <div class="feed-user-top-info" style="position: absolute"> posted at {{ createdAt.split("T")[1].substring(0,5) }}</div>
         </div>
 
       </div>
@@ -221,7 +221,8 @@ export default {
       default: false
     },
     author: String,
-    isPrivate: Boolean
+    isPrivate: Boolean,
+    createdAt: String
 
   },
   methods: {

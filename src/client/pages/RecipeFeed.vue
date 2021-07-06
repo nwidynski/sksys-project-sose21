@@ -2,7 +2,16 @@
   <div>
     <div id="main" class="main-container">
       <div id="feed">
+        <b-button id="featuretip-1" class="feature mt-1 mr-2" @click="() => { this.toSearch = 'recipe-feature: '}" variant="warning"> Which recipes can I use?</b-button>
+        <b-tooltip target="featuretip-1" placement="right">
+          Click me and all you have to do is to enter your ingredients in the search box and we will show you what you can do with it!
+        </b-tooltip>
+        <b-tooltip target="featuretip-1" variant="warning" placement="left">
+          Example: "tomatoes chicken pepper ginger onions beef bread eggs"
+        </b-tooltip>
         <h3 class="title pl-4 pt-2 pb-1"> Recipe Feed</h3>
+
+
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="search-container">
@@ -30,6 +39,7 @@
               :on-feed="true"
               :author="receipt.author"
               :isPrivate="receipt.isPrivate"
+              :createdAt="receipt.createdAt"
           >
 
           </Recipe>
@@ -56,6 +66,8 @@
 <script>
 import Recipe from "@client/components/Recipe";
 import BackEndRouter from "@client/utils/http";
+import UserStorage from '@client/utils/userStorage'
+
 export default {
   name: 'ReceiptFeed',
   components: {
@@ -63,6 +75,7 @@ export default {
   },
   data() {
     return {
+      user: UserStorage.readObj("user"),
       toSearch:"",
       loading: false,
       recipes: [
@@ -339,6 +352,7 @@ export default {
               this.recipes = res;
               console.log(res)
               this.loading = false
+              this.toSearch = ""
             })
             .catch(err => console.log("error"))
         console.log("test")
@@ -439,8 +453,9 @@ export default {
   font-size: 14px
 }
 
-.meetup:hover {
-  color: green
+.feature {
+  border: 1px solid black;
+  float: right
 }
 
 
