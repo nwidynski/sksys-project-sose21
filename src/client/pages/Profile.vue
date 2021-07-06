@@ -3,8 +3,8 @@
     <div id="main" class="main-container">
       <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
-          <h4> {{user.name}} </h4>
-          6 recipes
+          <h4> {{ this.user.firstname + " " + this.user.surname }} </h4>
+          {{ this.recipes.length }} recipes
         </div>
         <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.userCover +')'}">
         </div>
@@ -16,7 +16,7 @@
           <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
           <div class="user-data mt-3">
             <h4> {{ user.name }} </h4>
-            <div class="ml-1" style="font-size: smaller">since April 2019</div>
+            <div class="" style="font-size: smaller">since {{ this.user.createdAt.split("T")[0] }}</div>
             <div class="user-stats mt-5">
               <span class="stat mr-4"> <b>0</b> Following </span>
               <span class="stat"> <b>0</b> Followers </span>
@@ -69,7 +69,7 @@
 import Recipe from "@client/components/Recipe";
 import addRecipe from "@client/modals/addRecipe";
 import BackEndRouter from "@client/utils/http";
-import BackendRouter from "@client/utils/http";
+import UserStorage from '@client/utils/userStorage'
 
 export default {
   name: 'Profile',
@@ -79,7 +79,7 @@ export default {
   },
   data() {
     return {
-      user: this.$root.user,
+      user: UserStorage.readObj("user"),
       recipesMenu: true,
       menuCollapsed: false,
       userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
