@@ -6,15 +6,20 @@
         <div style="width:100%; border-top: 1px solid black"/>
 
         <div class="search-container">
-          <input v-model="toSearch" class="search-field" placeholder="search a recipe name..." />
+          <input v-model="toSearch" class="search-field" type="black" placeholder="search a recipe name..." />
           <b-button @click="search" class="search-btn mr-1 mb-1 mt-1"> search </b-button>
         </div>
         <div style="width:100%; border-top: 1px solid black"/>
 
+
+
         <div class="receipt-container">
+<!--          <div v-if="this.loading" style="text-align: center" class="mt-4">
+            <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+          </div>-->
           <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
-              v-for="receipt in filteredRecipes"
+              v-for="receipt in recipes"
               :id="receipt.id"
               :name="receipt.name"
               :level="receipt.level"
@@ -33,6 +38,8 @@
           <br>          <br>
           <br>          <br>
         </div>
+
+
 
 
       </div>
@@ -61,6 +68,7 @@ export default {
   data() {
     return {
       toSearch:"",
+      loading: false,
       recipes: [
         {
           id:0,
@@ -326,7 +334,19 @@ export default {
 
     },
     search(){
-      console.log("search: ",this.toSearch)
+      if (this.toSearch != "") {
+        console.log("search: ",this.toSearch)
+        this.loading = true
+        BackEndRouter.RequestRouter.EndPoints.LIST("/recipes?search=" + this.toSearch)
+            .then(res => {
+              this.recipes = res;
+              console.log(res)
+              this.loading = false
+            })
+            .catch(err => console.log("error"))
+        console.log("test")
+      }
+
     },
     getRecipes: function() {
       BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
