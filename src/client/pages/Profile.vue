@@ -10,26 +10,35 @@
         </div>
 <!--        :style="{'background-image': 'url(' + require('./assets/media/img.jpg') + ')'}"-->
         <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
-
         <div class="user-container">
 <!--          <div class="user-photo rounded-circle"></div>-->
           <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
           <div class="user-data mt-3">
-            <h4> {{ user.name }} </h4>
+            <h4> {{ this.user.firstname }} </h4>
             <div class="" style="font-size: smaller">since {{ this.user.createdAt.split("T")[0] }}</div>
             <div class="user-stats mt-5">
-              <span class="stat mr-4"> <b>0</b> Following </span>
-              <span class="stat"> <b>0</b> Followers </span>
+              <span class="stat mr-4" style="border: 2px solid black; padding: 4px"> <b>{{ this.recipes.length }}</b> Recipes </span>
+<!--              <span class="stat"> <b>0</b> Followers </span>-->
             </div>
           </div>
 
         </div>
 
       </div>
-      <div class="content-container">
+      <div class="content-container mt-5">
         <div class="profile-menu">
-          <span v-on:click="paginate" style="cursor: pointer"> recipes </span>
-          <div v-if="recipesMenu"  class="recipes"></div>
+          <div style="display: flex">
+            <div class="menuEntry">
+              <span v-on:click="paginate" style="cursor: pointer"> recipes </span>
+              <div :class="{menuShower: recipesMenu}"></div>
+            </div>
+
+            <div class="menuEntry">
+              <span v-on:click="paginate()" style="cursor: pointer"> meetups </span>
+              <div   :class="{ menuShower: meetupsMenu}"></div>
+            </div>
+
+          </div>
         </div>
 
         <hr style="border-top: 1px solid black; margin: 0;">
@@ -38,7 +47,7 @@
             @add-event="addRecipe"
         />
 
-        <div class="receipt-container">
+        <div v-if="recipesMenu" class="receipt-container">
           <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
               v-for="receipt in recipes"
@@ -57,6 +66,9 @@
           <br>          <br>
           <br>          <br>
           <br>          <br>
+        </div>
+        <div v-if="meetupsMenu">
+          <div> test</div>
         </div>
       </div>
     </div>
@@ -81,6 +93,7 @@ export default {
     return {
       user: UserStorage.readObj("user"),
       recipesMenu: true,
+      meetupsMenu: false,
       menuCollapsed: false,
       userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
       recipes: [
@@ -312,6 +325,8 @@ export default {
   methods: {
     paginate: function() {
       console.log("paginate")
+      this.recipesMenu = !this.recipesMenu;
+      this.meetupsMenu = !this.meetupsMenu;
     },
     addRecipe: function(newRecipe) {
       BackendRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
@@ -415,14 +430,19 @@ export default {
 }
 
 .profile-menu {
-  margin-left: 10%
+  margin-left: 10%;
+
 }
 
-.recipes {
+.menuShower {
   border-bottom: 4px solid black;
   width: 2.5em;
   position: relative;
   left: 0.5%
+}
+
+.menuEntry {
+  margin-right: 5em
 }
 
 
