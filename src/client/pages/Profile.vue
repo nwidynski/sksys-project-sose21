@@ -46,7 +46,7 @@
 
         <hr style="border-top: 1px solid black; margin: 0;">
 
-        <add-recipe
+        <add-recipe v-if="recipesMenu"
             @add-event="addRecipe"
         />
 
@@ -71,10 +71,27 @@
           <br>          <br>
         </div>
         <div v-if="meetupsMenu">
-          <div> meetups</div>
+          <div class="m-5">
+            <b-row>
+              <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
+                <Meetup :meetObj="obj"></Meetup>
+              </b-col>
+            </b-row>
+          </div>
+          <br>
+          <br>          <br>
+          <br>          <br>
+          <br>          <br>
         </div>
         <div v-if="savedMenu">
-          <div> saved </div>
+          <div> saved (comming soon)
+            <br>
+            <br>          <br>
+            <br>          <br>
+            <br>          <br>
+            <br>          <br>
+            <br>          <br>
+          </div>
         </div>
       </div>
     </div>
@@ -85,6 +102,7 @@
 <script>
 
 import Recipe from "@client/components/Recipe";
+import Meetup from "@client/components/Meetup";
 import addRecipe from "@client/modals/addRecipe";
 import BackEndRouter from "@client/utils/http";
 import UserStorage from '@client/utils/userStorage'
@@ -93,7 +111,8 @@ export default {
   name: 'Profile',
   components: {
     Recipe,
-    addRecipe
+    addRecipe,
+    Meetup
   },
   data() {
     return {
@@ -326,7 +345,8 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      meetupArray: []
     }
   },
   methods: {
@@ -360,6 +380,7 @@ export default {
       BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
           .then(res => {
             this.recipes = res;
+            this.recipes = this.recipes.filter(recipe => recipe.userId == this.user.id)
           })
           .catch(err => console.log("error"))
     },
@@ -370,11 +391,20 @@ export default {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min +1)) + min;
-    }
+    },
+    getMeetups() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
+          .then(res => {
+            this.meetupArray = res;
+            this.meetupArray = this.meetupArray.filter(meetup => this.user.id == meetup.hostId)
+          })
+          .catch(err => console.log("error"))
+    },
   },
   mounted() {
     //Backend requests for meetups
     this.getRecipes()
+    this.getMeetups()
   }
 }
 </script>

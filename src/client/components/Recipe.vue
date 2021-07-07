@@ -100,7 +100,7 @@
             <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
 
             <div class="feedOption">
-              <div>save</div>
+              <div>save <small>(soon)</small></div>
               <div @click="notInteressted">not interessted</div>
             </div>
           </div>
