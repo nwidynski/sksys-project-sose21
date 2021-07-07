@@ -82,7 +82,7 @@ export default {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
                 maxGuests: Number(this.newMeetup.maxGuests),
-                recipeId: "713974d3-eb27-4ebc-a979-e239d25748fd" //doesnt work with options
+                recipeId: this.newMeetup.recipeId 
             }
             BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + this.meetupsValues.id + "/update", editObj)
                 .then(res => self.$emit("edit-meetup", res))
@@ -107,7 +107,8 @@ export default {
             || this.newMeetup.date == "" 
             || this.newMeetup.time == "" 
             || this.newMeetup.maxGuests == 0 
-            || this.newMeetup.maxGuests == "") { // add this if recipes work || this.newMeetup.recipeId == null
+            || this.newMeetup.maxGuests == ""
+            || this.newMeetup.recipeId == null) { 
                 return false
             }
             return true;

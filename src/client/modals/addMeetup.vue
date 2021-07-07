@@ -87,9 +87,8 @@ export default {
                 date: this.fullDateString,
                 place: this.newMeetup.place,
                 maxGuests: Number(this.newMeetup.maxGuests),
-                recipeId: "713974d3-eb27-4ebc-a979-e239d25748fd" //doesnt with options
+                recipeId: this.newMeetup.recipeId 
             }
-            console.log(newObj)
 
             //Request to Backend
             BackEndRouter.RequestRouter.EndPoints.CREATE("/meetups", newObj)
@@ -106,7 +105,8 @@ export default {
             || this.newMeetup.date == "" 
             || this.newMeetup.time == "" 
             || this.newMeetup.maxGuests == 0 
-            || this.newMeetup.maxGuests == "") { // add this if recipes work || this.newMeetup.recipeId == null
+            || this.newMeetup.maxGuests == ""
+            || this.newMeetup.recipeId == null) {
                 console.log("false")
                 return false
             }

@@ -124,7 +124,7 @@ export default {
       //Backend requests for meetups
       this.getMeetups()
       //Backend reqeuest for recipesOptions (recipes -> [{value: id, text: recipe.name}])
-      //this.setRecipeOptions(); doesnt work, but worked fine for hours :(
+      this.setRecipeOptions();
   }
 }
 </script>
