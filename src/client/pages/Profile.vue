@@ -368,7 +368,7 @@ export default {
       }
     },
     addRecipe: function(newRecipe) {
-      BackendRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
+      BackEndRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
           .then(res => {
             this.recipes.push(res);
           })
