@@ -1,5 +1,5 @@
 <template>
-    <div id="main" style="">
+    <div id="main" style="background-color: #E6FFC7">
         <b-container fluid>
         <div class="text-center">
             <b-button @click="switchToLogin" pill>Go back to login</b-button>

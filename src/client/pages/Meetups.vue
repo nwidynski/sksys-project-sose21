@@ -1,5 +1,5 @@
 <template>
-    <div id="main" style="">
+    <div id="main" style="background-color: #E6FFC7">
         <h3 class="title pl-4 pt-2 pb-1">Meetups</h3>
         <div style="width:100%; border-top: 1px solid black"/>
 

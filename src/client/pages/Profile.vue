@@ -410,17 +410,20 @@ export default {
 </script>
 <style scoped>
 .wrapper {
+  background-color: #E6FFC7;
 }
 .main-container {
+  background-color: #E6FFC7;
   margin-left: 250px;
   transition: margin 325ms
 }
 
 .profile-container {
+  background-color: #E6FFC7;
   height: 65vh;
 }
 .content-container {
-
+  background-color: #E6FFC7;
 }
 
 .receipt-container {

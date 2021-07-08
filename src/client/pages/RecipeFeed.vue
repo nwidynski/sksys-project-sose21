@@ -404,6 +404,7 @@ export default {
 <style scoped>
 .main-container {
   margin-left: 250px;
+  background-color: #E6FFC7;
   display:flex;
   flex-wrap: nowrap;
   transition: margin 325ms;
@@ -416,6 +417,7 @@ export default {
 
 #infos {
   width: 25%;
+  background-color: #E6FFC7;
 }
 
 .title {
@@ -424,6 +426,7 @@ export default {
 
 .search-field {
   width: 85%;
+  background-color: #2a2a2e;
   color: white;
   padding: .75em;
   outline: none;
@@ -444,6 +447,7 @@ export default {
 }
 
 .receipt-container {
+  background-color: #E6FFC7;
 }
 
 .meetup {
