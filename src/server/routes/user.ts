@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.put(
-  "/user/updateEmail",
+  "/updateEmail",
   isAuthenticated,
   UserController.validateBody(),
   handleValidationResult,
@@ -17,7 +17,7 @@ router.put(
 );
 
 router.put(
-  "/user/updatePassword",
+  "/updatePassword",
   isAuthenticated,
   UserController.validateBodyUpdatePassword(),
   handleValidationResult,
@@ -25,7 +25,7 @@ router.put(
 );
 
 router.put(
-  "/user/updateName",
+  "/updateName",
   isAuthenticated,
   UserController.validateBodyUpdateName(),
   handleValidationResult,
