@@ -42,13 +42,13 @@
         <template #header>
           <b-icon-trash class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
           <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
-          <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="name"/>
+          <b-input style="width:35%;font-weight:500; font-size: 1.5em; color: black" class="ml-n2" v-model="editRecipe.name"/>
         </template>
 
         <b-card-text class="ingredients-container">
           <h5>Ingredients</h5>
           <b-list-group-item
-              v-for="ingredient in ingredients"
+              v-for="ingredient in editRecipe.ingredients"
               class="list-item"
           >
             <b-row>
@@ -66,19 +66,19 @@
           <h5>Instruction</h5>
 
           <b-form-textarea
-              v-model="instruction"
+              v-model="editRecipe.instruction"
               rows="10"
           >
           </b-form-textarea>
         </b-card-text>
 
-        <b-input-group style="width:50%" size="sm" :append="rating.toString()">
-          <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+        <b-input-group style="width:50%" size="sm" :append="this.editRecipe.rating.toString()">
+          <b-form-rating readonly v-model="editRecipe.rating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
-          <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{level ? level : "level"}} </div>
-          <input @click="timeClicked" placeholder="-h -min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="time">
+          <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{this.editRecipe.level ? this.editRecipe.level : "level"}} </div>
+          <input @click="timeClicked" placeholder="-h -min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="editRecipe.time">
         </b-card-text>
 
         <b-button class="mr-3" @click="editClicked">Save</b-button>
@@ -167,7 +167,7 @@ export default {
       editing: false,
       levels: ["hard","middle","easy"],
       value: '',
-      backup: {
+      editRecipe: {
         name: "",
         level: "",
         instruction: "",
@@ -179,7 +179,7 @@ export default {
       collapsedFeed: true,
       showOptions: false,
       options:[
-        {value:"null",text:"unit",disabled:true},
+        {value:null,text:"unit",disabled:true},
         {value:"kg",text:"kg"},
         {value:"g",text:"g"},
         {value:"l",text:"l"},
@@ -188,7 +188,7 @@ export default {
         {value:"tbsp",text:"tbsp"},
         {value:"handful",text:"handful"},
         {value:"pinch of",text:"pinch of"},
-        {value:"none",text:"none"}
+        {value:null,text:"none"}
       ]
     }
   },
@@ -208,7 +208,7 @@ export default {
       default: ""
     },
     rating: {
-      type: Number,
+      type: String,
       default: ""
     },
     time: {
@@ -245,28 +245,31 @@ export default {
 
     },
     editClicked() {
+      console.log("editClicked")
       this.editing = !this.editing;
-      if(!this.backup.done){
-        this.backup.name = this.name;
-        this.backup.instruction = this.instruction;
-        this.backup.time = this.time;
-        this.backup.level = this.level;
-        this.backup.rating = this.rating;
-        this.backup.ingredients = JSON.parse(JSON.stringify(this.ingredients));
-        //console.log(this.backup.ingredients)
-        this.backup.done = true;
+      if(!this.editRecipe.done){
+        this.editRecipe.name = this.name;
+        this.editRecipe.instruction = this.instruction;
+        this.editRecipe.time = this.time;
+        this.editRecipe.level = this.level;
+        this.editRecipe.rating = this.rating;
+        this.editRecipe.ingredients = this.ingredients //JSON.parse(JSON.stringify(this.ingredients));
+        //console.log(this.editRecipe.ingredients)
+        this.editRecipe.done = true;
         console.log("backup finished")
+        console.log(this.ingredients)
+        console.log(this.editRecipe.ingredients)
       }
       if(!this.editing){
-        this.backup.done = false;
+        this.editRecipe.done = false;
         console.log("submit changes to server")
         let editObj = {
-          name: this.name,
-          instruction: this.instruction,
-          time: this.time,
-          rating: this.rating,
-          ingredients: this.ingredients,
-          author: this.author,
+          name: this.editRecipe.name,
+          instruction: this.editRecipe.instruction,
+          time: this.editRecipe.time,
+          rating: this.editRecipe.rating,
+          ingredients: this.editRecipe.ingredients,
+          author: this.editRecipe.author,
           isPrivate: this.isPrivate
         }
         console.log(this.id)
@@ -274,7 +277,7 @@ export default {
         BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id, editObj)
             .then(res => {
               console.log("submit done");
-
+              this.$emit('refresh')
             })
             .catch(err => {
               console.log(err);
@@ -283,14 +286,14 @@ export default {
       }
     },
     editCancel() {
-      this.name = this.backup.name
-      this.instruction = this.backup.instruction
-      this.level = this.backup.level
-      this.time = this.backup.time
-      this.rating = this.backup.rating
-      this.ingredients = this.backup.ingredients
       this.editing = false;
-      this.backup.done = false;
+      this.editRecipe.done = false;
+      let ingredients = this.editRecipe.ingredients
+      let last = ingredients.length - 1
+
+      if(ingredients[last].name == "" && ingredients[last].amount == ""){
+        ingredients.pop()
+      }
       console.log("backup reset")
     },
     levelClicked() {
@@ -303,20 +306,21 @@ export default {
 
     },
     addIngredient() {
-      if(this.ingredients[this.ingredients.length - 1].name != "" && this.ingredients[this.ingredients.length - 1].amount != "" && this.ingredients[this.ingredients.length - 1].unit != null){
-
-        this.ingredients.push({name: '', amount: '', unit: null})
+      let ingredients = this.editRecipe.ingredients
+      let last = ingredients.length - 1
+      if(ingredients[last].name != "" && ingredients[last].amount != ""){
+        ingredients.push({name: '', amount: '', unit: null})
       }
       else {
         alert("Please complete the last recipe")
       }
     },
     deleteIngredient(){
-      if(this.ingredients.length == 1){
+      if(this.editRecipe.ingredients.length == 1){
         alert("You need minimum 1 ingredient")
       }
       else{
-        this.ingredients.pop()
+        this.editRecipe.ingredients.pop()
       }
 
     },
