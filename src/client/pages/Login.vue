@@ -1,5 +1,5 @@
 <template>
- <div style="background-color: #E6FFC7">
+ <div style="">
     <b-container fluid>
         <b-row class="vh-100" align-h="center" align-v="center">
             <b-col sm="8" cols="10" md="6" lg="4" xl="3">

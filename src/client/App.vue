@@ -4,4 +4,10 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+#app {
+  background-color: #E6FFC7;
+
+}
+</style>
