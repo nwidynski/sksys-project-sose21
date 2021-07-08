@@ -72,6 +72,16 @@
           </b-form-textarea>
         </b-card-text>
 
+        <b-form-group>
+          <b-form-checkbox
+              id="checkbox-1"
+              v-model="editRecipe.isPrivate"
+              name="checkbox-1"
+          >
+            private recipe
+          </b-form-checkbox>
+        </b-form-group>
+
         <b-input-group style="width:50%" size="sm" :append="this.editRecipe.rating.toString()">
           <b-form-rating readonly v-model="editRecipe.rating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
@@ -174,6 +184,7 @@ export default {
         rating: "",
         time: "",
         ingredients: "",
+        isPrivate:"",
         done: false,
       },
       collapsedFeed: true,
@@ -253,6 +264,8 @@ export default {
         this.editRecipe.time = this.time;
         this.editRecipe.level = this.level;
         this.editRecipe.rating = this.rating;
+        console.log(this.isPrivate)
+        this.editRecipe.isPrivate = this.isPrivate;
         this.editRecipe.ingredients = this.ingredients //JSON.parse(JSON.stringify(this.ingredients));
         //console.log(this.editRecipe.ingredients)
         this.editRecipe.done = true;
@@ -270,7 +283,7 @@ export default {
           rating: this.editRecipe.rating,
           ingredients: this.editRecipe.ingredients,
           author: this.editRecipe.author,
-          isPrivate: this.isPrivate
+          isPrivate: this.editRecipe.isPrivate
         }
         console.log(this.id)
         console.log(editObj)
@@ -353,7 +366,8 @@ export default {
   border-radius: 50px;
   padding: 0 14px 0 14px;
   text-align: center;
-  margin-right: 2%
+  margin-right: 2%;
+  width: 9em
 }
 
 .receipt-attribute:hover {
