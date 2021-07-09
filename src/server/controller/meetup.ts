@@ -42,13 +42,16 @@ const createMeetUp = (
 /**
  * Adds guest to the meetup.
  *
+ * @param guestsCount
  * @param guest
  * @return {*}
  */
 const addMeetUpGuest = (
+  guestsCount: number,
   guest: User
 ) => {
   return Prisma.validator<Prisma.MeetUpUpdateInput>()({
+    guestsCount,
     guests: {
       connect: { id: guest.id },
     }
@@ -59,13 +62,16 @@ const addMeetUpGuest = (
 /**
  * Removes guest from the meetup.
  *
+ * @param guestsCount
  * @param guest
  * @return {*}
  */
 const removeMeetUpGuest = (
+    guestsCount: number,
     guest: User
 ) => {
   return Prisma.validator<Prisma.MeetUpUpdateInput>()({
+    guestsCount,
     guests: {
       disconnect: { id: guest.id },
     }
@@ -76,7 +82,6 @@ const removeMeetUpGuest = (
 /**
  * Updates the meetup.
  *
- * @param hostName,
  * @param date,
  * @param place,
  * @param recipeId,
@@ -85,7 +90,6 @@ const removeMeetUpGuest = (
  * @return {*}
  */
 const updateMeetUp = (
-    hostName: string,
     date: string,
     place: string,
     recipeId: string,
@@ -93,7 +97,6 @@ const updateMeetUp = (
     maxGuests: number
 ) => {
   return Prisma.validator<Prisma.MeetUpUpdateInput>()({
-    hostName,
     date,
     place,
     recipeId,
@@ -105,7 +108,7 @@ const updateMeetUp = (
 
 namespace MeetupController {
   /**
-   * Validates path parameters for GET/PUT/DELETE.
+   * Validates path parameters for PUT/DELETE.
    */
   export const validateParams = () => {
     return [
@@ -171,7 +174,7 @@ namespace MeetupController {
       if (recipe == null) {
         res.status(404).json("Recipe not found.");
       } else {
-        const meetUp = await prisma.meetUp.create({
+        const meetup = await prisma.meetUp.create({
           data: createMeetUp(
             host.id,
             host.firstname + " " + host.surname,
@@ -181,18 +184,10 @@ namespace MeetupController {
             recipe.name,
             maxGuests
           ),
-          include: {
-            guests: {
-              select: {
-                id: true,
-                firstname: true,
-                surname: true,
-              },
-            },
-          },
+          include: { guests: true },
         });
 
-        res.status(200).json(meetUp);
+        res.status(200).json(meetup);
       }
     } catch (err) {
       return next(err);
@@ -201,7 +196,7 @@ namespace MeetupController {
 
 
   /**
-   * Adds guest to a specified meetup.
+   * Adds a guest to a specified meetup.
    *
    * @return JSON Object
    */
@@ -216,6 +211,11 @@ namespace MeetupController {
 
       const found = await prisma.meetUp.findUnique({
         where: { id },
+        include: {
+          guests: {
+            select: { id: true },
+          },
+        },
       });
 
       if (found == null) {
@@ -225,21 +225,40 @@ namespace MeetupController {
         res.status(403).json("You are the host!");
       }
       else {
-        const meetUp = await prisma.meetUp.update({
-          where: { id },
-          data: addMeetUpGuest(guest),
-          include: {
-            guests: {
-              select: {
-                id: true,
-                firstname: true,
-                surname: true,
+        let guests: Array<string> = [];
+        found.guests.forEach(extractID);
+
+        function extractID(guest: any) {
+          for (let key in guest) {
+            if (guest.hasOwnProperty(key)) {
+              guests.push(guest[key]);
+            }
+          }
+        }
+
+        if (guests.includes(guest.id)) {
+          res.status(403).json("You have already joined this meet up!");
+        }
+        else if (found.guestsCount == found.maxGuests) {
+          res.status(403).json("Sorry, this meet up is full.");
+        }
+        else {
+          const meetup = await prisma.meetUp.update({
+            where: { id },
+            data: addMeetUpGuest(found.guestsCount + 1, guest),
+            include: {
+              guests: {
+                select: {
+                  id: true,
+                  firstname: true,
+                  surname: true,
+                },
               },
             },
-          },
-        });
+          });
 
-        res.status(200).json(meetUp);
+          res.status(200).json(meetup);
+        }
       }
     } catch (err) {
       return next(err);
@@ -248,7 +267,7 @@ namespace MeetupController {
 
 
   /**
-   * Removes guest from a specified meetup.
+   * Removes a guest from a specified meetup.
    *
    * @return JSON Object
    */
@@ -263,6 +282,11 @@ namespace MeetupController {
 
       const found = await prisma.meetUp.findUnique({
         where: { id },
+        include: {
+          guests: {
+            select: { id: true },
+          },
+        },
       });
 
       if (found == null) {
@@ -272,21 +296,37 @@ namespace MeetupController {
         res.status(403).json("You are the host!");
       }
       else {
-        const meetUp = await prisma.meetUp.update({
-          where: { id },
-          data: removeMeetUpGuest(guest),
-          include: {
-            guests: {
-              select: {
-                id: true,
-                firstname: true,
-                surname: true,
+        let guests: Array<string> = [];
+        found.guests.forEach(extractID);
+
+        function extractID(guest: any) {
+          for (let key in guest) {
+            if (guest.hasOwnProperty(key)) {
+              guests.push(guest[key]);
+            }
+          }
+        }
+
+        if (!guests.includes(guest.id)) {
+          res.status(403).json("You can't leave a meet up that you haven't joined in the first place!");
+        }
+        else {
+          const meetup = await prisma.meetUp.update({
+            where: { id },
+            data: removeMeetUpGuest(found.guestsCount - 1, guest),
+            include: {
+              guests: {
+                select: {
+                  id: true,
+                  firstname: true,
+                  surname: true,
+                },
               },
             },
-          },
-        });
+          });
 
-        res.status(200).json(meetUp);
+          res.status(200).json(meetup);
+        }
       }
     } catch (err) {
       return next(err);
@@ -319,36 +359,31 @@ namespace MeetupController {
       else if (found.hostId != host.id) {
         res.status(403).json("You must be the host!");
       }
-
-      const recipe = await prisma.recipe.findUnique({
-        where: { id: recipeId },
-      });
-
-      if (recipe == null) {
-        res.status(404).json("Recipe not found.");
-      } else {
-        const meetUp = await prisma.meetUp.update({
-          where: { id },
-          data: updateMeetUp(
-              host.firstname + " " + host.surname,
-              date,
-              place,
-              recipeId,
-              recipe.name,
-              maxGuests
-          ),
-          include: {
-            guests: {
-              select: {
-                id: true,
-                firstname: true,
-                surname: true,
-              },
-            },
-          },
+      else {
+        const recipe = await prisma.recipe.findUnique({
+          where: { id: recipeId },
         });
 
-        res.status(200).json(meetUp);
+        if (recipe == null) {
+          res.status(404).json("Recipe not found.");
+        }
+        else {
+          const meetup = await prisma.meetUp.update({
+            where: { id },
+            data: updateMeetUp(date, place, recipeId, recipe.name, maxGuests),
+            include: {
+              guests: {
+                select: {
+                  id: true,
+                  firstname: true,
+                  surname: true,
+                },
+              },
+            },
+          });
+
+          res.status(200).json(meetup);
+        }
       }
     } catch (err) {
       return next(err);
@@ -356,6 +391,11 @@ namespace MeetupController {
   };
 
 
+  /**
+   * Returns a list with all meetups.
+   *
+   * @return JSON Array
+   */
   export const list = async (
     req: Request,
     res: Response,
@@ -372,7 +412,6 @@ namespace MeetupController {
             },
           },
         },
-        //where: { OR: [{ User: user }, { isPrivate: false }] },
       });
 
       res.status(200).json(meetups);
@@ -384,6 +423,8 @@ namespace MeetupController {
 
   /**
    * Deletes a specified meetup.
+   *
+   * @return JSON Object
    */
    export const remove = async (
     req: Request,
@@ -409,7 +450,7 @@ namespace MeetupController {
           where: { id },
         });
 
-        res.status(200).json();
+        res.status(200).json(found);
       }
     } catch (err) {
       return next(err);
