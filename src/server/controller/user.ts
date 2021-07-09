@@ -61,6 +61,20 @@ const updateUserName = (firstname?: string, surname?: string) => {
   });
 };
 
+/**
+ * Updates the host name of an existing meetup.
+ *
+ * @param hostName
+ * @return {*}
+ */
+const updateHostName = (
+    hostName: string
+) => {
+  return Prisma.validator<Prisma.MeetUpUpdateInput>()({
+    hostName
+  });
+};
+
 namespace UserController {
   /**
    * Validates body payload for signup
@@ -321,10 +335,13 @@ namespace UserController {
       const { firstname, surname } = req.body;
 
       const updated = await prisma.user.update({
-        where: {
-          id: user.id
-        },
+        where: { id: user.id },
         data: updateUserName(firstname, surname)
+      });
+
+      await prisma.meetUp.updateMany({
+        where: { hostId: user.id },
+        data: updateHostName(firstname + " " + surname),
       });
 
       res.status(200).json({

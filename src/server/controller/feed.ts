@@ -3,6 +3,11 @@ import { Request, Response, NextFunction } from "express";
 import prisma from "@server/common/services/prisma.service";
 
 namespace FeedController {
+    /**
+     * Returns a list with all public recipes and all meetups.
+     *
+     * @return JSON Array
+     */
     export const list = async (
         req: Request,
         res: Response,
