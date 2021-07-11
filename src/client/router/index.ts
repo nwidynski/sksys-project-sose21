@@ -5,6 +5,7 @@ import Profile from '../pages/Profile.vue'
 import Private from '../pages/Private.vue'
 import RecipeFeed from '../pages/RecipeFeed.vue'
 import Feed from '../pages/Feed.vue'
+import Settings from '@client/pages/Settings.vue'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
@@ -60,6 +61,11 @@ const routes = [
         path: 'meetups',
         name: 'Meetups',
         component: Meetups
+      },
+      {
+        path: 'settings',
+        name: 'Settings',
+        component: Settings
       }
     ]
   }
