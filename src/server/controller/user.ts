@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { Prisma } from "@prisma/client";
 
 import prisma from "@server/common/services/prisma.service";
@@ -76,6 +76,20 @@ const updateHostName = (
 };
 
 namespace UserController {
+  /**
+   * Validates path parameters for GET.
+   */
+  export const validateParams = () => {
+    return [
+      param("id", ValidationMessages.UNDEFINED)
+          .exists()
+          .isString()
+          .withMessage(ValidationMessages.WRONG_TYPE)
+          .isUUID()
+          .withMessage(ValidationMessages.WRONG_FORMAT)
+    ];
+  };
+
   /**
    * Validates body payload for signup
    */
@@ -228,6 +242,67 @@ namespace UserController {
         createdAt: loggedIn?.createdAt,
         updatedAt: loggedIn?.updatedAt
       });
+    } catch (err) {
+      return next(err);
+    }
+  };
+
+  /**
+   * Returns all profile data.
+   *
+   * @return JSON Object
+   */
+  export const getData = async (
+      req: Request,
+      res: Response,
+      next: NextFunction
+  ) => {
+    try {
+      const user = req.user;
+      const { id } = req.params;
+
+      const data = await prisma.user.findUnique({
+        where: { id },
+        select: {
+          firstname: true,
+          surname: true,
+          createdAt: true,
+          Recipes: {
+            where: { OR: [{ User: user }, { isPrivate: false }] },
+          },
+          savedRecipes: true,
+          MeetUps: {
+            include: {
+              guests: {
+                select: {
+                  id: true,
+                  firstname: true,
+                  surname: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (data == null) {
+        res.status(404).json("User not found.");
+      } else {
+        (data as any)["hostedMeetUps"] = await prisma.meetUp.findMany({
+          where: { hostId: id },
+          include: {
+            guests: {
+              select: {
+                id: true,
+                firstname: true,
+                surname: true,
+              },
+            },
+          },
+        });
+
+        res.status(200).json(data);
+      }
     } catch (err) {
       return next(err);
     }

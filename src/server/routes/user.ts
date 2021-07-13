@@ -28,4 +28,11 @@ router.put(
   UserController.updateName
 );
 
+router.get(
+    "/:id",
+    UserController.validateParams(),
+    handleValidationResult,
+    UserController.getData
+);
+
 export default router;
