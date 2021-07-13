@@ -11,9 +11,11 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "@prisma/client";
 
 import AuthRouter from "@server/routes/auth";
+import UserRouter from "@server/routes/user";
 import RecipeRouter from "@server/routes/recipe";
 import MeetupRouter from "@server/routes/meetup";
 import TagRouter from "@server/routes/tag";
+import FeedRouter from "@server/routes/feed";
 import prisma from "@server/common/services/prisma.service";
 
 const app = express();
@@ -52,11 +54,15 @@ app.use(passport.session());
 
 app.use("/", AuthRouter);
 
+app.use("/user", UserRouter);
+
 app.use("/recipes", RecipeRouter);
 
 app.use("/meetups", MeetupRouter);
 
 app.use("/tags", TagRouter);
+
+app.use("/feed", FeedRouter);
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

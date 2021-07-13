@@ -349,6 +349,12 @@ export default {
       meetupArray: []
     }
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
     paginate: function(page) {
       console.log("paginate")
@@ -402,6 +408,8 @@ export default {
     },
   },
   mounted() {
+    //get user data (use this id for backend request)
+    console.log(this.id);
     //Backend requests for meetups
     this.getRecipes()
     this.getMeetups()

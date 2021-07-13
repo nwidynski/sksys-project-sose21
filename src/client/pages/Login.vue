@@ -92,7 +92,7 @@ export default {
                 .then(res => {
                     this.$root.user = res;
                     UserStorage.writeObj("user", res)
-                    this.$router.push({path: "private"})
+                    this.$router.push({path: "private/profile/" + res.id})
                 })
                 .catch(err => console.log(err))
         },

@@ -13,7 +13,7 @@
             <b-button pill variant="danger" @click="deleteClicked()">delete</b-button>
             
             <b-avatar-group class="float-right" size="2rem" variant="warning">
-                <b-avatar v-for="guest in meetObj.guests" :key="guest.id" :text="getAcronym(guest)"></b-avatar>
+                <b-avatar button v-for="guest in meetObj.guests" :key="guest.id" :text="getAcronym(guest)" @click="iconClicked(guest.id)"></b-avatar>
             </b-avatar-group>
             
         </b-card>
@@ -45,6 +45,10 @@ export default {
         },
         getAcronym(guest) {
             return guest.firstname.charAt(0) + guest.surname.charAt(0);
+        },
+        iconClicked(id) {
+            console.log("icon: " + id);
+            this.$router.push({path: "/private/profile/" + id});
         }
     }
 
