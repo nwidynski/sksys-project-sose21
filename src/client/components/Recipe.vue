@@ -5,8 +5,9 @@
 
       <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
-          <b-icon-trash class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
-          <b-icon-pencil-fill class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
+          <span v-if="saved" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
+          <b-icon-trash v-if="!saved" class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
+          <b-icon-pencil-fill v-if="!saved" class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
         </template>
         <b-card-text class="ingredients-container">
@@ -33,6 +34,7 @@
           <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
 
         </b-card-text>
+
       </b-card>
     </div>
     <!-- Editing Card -->
@@ -239,12 +241,12 @@ export default {
     author: String,
     isPrivate: Boolean,
     createdAt: String,
+    saved: Boolean
 
   },
   methods: {
     collapsing() {
       this.collapsedFeed = !this.collapsedFeed
-      console.log("now: " + this.collapsedFeed)
     },
     feedOptions() {
       this.showOptions = !this.showOptions
@@ -269,14 +271,11 @@ export default {
         this.editRecipe.time = this.time;
         this.editRecipe.level = this.level;
         this.editRecipe.rating = this.rating;
-        console.log(this.isPrivate)
         this.editRecipe.isPrivate = this.isPrivate;
         this.editRecipe.ingredients = this.ingredients //JSON.parse(JSON.stringify(this.ingredients));
         //console.log(this.editRecipe.ingredients)
         this.editRecipe.done = true;
         console.log("backup finished")
-        console.log(this.ingredients)
-        console.log(this.editRecipe.ingredients)
       }
       if(!this.editing){
         this.editRecipe.done = false;
@@ -290,8 +289,6 @@ export default {
           author: this.editRecipe.author,
           isPrivate: this.editRecipe.isPrivate
         }
-        console.log(this.id)
-        console.log(editObj)
         BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id, editObj)
             .then(res => {
               console.log("submit done");
@@ -345,13 +342,14 @@ export default {
     notInteressted() {
       this.$emit('not-interessted',this.$props.id)
       this.showOptions = false
-      console.log("first")
     },
     saveRecipe() {
       this.$emit('save-recipe',this.$props.id)
       this.showOptions = false
-      console.log("first")
     },
+    unsaveRecipe() {
+      this.$emit('unsave-recipe',this.$props.id)
+    }
 /*    getOwnerBoolean(){
       let owner = false
       if(this.loggedInUser.id == this.userId) {
@@ -363,7 +361,6 @@ export default {
     }*/
   },
   mounted() {
-    console.log(this.id == this.loggedInUser.id)
   }
 }
 </script>
@@ -413,6 +410,11 @@ export default {
   cursor: pointer
 }
 
+#unsave-button:hover {
+  background-color: lightgray;
+  border-radius: 4px;
+
+}
 .timepicker {
   background-color: yellow;
 

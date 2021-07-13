@@ -98,6 +98,9 @@
               :ingredients="receipt.ingredients"
               :isPrivate="receipt.isPrivate"
               @refresh="refresh"
+              :saved="true"
+              :userId="receipt.userId"
+              @unsave-recipe="unsaveRecipe"
           >
           </Recipe>
           <br>
@@ -421,12 +424,22 @@ export default {
             this.createdAt = res.createdAt;
           })
           .catch(err => console.log("error"))
+    },
+    unsaveRecipe(id){
+      console.log("unsave recipe with id: " + id)
+      BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + id + "/remove")
+          .then(res => {
+            console.log(res)
+            this.refresh()
+          })
+          .catch(err => console.log("error"))
     }
+
   },
   mounted() {
     //get user data (use this id for backend request)
-    console.log(this.id);
-    console.log(this.loggedInUser.id)
+    console.log("profile of: " + this.id);
+    console.log("user loged in: " + this.loggedInUser.id)
     //Backend requests for meetups
     this.getData()
   }

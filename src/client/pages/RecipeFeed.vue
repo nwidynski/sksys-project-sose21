@@ -379,7 +379,6 @@ export default {
               this.toSearch = ""
             })
             .catch(err => console.log("error"))
-        console.log("test")
       }
 
     },
