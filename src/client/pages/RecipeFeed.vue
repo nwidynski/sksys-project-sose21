@@ -408,19 +408,9 @@ export default {
             console.log(res)
           })
           .catch(err => console.log("error"))
-    }
-  },
-  computed: {
-    filteredRecipes() {
-      let filtered = this.recipes.filter(recipe => {
-        let searchString = this.toSearch.toLowerCase().trim()
-        if(recipe.name.toLowerCase().includes(searchString) && searchString.length >=4) return true;
-        else return false
-      });
-      if(filtered.length == 0) {
-        return this.recipes
-      }
-      return filtered;
+    },
+    refresh(){
+      this.getRecipes()
     }
   },
   mounted() {

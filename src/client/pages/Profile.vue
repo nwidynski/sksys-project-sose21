@@ -87,7 +87,7 @@
           <br>          <br>
         </div>
         <div v-if="savedMenu">
-          <div style="height: 100vh" v-if="recipes.length == 0"></div>
+          <div style="height: 100vh" v-if="savedRecipes.length == 0"></div>
           <Recipe
               v-for="receipt in savedRecipes"
               :id="receipt.id"

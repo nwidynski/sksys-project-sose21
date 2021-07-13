@@ -25,8 +25,8 @@
           {{ instruction }}
         </b-card-text>
 
-        <b-input-group style="width: 65%" size="sm" :append="rating.toString()">
-          <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+        <b-input-group style="width: 65%" size="sm">
+          <b-form-rating show-value show-value-max :readonly="owner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
@@ -84,8 +84,8 @@
           </b-form-checkbox>
         </b-form-group>
 
-        <b-input-group style="width:50%" size="sm" :append="this.editRecipe.rating.toString()">
-          <b-form-rating readonly v-model="editRecipe.rating" variant="warning" class="mb-2"></b-form-rating>
+        <b-input-group style="width:50%" size="sm">
+          <b-form-rating show-value show-value-max readonly @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
@@ -149,8 +149,8 @@
             </div>
             <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>
           </div>
-          <b-input-group style="width:50%" size="sm" :append="rating.toString()">
-            <b-form-rating readonly v-model="rating" variant="warning" class="mb-2"></b-form-rating>
+          <b-input-group style="width:50%" size="sm">
+            <b-form-rating show-value show-value-max :readonly="owner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
           </b-input-group>
 
           <b-card-text class="mt-3">
@@ -193,6 +193,7 @@ export default {
         isPrivate:"",
         done: false,
       },
+      newRating:0,
       collapsedFeed: true,
       showOptions: false,
       options:[
@@ -244,6 +245,18 @@ export default {
 
   },
   methods: {
+    submitNewRating() {
+      BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id + "/rate",{rating: this.newRating})
+          .then(res => {
+              console.log(res);
+              this.newRating = res.rating
+              this.$emit('refresh')
+          })
+          .catch(err => {
+            this.newRating = this.rating
+            console.log(err)
+          })
+    },
     collapsing() {
       this.collapsedFeed = !this.collapsedFeed
     },
@@ -367,6 +380,8 @@ export default {
     this.owner = this.loggedInUser.id == this.$props.userId
     console.log(this.owner)
     //UserStorage.checkIfOwner(this.$props.userId)
+    this.newRating = this.rating
+
   }
 }
 </script>
