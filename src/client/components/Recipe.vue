@@ -5,9 +5,9 @@
 
       <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
-          <span v-if="saved" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
-          <b-icon-trash v-if="!saved" class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
-          <b-icon-pencil-fill v-if="!saved" class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
+          <span v-if="saved && owner == userId" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
+          <b-icon-trash v-if="owner" class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
+          <b-icon-pencil-fill v-if="owner" class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
         </template>
         <b-card-text class="ingredients-container">
@@ -179,7 +179,7 @@ export default {
   data() {
     return {
       loggedInUser: UserStorage.readObj("user"),
-      owner: UserStorage.readObj("user").id == this.id,
+      owner: false,
       editing: false,
       levels: ["hard","middle","easy"],
       value: '',
@@ -226,7 +226,6 @@ export default {
       default: ""
     },
     rating: {
-      type: String,
       default: ""
     },
     time: {
@@ -361,6 +360,13 @@ export default {
     }*/
   },
   mounted() {
+    //console.log("recipeID: " + this.$props.id)
+    console.log("userLoggedIn: " + this.loggedInUser.id)
+    console.log("userID: " + this.$props.userId)
+    //console.log(this.loggedInUser.id == this.$props.userId)
+    this.owner = this.loggedInUser.id == this.$props.userId
+    console.log(this.owner)
+    //UserStorage.checkIfOwner(this.$props.userId)
   }
 }
 </script>

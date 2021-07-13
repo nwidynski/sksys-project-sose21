@@ -64,6 +64,7 @@
               :time="receipt.time"
               :ingredients="receipt.ingredients"
               :isPrivate="receipt.isPrivate"
+              :userId="receipt.userId"
               @refresh="refresh"
           >
           </Recipe>

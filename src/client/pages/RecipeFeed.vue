@@ -89,7 +89,7 @@ export default {
       isRandomFeatureActive: false,
       recipesCopy: [],
       recipes: [
-        {
+        /*{
           id:0,
           author:"Lucy",
           createdAt: "1623585305680",
@@ -343,7 +343,7 @@ export default {
               unit:"none"
             }
           ]
-        },
+        },*/
       ],
       meetups: []
     }
