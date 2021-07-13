@@ -34,6 +34,13 @@ router.put(
   RecipeController.edit
 );
 
+router.put(
+    "/:id/save",
+    RecipeController.validateParams(),
+    handleValidationResult,
+    RecipeController.save
+);
+
 router.delete(
   "/:id",
   RecipeController.validateParams(),

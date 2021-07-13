@@ -27,7 +27,7 @@ namespace FeedController {
             });
 
             const recipes = await prisma.recipe.findMany({
-                where: { isPrivate: false  },
+                where: { isPrivate: false },
             });
 
             const feed = [...recipes, ...meetups];
