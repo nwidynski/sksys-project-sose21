@@ -2,13 +2,16 @@
   <div>
     <div id="main" class="main-container">
       <div id="feed">
+        <br class="feature">
+        <b-button id="featuretip-2" class="feature mt-1 mr-2" @click="getRandomRecipe" variant="success"> Random recipe</b-button>
         <b-button id="featuretip-1" class="feature mt-1 mr-2" @click="() => { this.toSearch = 'recipe-feature: '}" variant="warning"> Which recipes can I use?</b-button>
-        <b-tooltip target="featuretip-1" placement="right">
-          Click me and all you have to do is to enter your ingredients in the search box and we will show you what you can do with it!
-        </b-tooltip>
+<!--        <b-tooltip target="featuretip-1" placement="right">-->
+<!--          Click me and all you have to do is to enter your ingredients in the search box and we will show you what you can do with it!-->
+<!--        </b-tooltip>-->
         <b-tooltip target="featuretip-1" variant="warning" placement="left">
           Example: "tomatoes chicken pepper ginger onions beef bread eggs"
         </b-tooltip>
+
         <h3 class="title pl-4 pt-2 pb-1"> Recipe Feed</h3>
 
 
@@ -20,8 +23,10 @@
         </div>
         <div style="width:100%; border-top: 1px solid black"/>
 
-
-
+        <div  class="row" v-if="isRandomFeatureActive">
+          <b-button class="col-3 mt-2 mb-n3" style="margin: auto" @click="resetFeature" variant="danger"> Reset </b-button>
+          <br><br>
+        </div>
         <div class="receipt-container">
 <!--          <div v-if="this.loading" style="text-align: center" class="mt-4">
             <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
@@ -79,6 +84,8 @@ export default {
       user: UserStorage.readObj("user"),
       toSearch:"",
       loading: false,
+      isRandomFeatureActive: false,
+      recipesCopy: [],
       recipes: [
         {
           id:0,
@@ -340,6 +347,20 @@ export default {
     }
   },
   methods: {
+    getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min +1)) + min;
+    },
+    getRandomRecipe() {
+      this.isRandomFeatureActive = true
+      this.recipes = this.recipesCopy
+      this.recipes = [this.recipes[this.getRandomIntInclusive(0,this.recipes.length-1)]]
+    },
+    resetFeature() {
+      this.isRandomFeatureActive = false
+      this.recipes = this.recipesCopy
+    },
     onResize(){
 
 
@@ -364,6 +385,7 @@ export default {
       BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
           .then(res => {
             this.recipes = res;
+            this.recipesCopy = JSON.parse(JSON.stringify(this.recipes))
           })
           .catch(err => console.log("error"))
     },

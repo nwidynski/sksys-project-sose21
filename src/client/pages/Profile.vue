@@ -8,8 +8,8 @@
         </div>
         <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.userCover +')'}">
         </div>
-<!--        :style="{'background-image': 'url(' + require('./assets/media/img.jpg') + ')'}"-->
-        <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>
+<!--        :style="{'background-image': s'url(' + require('./assets/media/img.jpg') + ')'}"-->
+<!--        <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>-->
         <div class="user-container">
 <!--          <div class="user-photo rounded-circle"></div>-->
           <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
@@ -17,7 +17,7 @@
             <h4> {{ this.user.firstname }} </h4>
             <div class="" style="font-size: smaller">since {{ this.user.createdAt.split("T")[0] }}</div>
             <div class="user-stats mt-5">
-              <span class="stat mr-4" style="border: 2px solid black; padding: 4px"> <b>{{ this.recipes.length }}</b> Recipes </span>
+              <span class="stat mr-4" style="border: 2px solid black; padding: 4px; position: relative; bottom: 15px"> <b>{{ this.recipes.length }}</b> Recipes </span>
 <!--              <span class="stat"> <b>0</b> Followers </span>-->
             </div>
           </div>
