@@ -8,18 +8,19 @@ generator client {
 }
 
 model User {
-  id String @id @default(uuid())
+  id String     @id @default(uuid())
 
-  firstname String
-  surname   String
-  email     String @unique
-  password  String
+  firstname     String
+  surname       String
+  email         String @unique
+  password      String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  Recipes   Recipe[]
-  MeetUps   MeetUp[]
+  Recipes       Recipe[]
+  savedRecipes  Recipe[] @relation("recipetouser")
+  MeetUps       MeetUp[]
 }
 
 model Recipe {
@@ -33,9 +34,10 @@ model Recipe {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User        User          @relation(fields: [userId], references: [id])
-  Ingredients Ingredients[]
-  Tags        Tag[]
+  User            User          @relation(fields: [userId], references: [id])
+  userProfiles    User[]        @relation("recipetouser")
+  Ingredients     Ingredients[]
+  Tags            Tag[]
 }
 
 model Ingredients {

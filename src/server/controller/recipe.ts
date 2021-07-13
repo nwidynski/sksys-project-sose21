@@ -11,6 +11,7 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * @param user
  * @param name
  * @param rating
+ * @param isPrivate
  * @return {*}
  */
 const createRecipe = (
@@ -36,6 +37,7 @@ const createRecipe = (
  *
  * @param name
  * @param rating
+ * @param isPrivate
  * @return {*}
  */
 const updateRecipe = (
@@ -50,6 +52,22 @@ const updateRecipe = (
   });
 };
 
+/**
+ * Saves the recipe to an user.
+ *
+ * @param user
+ * @return {*}
+ */
+const saveRecipe = (
+    user: User
+) => {
+  return Prisma.validator<Prisma.RecipeUpdateInput>()({
+    userProfiles: {
+      connect: { id: user.id },
+    }
+  });
+};
+
 namespace RecipeController {
   /**
    * Validates path parameters for GET/PUT/DELETE - /recipes/{:id}
@@ -59,7 +77,9 @@ namespace RecipeController {
       param("id", ValidationMessages.UNDEFINED)
         .exists()
         .isString()
-        .withMessage(ValidationMessages.WRONG_TYPE),
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isUUID()
+        .withMessage(ValidationMessages.WRONG_FORMAT)
     ];
   };
 
@@ -110,7 +130,7 @@ namespace RecipeController {
   };
 
   /**
-   * Get a specified todo
+   * Gets a specified recipe
    * @return  JSON Object
    */
   export const get = async (
@@ -183,6 +203,39 @@ namespace RecipeController {
       });
 
       res.status(200).json(recipe);
+    } catch (err) {
+      return next(err);
+    }
+  };
+
+  /**
+   * Saves a specified recipe to an existing user.
+   *
+   * @return JSON Object
+   */
+  export const save = async (
+      req: Request,
+      res: Response,
+      next: NextFunction
+  ) => {
+    try {
+      const user = req.user;
+      const { id } = req.params;
+
+      const recipe = await prisma.recipe.findUnique({
+        where: { id },
+      });
+
+      if (recipe == null) {
+        res.status(404).json("Recipe not found.");
+      } else {
+        await prisma.recipe.update({
+          where: { id },
+          data: saveRecipe(user),
+        });
+
+        res.status(200).json(recipe);
+      }
     } catch (err) {
       return next(err);
     }
