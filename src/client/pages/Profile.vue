@@ -3,7 +3,7 @@
     <div id="main" class="main-container">
       <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
-          <h4> {{ this.user.firstname + " " + this.user.surname }} </h4>
+          <h4> {{ this.firstname + " " + this.surname }} </h4>
           {{ this.recipes.length }} recipes
         </div>
         <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.userCover +')'}">
@@ -14,11 +14,13 @@
 <!--          <div class="user-photo rounded-circle"></div>-->
           <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
           <div class="user-data mt-3">
-            <h4> {{ this.user.firstname }} </h4>
-            <div class="" style="font-size: smaller">since {{ this.user.createdAt.split("T")[0] }}</div>
+            <h4> {{ this.firstname }} </h4>
+            <div class="" style="font-size: smaller">since {{ this.createdAt.split("T")[0] }}</div>
             <div class="user-stats mt-5">
               <span class="stat mr-4" style="border: 2px solid black; padding: 4px; position: relative; bottom: 15px"> <b>{{ this.recipes.length }}</b> Recipes </span>
 <!--              <span class="stat"> <b>0</b> Followers </span>-->
+              <span class="stat mr-4" style="border: 2px solid black; padding: 4px; position: relative; bottom: 15px"> <b>{{ this.hostedMeetUpsLength }}</b> MeetUps </span>
+
             </div>
           </div>
 
@@ -84,14 +86,24 @@
           <br>          <br>
         </div>
         <div v-if="savedMenu">
-          <div> saved (comming soon)
-            <br>
-            <br>          <br>
-            <br>          <br>
-            <br>          <br>
-            <br>          <br>
-            <br>          <br>
-          </div>
+          <div style="height: 100vh" v-if="recipes.length == 0"></div>
+          <Recipe
+              v-for="receipt in savedRecipes"
+              :id="receipt.id"
+              :name="receipt.name"
+              :level="receipt.level"
+              :rating="receipt.rating"
+              :instruction="receipt.instruction"
+              :time="receipt.time"
+              :ingredients="receipt.ingredients"
+              :isPrivate="receipt.isPrivate"
+              @refresh="refresh"
+          >
+          </Recipe>
+          <br>
+          <br>          <br>
+          <br>          <br>
+          <br>          <br>        <br>          <br>        <br>          <br>
         </div>
       </div>
     </div>
@@ -116,14 +128,19 @@ export default {
   },
   data() {
     return {
-      user: UserStorage.readObj("user"),
+      loggedInUser: UserStorage.readObj("user"),
+      firstname: "",
+      surname: "",
+      createdAt: "",
       recipesMenu: true,
       meetupsMenu: false,
       savedMenu: false,
       menuCollapsed: false,
       userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
+      hostedMeetUpsLength: 0,
+      savedRecipes: [],
       recipes: [
-        {
+        /*{
           id:0,
           author:"Lucy",
           createdAt: "1623585305680",
@@ -344,7 +361,7 @@ export default {
               unit:"g"
             }
           ]
-        }
+        }*/
       ],
       meetupArray: []
     }
@@ -382,37 +399,36 @@ export default {
 
       //this.recipes.push(newRecipe)
     },
-    getRecipes: function() {
-      BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
-          .then(res => {
-            this.recipes = res;
-            this.recipes = this.recipes.filter(recipe => recipe.userId == this.user.id)
-          })
-          .catch(err => console.log("error"))
-    },
     refresh(){
-      this.getRecipes()
+      this.getData()
     },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min +1)) + min;
     },
-    getMeetups() {
-      BackEndRouter.RequestRouter.EndPoints.LIST("/meetups")
+    getData() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/user/" + this.id)
           .then(res => {
-            this.meetupArray = res;
-            this.meetupArray = this.meetupArray.filter(meetup => this.user.id == meetup.hostId)
+            let hostedMeetUps = res.hostedMeetUps;
+            this.hostedMeetUpsLength = hostedMeetUps.length;
+            let otherMeetUps = res.MeetUps;
+            this.meetupArray = otherMeetUps.concat(hostedMeetUps);
+            this.recipes = res.Recipes;
+            this.savedRecipes = res.savedRecipes;
+            this.firstname = res.firstname;
+            this.surname = res.surname;
+            this.createdAt = res.createdAt;
           })
           .catch(err => console.log("error"))
-    },
+    }
   },
   mounted() {
     //get user data (use this id for backend request)
     console.log(this.id);
+    console.log(this.loggedInUser.id)
     //Backend requests for meetups
-    this.getRecipes()
-    this.getMeetups()
+    this.getData()
   }
 }
 </script>

@@ -45,7 +45,9 @@
               :author="receipt.author"
               :isPrivate="receipt.isPrivate"
               :createdAt="receipt.createdAt"
+              :userId="receipt.userId"
               @not-interessted="notInteressted"
+              @save-recipe="saveRecipe"
           >
 
           </Recipe>
@@ -399,6 +401,14 @@ export default {
     },
     notInteressted(id) {
       this.recipes = this.recipes.filter(recipe => id != recipe.id)
+    },
+    saveRecipe(id) {
+      console.log("save recipe with id: " + id)
+      BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + id + "/save")
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => console.log("error"))
     }
   },
   computed: {

@@ -100,8 +100,9 @@
 
     <div v-if="onFeed" class="feed-receipt-container">
       <div class="mt-4 mx-3 feed-user-top" style="display: flex">
+        <span @click="() => this.$router.push({path: '/private/profile/' + this.userId})">
         <b-avatar class="mt-2" size="3rem"/>
-
+          </span>
         <div class="mx-3" style="width: 100%">
           <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
 
@@ -110,7 +111,7 @@
             <b-icon-x style="float: right; cursor: pointer; margin: 5px" @click="() => this.showOptions = !this.showOptions"/>
 
             <div class="feedOption">
-              <div>save <small>(soon)</small></div>
+              <div @click="saveRecipe">save</div>
               <div @click="notInteressted">not interessted</div>
             </div>
           </div>
@@ -169,11 +170,14 @@
 <script>
 
 import BackEndRouter from "@client/utils/http";
+import UserStorage from "@client/utils/userStorage";
 
 export default {
   name: 'Receipt',
   data() {
     return {
+      loggedInUser: UserStorage.readObj("user"),
+      owner: UserStorage.readObj("user").id == this.id,
       editing: false,
       levels: ["hard","middle","easy"],
       value: '',
@@ -206,6 +210,7 @@ export default {
 
   props: {
     id: String,
+    userId: String,
     name: {
       type: String,
       default: ""
@@ -341,7 +346,24 @@ export default {
       this.$emit('not-interessted',this.$props.id)
       this.showOptions = false
       console.log("first")
-    }
+    },
+    saveRecipe() {
+      this.$emit('save-recipe',this.$props.id)
+      this.showOptions = false
+      console.log("first")
+    },
+/*    getOwnerBoolean(){
+      let owner = false
+      if(this.loggedInUser.id == this.userId) {
+        owner = true
+      }
+      consoler.log("asdkaslödkasöldkölaskdölsakdölk")
+      console.log(owner)
+      return owner
+    }*/
+  },
+  mounted() {
+    console.log(this.id == this.loggedInUser.id)
   }
 }
 </script>
