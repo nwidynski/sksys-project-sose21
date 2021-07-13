@@ -35,10 +35,25 @@ router.put(
 );
 
 router.put(
+    "/:id/rate",
+    RecipeController.validateParams(),
+    RecipeController.validateBodyRate(),
+    handleValidationResult,
+    RecipeController.rate
+);
+
+router.put(
     "/:id/save",
     RecipeController.validateParams(),
     handleValidationResult,
     RecipeController.save
+);
+
+router.put(
+    "/:id/remove",
+    RecipeController.validateParams(),
+    handleValidationResult,
+    RecipeController.removeSaved
 );
 
 router.delete(
