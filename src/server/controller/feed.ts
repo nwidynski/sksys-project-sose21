@@ -15,6 +15,9 @@ namespace FeedController {
     ) => {
         try {
             const meetups = await prisma.meetUp.findMany({
+                orderBy: {
+                    createdAt: "desc",
+                },
                 include: {
                     guests: {
                         select: {
@@ -28,10 +31,14 @@ namespace FeedController {
 
             const recipes = await prisma.recipe.findMany({
                 where: { isPrivate: false },
+                orderBy: {
+                    createdAt: "desc",
+                },
             });
 
-            const feed = [...recipes, ...meetups];
-            feed.sort((a, b) => Date.parse(b.createdAt as any) - Date.parse(a.createdAt as any));
+            let feed: Array<any> = [];
+            feed.push(meetups);
+            feed.push(recipes);
 
             res.status(200).json(feed);
         } catch (err) {
