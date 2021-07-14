@@ -324,10 +324,10 @@ export default {
       console.log("backup reset")
     },
     levelClicked() {
-      if (this.levels.indexOf(this.level) == this.levels.length - 1)
-        this.level = this.levels[0]
+      if (this.levels.indexOf(this.editRecipe.level) == this.levels.length - 1)
+        this.editRecipe.level = this.levels[0]
       else
-        this.level = this.levels[this.levels.indexOf(this.level) + 1]
+        this.editRecipe.level = this.levels[this.levels.indexOf(this.editRecipe.level) + 1]
     },
     timeClicked() {
 
