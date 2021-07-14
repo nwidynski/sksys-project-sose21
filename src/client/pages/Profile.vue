@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" >
     <div id="main" class="main-container">
       <div class="profile-container">
         <div class="user-data px-5 pt-2 pb-2 mb-3">
@@ -53,7 +53,6 @@
         />
 
         <div v-if="recipesMenu" class="receipt-container">
-          <div style="height: 100vh" v-if="recipes.length == 0"></div>
           <Recipe
               v-for="receipt in recipes"
               :id="receipt.id"
@@ -69,9 +68,7 @@
           >
           </Recipe>
           <br>
-          <br>          <br>
-          <br>          <br>
-          <br>          <br>
+          <br>
         </div>
         <div v-if="meetupsMenu">
           <div class="m-5">
@@ -81,13 +78,8 @@
               </b-col>
             </b-row>
           </div>
-          <br>
-          <br>          <br>
-          <br>          <br>
-          <br>          <br>
         </div>
         <div v-if="savedMenu">
-          <div style="height: 100vh" v-if="savedRecipes.length == 0"></div>
           <Recipe
               v-for="receipt in savedRecipes"
               :id="receipt.id"
@@ -105,9 +97,7 @@
           >
           </Recipe>
           <br>
-          <br>          <br>
-          <br>          <br>
-          <br>          <br>        <br>          <br>        <br>          <br>
+          <br>
         </div>
       </div>
     </div>
@@ -451,17 +441,14 @@ export default {
   background-color: #E6FFC7;
 }
 .main-container {
-  background-color: #E6FFC7;
   margin-left: 250px;
-  transition: margin 325ms
+  transition: margin 325ms;
 }
 
 .profile-container {
-  background-color: #E6FFC7;
   height: 65vh;
 }
 .content-container {
-  background-color: #E6FFC7;
 }
 
 .receipt-container {

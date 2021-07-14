@@ -52,9 +52,7 @@
 
           </Recipe>
           <br>
-          <br>          <br>
-          <br>          <br>
-          <br>          <br>
+          <br>
         </div>
 
 
@@ -425,10 +423,10 @@ export default {
 <style scoped>
 .main-container {
   margin-left: 250px;
-  background-color: #E6FFC7;
   display:flex;
   flex-wrap: nowrap;
   transition: margin 325ms;
+  background-color: #E6FFC7;
 }
 
 #feed {
@@ -438,7 +436,6 @@ export default {
 
 #infos {
   width: 25%;
-  background-color: #E6FFC7;
 }
 
 .title {
@@ -468,7 +465,6 @@ export default {
 }
 
 .receipt-container {
-  background-color: #E6FFC7;
 }
 
 .meetup {
