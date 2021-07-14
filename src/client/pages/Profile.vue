@@ -64,6 +64,7 @@
               :ingredients="receipt.ingredients"
               :isPrivate="receipt.isPrivate"
               :userId="receipt.userId"
+              :profileId="id"
               @refresh="refresh"
           >
           </Recipe>
@@ -93,6 +94,7 @@
               @refresh="refresh"
               :saved="true"
               :userId="receipt.userId"
+              :profileId="id"
               @unsave-recipe="unsaveRecipe"
           >
           </Recipe>

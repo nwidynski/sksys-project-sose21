@@ -5,9 +5,9 @@
 
       <b-card class="m-3" :img-src="require('@/client/assets/foodimg2.png')" img-alt="Card image" img-top>
         <template #header>
-          <span v-if="saved && owner == userId" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
-          <b-icon-trash v-if="owner" class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
-          <b-icon-pencil-fill v-if="owner" class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
+          <span v-if="saved && profileOwner" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
+          <b-icon-trash v-if="recipeOwner && profileOwner" class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
+          <b-icon-pencil-fill v-if="recipeOwner && profileOwner" class="mt-1 edit-button" title="edit" @click="editClicked"></b-icon-pencil-fill>
           <h4 class="mb-0">{{ name }}</h4>
         </template>
         <b-card-text class="ingredients-container">
@@ -26,7 +26,7 @@
         </b-card-text>
 
         <b-input-group style="width: 65%" size="sm">
-          <b-form-rating show-value show-value-max :readonly="owner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
+          <b-form-rating show-value show-value-max :readonly="recipeOwner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
         </b-input-group>
 
         <b-card-text class="mt-3">
@@ -150,7 +150,7 @@
             <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>
           </div>
           <b-input-group style="width:50%" size="sm">
-            <b-form-rating show-value show-value-max :readonly="owner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
+            <b-form-rating show-value show-value-max :readonly="recipeOwner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
           </b-input-group>
 
           <b-card-text class="mt-3">
@@ -179,7 +179,8 @@ export default {
   data() {
     return {
       loggedInUser: UserStorage.readObj("user"),
-      owner: false,
+      recipeOwner: false,
+      profileOwner: false,
       editing: false,
       levels: ["hard","middle","easy"],
       value: '',
@@ -213,6 +214,7 @@ export default {
 
   props: {
     id: String,
+    profileId: String,
     userId: String,
     name: {
       type: String,
@@ -376,9 +378,12 @@ export default {
     //console.log("recipeID: " + this.$props.id)
     console.log("userLoggedIn: " + this.loggedInUser.id)
     console.log("userID: " + this.$props.userId)
+    console.log("profileID: " + this.$props.profileId)
     //console.log(this.loggedInUser.id == this.$props.userId)
-    this.owner = this.loggedInUser.id == this.$props.userId
-    console.log(this.owner)
+    this.recipeOwner = this.loggedInUser.id == this.$props.userId
+    this.profileOwner = this.loggedInUser.id == this.$props.profileId
+    console.log("recipeOwner: " + this.recipeOwner)
+    console.log("profileOwner: " + this.profileOwner)
     //UserStorage.checkIfOwner(this.$props.userId)
     this.newRating = this.rating
 
