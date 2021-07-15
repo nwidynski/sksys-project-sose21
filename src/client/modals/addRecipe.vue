@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-button v-b-modal.add-receipt-modal class="ml-4 mt-3 mb-n2 addRcpt"><b-icon-plus class="add-receipt" title="add receipt"> </b-icon-plus></b-button>
+    <b-button v-b-modal.add-receipt-modal class="ml-4 mt-3 mb-n2 addRcpt"><b-icon-plus class="add-receipt" title="add recipe"> </b-icon-plus></b-button>
     <b-modal
         id="add-receipt-modal"
         ref="modal"
-        title="Add new receipt"
+        title="Add new recipe"
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
@@ -12,7 +12,7 @@
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
-            label="Receipt name"
+            label="Recipe name"
             label-for="name-input"
             invalid-feedback="Name is required"
             :state="nameState"
@@ -20,6 +20,7 @@
           <b-form-input
               id="name-input"
               v-model="name"
+              autofocus
               :state="nameState"
               required
               placeholder="yummy food name"

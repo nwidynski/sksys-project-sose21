@@ -60,9 +60,9 @@
 
       </div>
       <div id="infos">
-        <h3 style="text-align: center; margin-top: 17% !important">Check mal die nächsten MeetUps!</h3>
+        <h3 style="text-align: center; margin-top: 17% !important">Check the next MeetUps!</h3>
         <div class="meetup-container" v-for="meetup in meetups.slice(0,6)">
-          <div class="meetup m-3 p-2"> <router-link style="color: snow; font-weight: 500" to="meetups">{{ meetup.recipeName + " - by " + meetup.hostName + " - in " + meetup.place }} <b-icon-arrow-right-square style="float: right; margin-top: 2px"></b-icon-arrow-right-square></router-link></div>
+          <div class="meetup m-3 p-2"> <router-link style="color: snow; font-weight: 500" to="meetups">{{ meetup.recipeName + " - by " + meetup.hostName + " - " + meetup.place }} <b-icon-arrow-right-square style="float: right; margin-top: 2px"></b-icon-arrow-right-square></router-link></div>
         </div>
       </div>
     </div>
