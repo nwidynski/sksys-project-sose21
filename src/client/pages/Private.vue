@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <div>
     <header>
 
       <div id="nav" style="display:none">
@@ -11,72 +11,81 @@
               <b-nav-item :to="profilePath"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
               <b-nav-item to="/private/recipefeed"><i class="fa fa-utensils mr-2"/>Recipe Feed</b-nav-item>
               <b-nav-item to="/private/meetups"><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
-              <b-nav-item to="/"><i class="fa fa-coffee mr-2"/>Logout</b-nav-item>
+              <b-nav-item @click="onItemClick"><i class="fa fa-coffee mr-2"/>Logout</b-nav-item>
               <b-nav-item to="/private/settings"><i class="fa fa-cog mr-2"/>Settings</b-nav-item>
             </b-navbar-nav>
           </b-collapse>
         </b-navbar>
       </div>
 
-      <sidebar-menu :menu="menu" :width="'250px'" :collapsed="collapse" :hide-toggle="true">
+      <sidebar-menu :menu="menu" :width="'250px'" @item-click="onItemClick" :collapsed="collapse" :hide-toggle="true">
       </sidebar-menu>
     </header>
     <router-view/>
-    </div>
+  </div>
 </template>
 
 <script>
 import UserStorage from '@client/utils/userStorage'
 export default {
-    name: 'Private',
-    data() {
-      return {
-        profilePath: '/private/profile/' + UserStorage.readObj("user").id,
-        menu: [
-          {
-            header: true,
-            title: 'Hi ' + UserStorage.readObj("user").firstname + '!',
-            hiddenOnCollapse: true
-          },
-          {
-            href: {path: '/private/profile/' + UserStorage.readObj("user").id},
-            title: 'Profile',
-            icon: 'fa fa-user'
-          },
-          {
-            href: {path: '/private/recipefeed'},
-            title: 'Recipe Feed',
-            icon: 'fa fa-utensils'
-          },
-          {
-            href: {path: '/private/meetups'},
-            title: 'MeetUps',
-            icon: 'fa fa-people-arrows'
-          },
-          {
-            href: {path: '/'},
-            title: 'Logout',
-            icon: 'fa fa-coffee'
-          },
-          {
-            href: {path: '/private/settings'},
-            title: 'Settings',
-            icon: 'fa fa-cog'
-          }
-        ],
-        collapse: false,
-      }
-    },
+  name: 'Private',
+  data() {
+    return {
+      profilePath: '/private/profile/' + UserStorage.readObj("user").id,
+      menu: [
+        {
+          header: true,
+          title: 'Hi ' + UserStorage.readObj("user").firstname + '!',
+          hiddenOnCollapse: true
+        },
+        {
+          href: {path: '/private/profile/' + UserStorage.readObj("user").id},
+          title: 'Profile',
+          icon: 'fa fa-user'
+        },
+        {
+          href: {path: '/private/recipefeed'},
+          title: 'Recipe Feed',
+          icon: 'fa fa-utensils'
+        },
+        {
+          href: {path: '/private/meetups'},
+          title: 'MeetUps',
+          icon: 'fa fa-people-arrows'
+        },
+        {
+          // href: {path: '/'},
+          title: 'Logout',
+          icon: 'fa fa-coffee'
+        },
+        {
+          href: {path: '/private/settings'},
+          title: 'Settings',
+          icon: 'fa fa-cog'
+        }
+      ],
+      collapse: false,
+    }
+  },
   created: function() {
     window.addEventListener('resize',this.onResize)
   },
   methods: {
-      onResize(){
-        if(window.innerWidth < 1000)
-          this.collapse = true
-        else
-          this.collapse = false
+    onResize(){
+      if(window.innerWidth < 1000)
+        this.collapse = true
+      else
+        this.collapse = false
+    },
+    onItemClick(event, item, node) {
+      console.log("event: ", event)
+      console.log("item: ",  item)
+      console.log("node: ", node)
+      if(event.target.innerText == "Logout") {
+        console.log("Clicked on Logout")
+        this.$router.push({path: "/"})
       }
+    }
   }
 }
 </script>
