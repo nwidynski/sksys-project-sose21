@@ -9,7 +9,7 @@
             <div>
               <b-row>
                 <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12">
-                  <Meetup :meetObj="obj"></Meetup>
+                  <Meetup :meetObj="obj" @join-event="switchToLogin"></Meetup>
                 </b-col>
               </b-row>  
             </div>

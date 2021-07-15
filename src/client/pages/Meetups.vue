@@ -6,7 +6,7 @@
         <b-container fluid style="margin: 0px">
             <b-row>
                 <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                    <Meetup :meetObj="obj" @join-event="joinMeetup" @edit-event="editMeetup" @delete-event="deleteMeetup"></Meetup>
+                    <Meetup :meetObj="obj" :userId="userId" @join-event="joinMeetup" @edit-event="editMeetup" @delete-event="deleteMeetup" @leave-event="leaveMeetup"></Meetup>
                 </b-col>
             </b-row>
         </b-container>
@@ -29,7 +29,8 @@ export default {
       return {
           meetupArray: [],
           recipeOptions: [],
-          toBeEdited: undefined
+          toBeEdited: undefined,
+          userId: UserStorage.readObj("user").id
       }
   },
   methods: {
@@ -81,6 +82,13 @@ export default {
             .then(res => {
                 console.log(res);
                 self.getMeetups()})
+            .catch(err => console.log(err))
+    },
+    leaveMeetup(id) {
+        BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/removeGuest")
+            .then(res => {
+                this.getMeetups();
+            })
             .catch(err => console.log(err))
     },
     pushNewMeetup(newMeetup) {

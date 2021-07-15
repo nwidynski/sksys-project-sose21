@@ -8,9 +8,10 @@
                 <p>Guests: {{meetObj.guests.length}}/{{meetObj.maxGuests}}</p>
                 <p>created by: {{meetObj.hostName}}</p>
             </b-card-text>
-            <b-button pill @click="joinClicked()">join</b-button>
-            <b-button pill @click="editClicked()">edit</b-button>
-            <b-button pill variant="danger" @click="deleteClicked()">delete</b-button>
+            <b-button v-if="showJoin" pill @click="joinClicked()">join</b-button>
+            <b-button v-if="showLeave" pill @click="leaveClicked">leave</b-button>
+            <b-button v-if="showDelete" pill @click="editClicked()">edit</b-button>
+            <b-button v-if="showDelete" pill variant="danger" @click="deleteClicked()">delete</b-button>
             
             <b-avatar-group class="float-right" size="2rem" variant="warning">
                 <b-avatar button v-for="guest in meetObj.guests" :key="guest.id" :text="getAcronym(guest)" @click="iconClicked(guest.id)"></b-avatar>
@@ -25,6 +26,9 @@ export default {
     props: {
         meetObj: {
             required: true
+        },
+        userId: {
+            type: String
         }
     },
     methods: {
@@ -36,6 +40,9 @@ export default {
         },
         deleteClicked() {
             this.$emit('delete-event', this.$props.meetObj.id);
+        },
+        leaveClicked() {
+            this.$emit('leave-event', this.$props.meetObj.id);
         },
         getDate() {
             return this.$props.meetObj.date.substring(0, 10);
@@ -49,6 +56,29 @@ export default {
         iconClicked(id) {
             console.log("icon: " + id);
             this.$router.push({path: "/private/profile/" + id});
+        }
+    },
+    computed: {
+        showDelete() {
+            if(this.meetObj.hostId === this.userId) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        showJoin() {
+            if(this.meetObj.hostId === this.userId || this.meetObj.guests.filter(ele => ele.id === this.userId).length > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        showLeave() {
+            if(this.meetObj.hostId !== this.userId && this.meetObj.guests.filter(ele => ele.id === this.userId).length > 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

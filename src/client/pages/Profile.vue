@@ -76,7 +76,7 @@
           <div class="m-5">
             <b-row>
               <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                <Meetup :meetObj="obj" @delete-event="deleteMeetup" @edit-event="editMeetup" @join-event="joinMeetup"></Meetup>
+                <Meetup :meetObj="obj" :userId="loggedInUser.id" @delete-event="deleteMeetup" @edit-event="editMeetup" @join-event="joinMeetup" @leave-event="leaveMeetup"></Meetup>
               </b-col>
             </b-row>
           </div>
@@ -480,6 +480,13 @@ export default {
         //TODO Backend request
         BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/addGuest")
             .then(res => this.getData())
+            .catch(err => console.log(err))
+    },
+    leaveMeetup(id) {
+        BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/removeGuest")
+            .then(res => {
+                this.getData();
+            })
             .catch(err => console.log(err))
     },
     setRecipeOptions() {
