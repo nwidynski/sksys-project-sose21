@@ -142,7 +142,7 @@
             ClickMe Test {{ author }}
           </span>
 
-          <div class="feed-user-top-info" style="position: absolute"> posted at {{ createdAt.split("T")[1].substring(0,5) }}</div>
+          <div class="feed-user-top-info" style="position: absolute"> posted {{ createdAt.split("T")[1].substring(0,5) + ", " + createdAt.split("T")[0]  }}</div>
         </div>
 
       </div>
