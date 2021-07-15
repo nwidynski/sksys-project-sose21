@@ -6,13 +6,13 @@
           <h4> {{ this.firstname + " " + this.surname }} </h4>
           {{ this.recipes.length }} recipes
         </div>
-        <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.userCover +')'}">
+        <div class="user-cover mx-3" :style="{'background-image': 'url(' + this.profileCoverLink +')'}">
         </div>
 <!--        :style="{'background-image': s'url(' + require('./assets/media/img.jpg') + ')'}"-->
 <!--        <b-button class="profile-btn mx-4 mt-2" pill variant="outline-dark"> <b>Set Up</b> </b-button>-->
         <div class="user-container">
 <!--          <div class="user-photo rounded-circle"></div>-->
-          <b-avatar src="https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" size="13rem"></b-avatar>
+          <b-avatar :src="profileImgLink" size="13rem"></b-avatar>
           <div class="user-data mt-3">
             <h4> {{ this.firstname }} </h4>
             <div class="" style="font-size: smaller">since {{ this.createdAt.split("T")[0] }}</div>
@@ -133,11 +133,12 @@ export default {
       firstname: "",
       surname: "",
       createdAt: "",
+      profileImgLink: "",
       recipesMenu: true,
       meetupsMenu: false,
       savedMenu: false,
       menuCollapsed: false,
-      userCover: 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString(),
+      profileCoverLink: "",
       hostedMeetUpsLength: 0,
       savedRecipes: [],
       recipes: [
@@ -422,6 +423,8 @@ export default {
             this.firstname = res.firstname;
             this.surname = res.surname;
             this.createdAt = res.createdAt;
+            this.profileImgLink = "https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+            this.profileCoverLink = 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString();
           })
           .catch(err => console.log("error"))
     },
@@ -506,6 +509,7 @@ export default {
   },
   mounted() {
     //get user data (use this id for backend request)
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     console.log("profile of: " + this.id);
     console.log("user loged in: " + this.loggedInUser.id)
     //Backend requests for meetups

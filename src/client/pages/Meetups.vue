@@ -120,6 +120,7 @@ export default {
     }
   },
   mounted() {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       //access control
       //Backend requests for meetups
       this.getMeetups()

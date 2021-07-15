@@ -121,11 +121,11 @@
 
     <div v-if="onFeed" class="feed-receipt-container">
       <div class="mt-4 mx-3 feed-user-top" style="display: flex">
-        <span @click="() => this.$router.push({path: '/private/profile/' + this.userId})">
+        <span @click="goToProfile">
         <b-avatar class="mt-2 avatar" style="cursor: pointer" :title="this.author" size="3rem"/>
           </span>
         <div class="mx-3" style="width: 100%">
-          <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
+          <b-icon-three-dots v-if="!showOptions && this.loggedInUser" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
 
           <!-- TODO -->
           <div v-if="showOptions" style="float: right; background-color: #2a2a2e; color: white; font-size: medium">
@@ -138,7 +138,7 @@
             </div>
           </div>
 
-          <span class="author" @click="() => this.$router.push({path: '/private/profile/' + this.userId})" style="cursor: pointer">
+          <span class="author" @click="goToProfile" style="cursor: pointer">
             ClickMe Test {{ author }}
           </span>
 
@@ -278,6 +278,12 @@ export default {
 
   },
   methods: {
+
+    goToProfile() {
+      if(this.loggedInUser) {
+        this.$router.push({path: '/private/profile/' + this.userId})
+      }
+    },
     submitNewRating() {
       BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id + "/rate",{rating: this.newRating})
           .then(res => {

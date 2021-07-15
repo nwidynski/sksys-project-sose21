@@ -414,6 +414,7 @@ export default {
   },
   mounted() {
     //Backend requests for meetups
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     this.getRecipes()
     this.getMeetups()
   }
