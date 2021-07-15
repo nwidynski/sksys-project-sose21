@@ -15,6 +15,10 @@ export namespace UserStorage {
     export const readObj = (key:string): User => {
         return JSON.parse(String(sessionStorage.getItem(key)))  
     }
+
+    export const deleteObj = (key: string) => {
+        sessionStorage.removeItem(key);
+    }
 }
 
 export default UserStorage;
