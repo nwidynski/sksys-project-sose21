@@ -81,7 +81,8 @@ export default {
       console.log("event: ", event)
       console.log("item: ",  item)
       console.log("node: ", node)
-      if(event.target.innerText == "Logout") {
+      if(event.target.innerText == "Logout" || item.title == "Logout") {
+        UserStorage.deleteObj("user")
         console.log("Clicked on Logout")
         this.$router.push({path: "/"})
       }

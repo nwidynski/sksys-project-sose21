@@ -415,14 +415,18 @@ export default {
   },
   mounted() {
     //console.log("recipeID: " + this.$props.id)
-    console.log("userLoggedIn: " + this.loggedInUser.id)
-    console.log("userID: " + this.$props.userId)
-    console.log("profileID: " + this.$props.profileId)
+
     //console.log(this.loggedInUser.id == this.$props.userId)
-    this.recipeOwner = this.loggedInUser.id == this.$props.userId
-    this.profileOwner = this.loggedInUser.id == this.$props.profileId
-    console.log("recipeOwner: " + this.recipeOwner)
-    console.log("profileOwner: " + this.profileOwner)
+    if(this.loggedInUser) {
+      console.log("userLoggedIn: " + this.loggedInUser.id)
+      console.log("userID: " + this.$props.userId)
+      console.log("profileID: " + this.$props.profileId)
+      this.recipeOwner = this.loggedInUser.id == this.$props.userId
+      this.profileOwner = this.loggedInUser.id == this.$props.profileId
+      console.log("recipeOwner: " + this.recipeOwner)
+      console.log("profileOwner: " + this.profileOwner)
+    }
+
     //UserStorage.checkIfOwner(this.$props.userId)
     this.newRating = this.rating
 
