@@ -194,7 +194,8 @@ export default {
           level: this.level,
           rating: 0,
           ingredients: this.ingredientsList,
-          isPrivate: this.isPrivate
+          isPrivate: this.isPrivate,
+          img: this.img
         }
 
         console.log("submit ",newreceipt)

@@ -65,6 +65,7 @@
               :isPrivate="receipt.isPrivate"
               :userId="receipt.userId"
               :profileId="id"
+              :imgLink="receipt.imgLink"
               @refresh="refresh"
           >
           </Recipe>
@@ -95,6 +96,7 @@
               :saved="true"
               :userId="receipt.userId"
               :profileId="id"
+              :imgLink="receipt.imgLink"
               @unsave-recipe="unsaveRecipe"
           >
           </Recipe>

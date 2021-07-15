@@ -46,6 +46,7 @@
               :isPrivate="receipt.isPrivate"
               :createdAt="receipt.createdAt"
               :userId="receipt.userId"
+              :imgLink="receipt.imgLink"
               @not-interessted="notInteressted"
               @save-recipe="saveRecipe"
           >

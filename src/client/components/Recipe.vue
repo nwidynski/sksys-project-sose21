@@ -6,8 +6,8 @@
       <b-card class="m-3" style="border-radius: 10px; border: 1px solid black">
         <div class="card-body-container">
 
-          <div style="height: 300px; overflow: hidden">
-            <b-card-img src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=6&m=1155240408&s=612x612&w=0&h=SEhOUzsexrBBtRrdaLWNB6Zub65Dnyjk7vVrTk1KQSU="></b-card-img>
+          <div class="img-container">
+            <b-card-img :src="this.imgLink" ></b-card-img>
           </div>
           <div class="card-body-header">
             <span v-if="saved && profileOwner" id="unsave-button" @click="unsaveRecipe" style="float:right; font-weight: lighter; cursor: pointer"> unsave </span>
@@ -53,8 +53,8 @@
       <b-card class="m-3" style="border-radius: 10px; border: 1px solid black">
         <div class="card-body-container">
 
-          <div style="height: 300px; overflow: hidden">
-            <b-card-img src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=6&m=1155240408&s=612x612&w=0&h=SEhOUzsexrBBtRrdaLWNB6Zub65Dnyjk7vVrTk1KQSU="></b-card-img>
+          <div class="img-container">
+            <b-card-img :src="this.imgLink"></b-card-img>
           </div>
           <div class="card-body-header">
             <b-icon-trash class="mt-1 edit-button" title="edit" @click="deleteRecipe"></b-icon-trash>
@@ -149,8 +149,8 @@
 
         <b-card body-class="" class="m-3" style="border-radius: 10px; border: 1px solid black">
           <div class="card-body-container">
-            <div style="height: 300px; overflow: hidden">
-            <b-card-img src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=6&m=1155240408&s=612x612&w=0&h=SEhOUzsexrBBtRrdaLWNB6Zub65Dnyjk7vVrTk1KQSU="></b-card-img>
+            <div class="img-container">
+            <b-card-img :src="this.imgLink"></b-card-img>
             </div>
             <div class="card-body-header">
               <h4 class="mb-0">{{ name }}</h4>
@@ -270,7 +270,11 @@ export default {
     author: String,
     isPrivate: Boolean,
     createdAt: String,
-    saved: Boolean
+    saved: Boolean,
+    imgLink: {
+      type: String,
+      default: "https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=6&m=1155240408&s=612x612&w=0&h=SEhOUzsexrBBtRrdaLWNB6Zub65Dnyjk7vVrTk1KQSU="
+    }
 
   },
   methods: {
@@ -329,7 +333,8 @@ export default {
           rating: this.editRecipe.rating,
           ingredients: this.editRecipe.ingredients,
           author: this.editRecipe.author,
-          isPrivate: this.editRecipe.isPrivate
+          isPrivate: this.editRecipe.isPrivate,
+          img: this.img
         }
         BackEndRouter.RequestRouter.EndPoints.UPDATE("/recipes/" + this.id, editObj)
             .then(res => {
@@ -423,6 +428,11 @@ export default {
 
 }
 
+.img-container {
+  height: 250px;
+  overflow: hidden
+}
+
 .author:hover{
   color: gray;
 }
@@ -510,6 +520,12 @@ export default {
 
 @media only screen and (max-width: 950px) {
   .receipt-attribute {
+  }
+}
+
+@media only screen and (max-width: 476px) {
+  .img-container {
+    height: auto !important
   }
 }
 
