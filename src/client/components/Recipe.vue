@@ -122,7 +122,7 @@
     <div v-if="onFeed" class="feed-receipt-container">
       <div class="mt-4 mx-3 feed-user-top" style="display: flex">
         <span @click="() => this.$router.push({path: '/private/profile/' + this.userId})">
-        <b-avatar class="mt-2" size="3rem"/>
+        <b-avatar class="mt-2 avatar" style="cursor: pointer" :title="this.author" size="3rem"/>
           </span>
         <div class="mx-3" style="width: 100%">
           <b-icon-three-dots v-if="!showOptions" class="icon" style="float: right" @click="feedOptions"></b-icon-three-dots>
@@ -138,7 +138,9 @@
             </div>
           </div>
 
-          <div> {{ author }}</div>
+          <span class="author" @click="() => this.$router.push({path: '/private/profile/' + this.userId})" style="cursor: pointer">
+            ClickMe Test {{ author }}
+          </span>
 
           <div class="feed-user-top-info" style="position: absolute"> posted at {{ createdAt.split("T")[1].substring(0,5) }}</div>
         </div>
@@ -421,6 +423,9 @@ export default {
 
 }
 
+.author:hover{
+  color: gray;
+}
 .card-body-container {
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 10px

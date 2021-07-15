@@ -11,7 +11,7 @@
               <b-nav-item :to="profilePath"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
               <b-nav-item to="/private/recipefeed"><i class="fa fa-utensils mr-2"/>Recipe Feed</b-nav-item>
               <b-nav-item to="/private/meetups"><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
-              <b-nav-item to="/"><i class="fa fa-coffee mr-2"/>Login</b-nav-item>
+              <b-nav-item to="/"><i class="fa fa-coffee mr-2"/>Logout</b-nav-item>
               <b-nav-item to="/private/settings"><i class="fa fa-cog mr-2"/>Settings</b-nav-item>
             </b-navbar-nav>
           </b-collapse>
@@ -35,7 +35,7 @@ export default {
         menu: [
           {
             header: true,
-            title: 'Navigation',
+            title: 'Hi ' + UserStorage.readObj("user").firstname + '!',
             hiddenOnCollapse: true
           },
           {
@@ -55,7 +55,7 @@ export default {
           },
           {
             href: {path: '/'},
-            title: 'Login',
+            title: 'Logout',
             icon: 'fa fa-coffee'
           },
           {
