@@ -6,7 +6,7 @@
                 <p>Date: {{getDate()}}</p>
                 <p>Time: {{getTime()}}</p>
                 <p>Guests: {{meetObj.guests.length}}/{{meetObj.maxGuests}}</p>
-                <p>created by: {{meetObj.hostName}}</p>
+                <p>created by: <a href="#" @click="iconClicked(meetObj.hostId)">{{meetObj.hostName}}</a></p>
             </b-card-text>
             <b-button v-if="showJoin" pill @click="joinClicked()">join</b-button>
             <b-button v-if="showLeave" pill @click="leaveClicked">leave</b-button>
@@ -54,8 +54,11 @@ export default {
             return guest.firstname.charAt(0) + guest.surname.charAt(0);
         },
         iconClicked(id) {
-            console.log("icon: " + id);
-            this.$router.push({path: "/private/profile/" + id});
+            if(!this.userId) {
+                this.$router.push({path: "/"});
+            } else {
+                this.$router.push({path: "/private/profile/" + id});
+            }
         }
     },
     computed: {
