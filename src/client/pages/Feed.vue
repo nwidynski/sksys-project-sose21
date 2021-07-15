@@ -60,7 +60,6 @@ export default {
             .then(res => {
                 this.meetupArray = res[0];
                 this.recipeArray = res[1];
-                console.log(res);
             })
             .catch(err => console.log("error"))
         }

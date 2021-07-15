@@ -75,7 +75,7 @@
           <div class="m-5">
             <b-row>
               <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                <Meetup :meetObj="obj"></Meetup>
+                <Meetup :meetObj="obj" @delete-event="deleteMeetup" @edit-event="editMeetup" @join-event="joinMeetup"></Meetup>
               </b-col>
             </b-row>
           </div>
@@ -103,6 +103,7 @@
         </div>
       </div>
     </div>
+    <edit-meetup :recipeOptions="recipeOptions" :meetupsValues="toBeEdited" @edit-meetup="pushEditMeetup"></edit-meetup>
   </div>
 
 </template>
@@ -114,13 +115,15 @@ import Meetup from "@client/components/Meetup";
 import addRecipe from "@client/modals/addRecipe";
 import BackEndRouter from "@client/utils/http";
 import UserStorage from '@client/utils/userStorage'
+import EditMeetup from '@client/modals/editMeetup.vue';
 
 export default {
   name: 'Profile',
   components: {
     Recipe,
     addRecipe,
-    Meetup
+    Meetup,
+    EditMeetup
   },
   data() {
     return {
@@ -359,7 +362,9 @@ export default {
           ]
         }*/
       ],
-      meetupArray: []
+      meetupArray: [],
+      toBeEdited: undefined,
+      recipeOptions: []
     }
   },
   props: {
@@ -426,6 +431,74 @@ export default {
             this.refresh()
           })
           .catch(err => console.log("error"))
+    },
+    deleteMeetup(id) {
+        // hostid of meetup
+        let hostId = this.meetupArray.filter(ele => ele.id==id)[0].hostId;
+        
+        // only delete own
+        if(hostId !== UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can only delete your own meetups!")
+            return;
+        }
+
+        //Backend request
+        BackEndRouter.RequestRouter.EndPoints.DELETE("/meetups/" + id)
+            .then(res => {
+                this.getData()})
+            .catch(err => console.log(err))
+    },
+    editMeetup(id) {
+        this.toBeEdited = this.meetupArray.filter(ele => ele.id==id)[0];
+
+        // only edit own meetup
+        if(this.toBeEdited.hostId !== UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can only edit your own meetups!")
+            return;
+        }
+
+        this.$bvModal.show("edit-meetup");
+    },
+    joinMeetup(id) {
+        // hostid of meetup
+        let hostId = this.meetupArray.filter(ele => ele.id==id)[0].hostId;
+
+        // not own meetup
+        if(hostId === UserStorage.readObj("user").id) {
+            //TODO
+            console.log("you can not join your own meetups!")
+            return;
+        }
+
+        //TODO Backend request
+        BackEndRouter.RequestRouter.EndPoints.UPDATE("/meetups/" + id + "/addGuest")
+            .then(res => this.getData())
+            .catch(err => console.log(err))
+    },
+    setRecipeOptions() {
+        let self = this;
+        BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
+            .then(res => {
+                let newArr = res.map(ele => {
+                    delete ele.createdAt;
+                    delete ele.updatedAt;
+                    delete ele.isPrivate;
+                    delete ele.rating;
+                    delete ele.userId;
+                    return ele;
+                });
+                newArr.forEach(ele => {
+                    delete Object.assign(ele, {value: ele["id"] })["id"];
+                    delete Object.assign(ele, {text: ele["name"] })["name"];
+                })
+                self.recipeOptions = newArr;
+            })
+            .catch(err => console.log(err))
+    },
+    pushEditMeetup(editMeetup) {
+        this.getData();
     }
 
   },
@@ -435,6 +508,8 @@ export default {
     console.log("user loged in: " + this.loggedInUser.id)
     //Backend requests for meetups
     this.getData()
+    //Backend reqeuest for recipesOptions (recipes -> [{value: id, text: recipe.name}])
+    this.setRecipeOptions()
   }
 }
 </script>
