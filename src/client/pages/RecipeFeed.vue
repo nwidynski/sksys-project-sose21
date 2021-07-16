@@ -88,10 +88,11 @@ export default {
       isRandomFeatureActive: false,
       recipesCopy: [],
       recipes: [
-        /*{
-          id:0,
+        {
+          id:"0",
           author:"Lucy",
-          createdAt: "1623585305680",
+          createdAt: "2021-07-14T20:24:29.547",
+          imgLink: "https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           updatedAt: "1623585305680",
           name: "Pizza",
           time: "3h 20min",
@@ -132,9 +133,10 @@ export default {
           ]
         },
         {
-          id:1,
+          id:"1",
           author:"John",
-          createdAt: "1623585305680",
+          createdAt: "2021-07-13T20:24:29.547",
+          imgLink: "https://images.pexels.com/photos/3913295/pexels-photo-3913295.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           updatedAt: "1623585305680",
           name: "Cake",
           time: "50min",
@@ -170,9 +172,11 @@ export default {
           ]
         },
         {
-          id:2,
+          id:"2",
           author: "Christian",
+          createdAt: "2021-07-13T15:24:29.547",
           name: "Chocolate Cake",
+          imgLink: "https://images.pexels.com/photos/4987182/pexels-photo-4987182.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           time:"30min",
           instruction: "Den Backofen auf 160 °C Umluft (180 °C Ober-/Unterhitze) vorheizen. Den Boden von zwei Springformen ca. 15 cm (oder alternativ einer 22 cm Springform) mit Backpapier auslegen. Den Formrand fetten und mit Mehl bestäuben.\n" +
               "\n" +
@@ -200,10 +204,11 @@ export default {
           ]
         },
         {
-          id:3,
+          id:"3",
           author: "Lara",
           name: "Spaghetti Bolognese",
           time:"2h",
+          imgLink: "https://images.pexels.com/photos/4987182/pexels-photo-4987182.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
           level: "middle",
           rating: "3",
@@ -236,10 +241,11 @@ export default {
           ]
         },
         {
-          id:4,
+          id:"4",
           author: "Thomas",
           name: "Spaghetti Carbonara",
           time:"2h",
+          imgLink: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           instruction: "Die Pasta in reichlich Salzwasser bissfest kochen. Den Schinken in Würfel schneiden und in wenig Butter anbraten.\n" +
               "\n" +
               "Eigelb in einer großen Schüssel mit Salz, Pfeffer und Muskat verquirlen. Die Butter schaumig rühren und gut unter das Eigelb mischen. Die Schinkenwürfel und den geriebenen Käse gründlich unterrühren.",
@@ -274,10 +280,12 @@ export default {
           ]
         },
         {
-          id:5,
+          id:"5",
           author: "Sophie",
+          createdAt: "2021-07-15T12:10:29.547",
           name: "Bio Vegan Bolognese",
           time:"2h",
+          imgLink: "https://images.pexels.com/photos/262905/pexels-photo-262905.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
           level: "middle",
           rating: "3",
@@ -315,9 +323,11 @@ export default {
           ]
         },
         {
-          id:2,
+          id:"6",
           author: "Emily",
+          createdAt: "2021-07-13T16:32:29.547",
           name: "Chocolate Brownie",
+          imgLink: "https://images.pexels.com/photos/45202/brownie-dessert-cake-sweet-45202.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           time:"30min",
           instruction: "Eine ca. 20 x 20 bzw. 28 x 15 cm große Form einfetten und kalt stellen. Die Bitterschokolade im Wasserbad schmelzen, die Butter unterrühren. Die Vollmilch- und die weiße Schokolade hacken.\n" +
               "Den Ofen inzwischen auf 200 °C Ober-/Unterhitze vorheizen.\n" +
@@ -342,7 +352,7 @@ export default {
               unit:"none"
             }
           ]
-        },*/
+        },
       ],
       meetups: []
     }
@@ -384,7 +394,7 @@ export default {
     getRecipes: function() {
       BackEndRouter.RequestRouter.EndPoints.LIST("/recipes")
           .then(res => {
-            this.recipes = res;
+            //this.recipes = res;
             this.recipesCopy = JSON.parse(JSON.stringify(this.recipes))
           })
           .catch(err => console.log("error"))

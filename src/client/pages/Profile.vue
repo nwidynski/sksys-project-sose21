@@ -142,11 +142,12 @@ export default {
       hostedMeetUpsLength: 0,
       savedRecipes: [],
       recipes: [
-        /*{
+        {
           id:0,
           author:"Lucy",
           createdAt: "1623585305680",
           updatedAt: "1623585305680",
+          imgLink: "https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           name: "Pizza",
           time: "3h 20min",
           instruction: "Zunächst für den Pizzateig Mehl, Grieß und Salz gründlich vermengen. Die Hefe im warmen Wasser auflösen, 5 Minuten ruhen lassen und dann zur Mehlmischung geben. Die Zutaten so lange mit dem Knethaken des Handrührers, in der Küchenmaschine oder von Hand kneten, bis ein elastischer Teig entsteht, das dauert ungefähr 10 Minuten. Falls der Teig zu fest sein sollte einfach noch etwas warmes Wasser zugeben, wenn der Teig zu flüssig ist, etwas Mehl hinzugeben. Erst dann das Olivenöl unterkneten.\n" +
@@ -190,9 +191,10 @@ export default {
           author:"John",
           createdAt: "1623585305680",
           updatedAt: "1623585305680",
+          imgLink: "https://images.pexels.com/photos/3913295/pexels-photo-3913295.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           name: "Cake",
           time: "50min",
-          instruction: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+          instruction: "Für den Teig Margarine mit Zucker und Vanillezucker verrühren. Eier nach und nach unterrühren. Mehl mit Backpulver und Kakaopulver vermischen. Abwechselnd mit der Milch zur Margarine-Zuckermasse geben und unterrühren. Zartbitterschokolade fein hacken und unter den Teig heben.",
           level: "middle",
           rating: "4",
           ingredients: [
@@ -227,6 +229,7 @@ export default {
           id:2,
           author: "Christian",
           name: "Chocolate Cake",
+          imgLink: "https://images.pexels.com/photos/4987182/pexels-photo-4987182.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           time:"30min",
           instruction: "easy peasy instruction",
           level: "easy",
@@ -254,6 +257,7 @@ export default {
           author: "Lara",
           name: "Spaghetti Bolognese",
           time:"2h",
+          imgLink: "https://images.pexels.com/photos/41320/beef-cheese-cuisine-delicious-41320.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
           instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
           level: "middle",
           rating: "3",
@@ -289,6 +293,7 @@ export default {
           id:4,
           author: "Thomas",
           name: "Spaghetti Carbonara",
+          imgLink: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           time:"2h",
           instruction: "Die Pasta in reichlich Salzwasser bissfest kochen. Den Schinken in Würfel schneiden und in wenig Butter anbraten.\n" +
               "\n" +
@@ -327,6 +332,7 @@ export default {
           id:5,
           author: "Sophie",
           name: "Bio Vegan Bolognese",
+          imgLink: "https://images.pexels.com/photos/262905/pexels-photo-262905.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
           time:"2h",
           instruction: "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen und in Öl glasig schmoren. Tomaten vom Strunk befreien und in Scheiben schneiden. Zu den Zwiebeln geben. Einmal durchrühren und dann einen Teller drüberlegen, sodass der gesamte Inhalt der Pfanne unter dem Teller verborgen ist, und ca. 15 Minuten bei geringer Hitze schmoren lassen.",
           level: "middle",
@@ -363,7 +369,7 @@ export default {
               unit:"g"
             }
           ]
-        }*/
+        }
       ],
       meetupArray: [],
       toBeEdited: undefined,
@@ -418,12 +424,12 @@ export default {
             this.hostedMeetUpsLength = hostedMeetUps.length;
             let otherMeetUps = res.MeetUps;
             this.meetupArray = otherMeetUps.concat(hostedMeetUps);
-            this.recipes = res.Recipes;
+            //this.recipes = res.Recipes;
             this.savedRecipes = res.savedRecipes;
             this.firstname = res.firstname;
             this.surname = res.surname;
             this.createdAt = res.createdAt;
-            this.profileImgLink = "https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+            //this.profileImgLink = "https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
             this.profileCoverLink = 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString();
           })
           .catch(err => console.log("error"))
