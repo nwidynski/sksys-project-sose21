@@ -156,7 +156,10 @@ namespace RecipeController {
   ) => {
     try {
       const recipes = await prisma.recipe.findMany({
-        where: { isPrivate: false }
+        where: { isPrivate: false },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
 
       res.status(200).json(recipes);

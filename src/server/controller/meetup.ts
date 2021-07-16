@@ -403,6 +403,9 @@ namespace MeetupController {
   ) => {
     try {
       const meetups = await prisma.meetUp.findMany({
+        orderBy: {
+          date: "asc",
+        },
         include: {
           guests: {
             select: {
