@@ -8,7 +8,7 @@
           <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
           <b-collapse id="nav-text-collapse" is-nav>
             <b-navbar-nav>
-              <b-nav-item :to="profilePath"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
+              <b-nav-item @click="onItemClick" :to="profilePath"><i class="fa fa-user mr-2"/>Profile</b-nav-item>
               <b-nav-item to="/private/recipefeed"><i class="fa fa-utensils mr-2"/>Recipe Feed</b-nav-item>
               <b-nav-item to="/private/meetups"><i class="fa fa-people-arrows mr-2"/>MeetUp</b-nav-item>
               <b-nav-item @click="onItemClick"><i class="fa fa-coffee mr-2"/>Logout</b-nav-item>
@@ -81,11 +81,17 @@ export default {
       console.log("event: ", event)
       console.log("item: ",  item)
       console.log("node: ", node)
-      if(event.target.innerText == "Logout" || item.title == "Logout") {
+
+      if(event.target.innerText == "Logout" || (item != undefined && item.title == "Logout")) {
         UserStorage.deleteObj("user")
         console.log("Clicked on Logout")
         this.$router.push({path: "/"})
       }
+      else if(event.target.innerText == "Profile" || (item != undefined && item.title == "Profile")) {
+        console.log("refresh")
+        this.$root.$refs.ProfileComponent.getData();
+      }
+
     }
   }
 }

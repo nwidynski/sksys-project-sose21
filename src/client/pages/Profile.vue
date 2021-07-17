@@ -514,6 +514,9 @@ export default {
     }
 
   },
+  created() {
+    this.$root.$refs.ProfileComponent = this
+  },
   mounted() {
     //get user data (use this id for backend request)
     document.body.scrollTop = document.documentElement.scrollTop = 0;
