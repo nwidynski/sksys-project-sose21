@@ -110,7 +110,8 @@ export default {
             BackendRouter.RequestRouter.EndPoints.CREATE('/signup', newUser)
                 .then(res => {
                     this.$root.user = res;
-                    this.$router.push({path: "private"})
+                    UserStorage.writeObj("user", res)
+                    this.$router.push({path: "private/profile/" + res.id})
                 })
                 .catch(err => console.log("something went wrong"))
             //TODO
