@@ -48,7 +48,9 @@ model Recipe {
 model Ingredients {
   id String @id @default(uuid())
 
-  name String @unique
+  name   String @unique
+  amount String
+  unit   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

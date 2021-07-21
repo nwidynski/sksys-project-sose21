@@ -38,7 +38,11 @@ const createRecipe = (
         connectOrCreate: ingredients.map((ingredient) => {
           return {
             where: { name: ingredient.name },
-            create: { name: ingredient.name },
+            create: {
+              name: ingredient.name,
+              amount: ingredient.amount,
+              unit: ingredient.unit,
+            },
           };
         }),
       },
