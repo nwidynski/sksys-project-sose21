@@ -8,38 +8,41 @@ generator client {
 }
 
 model User {
-  id String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  firstname         String
-  surname           String
-  email             String @unique
-  password          String
+  firstname String
+  surname   String
+  email     String @unique
+  password  String
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  Recipes           Recipe[]
-  savedRecipes      Recipe[] @relation("recipetouser")
-  reviewedRecipes   Recipe[] @relation("reviews")
-  MeetUps           MeetUp[]
+  Recipes         Recipe[]
+  savedRecipes    Recipe[] @relation("recipetouser")
+  reviewedRecipes Recipe[] @relation("reviews")
+  MeetUps         MeetUp[]
 }
 
 model Recipe {
   id     String @id @default(uuid())
   userId String
 
-  name      String
-  rating    Float    @default(0)
-  isPrivate Boolean  @default(true)
+  name        String
+  rating      Float   @default(0)
+  isPrivate   Boolean @default(true)
+  instruction String
+  level       Int
+  time        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User            User          @relation(fields: [userId], references: [id])
-  userProfiles    User[]        @relation("recipetouser")
-  reviewers       User[]        @relation("reviews")
-  Ingredients     Ingredients[]
-  Tags            Tag[]
+  User         User          @relation(fields: [userId], references: [id])
+  userProfiles User[]        @relation("recipetouser")
+  reviewers    User[]        @relation("reviews")
+  Ingredients  Ingredients[]
+  Tags         Tag[]
 }
 
 model Ingredients {
@@ -65,19 +68,19 @@ model Tag {
 }
 
 model MeetUp {
-  id           String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  hostId       String
-  hostName     String
-  date         DateTime
-  place        String
-  recipeId     String
-  recipeName   String
-  maxGuests    Int
-  guestsCount  Int      @default(0)
+  hostId      String
+  hostName    String
+  date        DateTime
+  place       String
+  recipeId    String
+  recipeName  String
+  maxGuests   Int
+  guestsCount Int      @default(0)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  guests       User[]
+  guests User[]
 }

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { body, param } from "express-validator";
-import { Prisma, User } from "@prisma/client";
+import { Ingredients, Prisma, User } from "@prisma/client";
 
 import prisma from "@server/common/services/prisma.service";
 import { ValidationMessages } from "@server/common/enums/validationMessages.enum";
@@ -13,15 +13,36 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * @param isPrivate
  * @return {*}
  */
-const createRecipe = (user: User, name: string, isPrivate: boolean = true) => {
+const createRecipe = (
+  user: User,
+  name: string,
+  isPrivate: boolean = true,
+  instruction: string,
+  time: string,
+  level: number,
+  ingredients: any[]
+) => {
   return Prisma.validator<Prisma.RecipeCreateInput>()({
     name,
     isPrivate,
+    instruction,
+    level,
+    time,
     User: {
       connect: {
         id: user.id,
       },
     },
+    ...(ingredients && {
+      Ingredients: {
+        connectOrCreate: ingredients.map((ingredient) => {
+          return {
+            where: { name: ingredient.name },
+            create: { name: ingredient.name },
+          };
+        }),
+      },
+    }),
   });
 };
 
@@ -247,10 +268,26 @@ namespace RecipeController {
   ) => {
     try {
       const user = req.user;
-      const { name, isPrivate } = req.body;
+      const {
+        name,
+        isPrivate,
+        instruction,
+        time,
+        level,
+        ingredients,
+        img,
+      } = req.body;
 
       const recipe = await prisma.recipe.create({
-        data: createRecipe(user, name, isPrivate),
+        data: createRecipe(
+          user,
+          name,
+          isPrivate,
+          instruction,
+          time,
+          level,
+          ingredients
+        ),
       });
 
       res.status(200).json(recipe);
