@@ -179,12 +179,12 @@
               </b-input-group>
 
               <b-card-text class="mt-3">
-                <div v-if="this.level" class="receipt-attribute"> {{level}} </div>
-                <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
                 <div v-if="this.instruction">
                   <b-icon-arrow-down-circle-fill class="icon h3" v-if="collapsedFeed" style="float: right" @click="collapsing"/>
                   <b-icon-arrow-up-circle-fill class="icon h3" v-else style="float: right" @click="collapsing"/>
                 </div>
+                <div v-if="this.level" class="receipt-attribute"> {{level}} </div>
+                <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
               </b-card-text>
             </div>
           </div>

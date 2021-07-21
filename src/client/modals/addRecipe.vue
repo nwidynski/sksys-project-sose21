@@ -137,7 +137,7 @@ export default {
         {value:"tbsp",text:"tbsp"},
         {value:"handful",text:"handful"},
         {value:"pinch of",text:"pinch of"},
-        {value:null,text:"none"}
+        {value:"none",text:"none"}
       ],
       levelOptions:[
         {value:null, text:"switch me", disabled:true},
