@@ -89,7 +89,7 @@ export default {
       }
       else if(event.target.innerText == "Profile" || (item != undefined && item.title == "Profile")) {
         console.log("refresh")
-        this.$root.$refs.ProfileComponent.getData();
+        this.$root.$refs.ProfileComponent.getData(UserStorage.readObj("user").id);
       }
 
     }
