@@ -4,7 +4,7 @@
       <div id="feed">
         <br class="feature">
         <b-button id="featuretip-2" class="feature mt-1 mr-2" @click="getRandomRecipe" variant="success"> Random recipe</b-button>
-        <b-button id="featuretip-1" class="feature mt-1 mr-2" @click="() => { this.toSearch = 'recipe-feature: '}" variant="warning"> Which recipes can I use?</b-button>
+        <b-button id="featuretip-1" class="feature mt-1 mr-2" @click="() => { this.toSearch = 'recipe-feature: '; this.isRandomFeatureActive = true}" variant="warning"> Which recipes can I use?</b-button>
 <!--        <b-tooltip target="featuretip-1" placement="right">-->
 <!--          Click me and all you have to do is to enter your ingredients in the search box and we will show you what you can do with it!-->
 <!--        </b-tooltip>-->
@@ -368,6 +368,7 @@ export default {
     },
     search(){
       if (this.toSearch != "") {
+        this.isRandomFeatureActive = true
         console.log("search: ",this.toSearch)
         this.loading = true
         BackEndRouter.RequestRouter.EndPoints.LIST("/recipes?search=" + this.toSearch)
@@ -378,6 +379,9 @@ export default {
               this.toSearch = ""
             })
             .catch(err => console.log("error"))
+      }
+      else {
+        this.recipes = this.recipesCopy
       }
 
     },

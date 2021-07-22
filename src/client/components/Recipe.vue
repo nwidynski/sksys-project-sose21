@@ -139,7 +139,7 @@
           </div>
 
           <span class="author" @click="goToProfile" style="cursor: pointer">
-            ClickMe Test {{ author }}
+            {{ author }}
           </span>
 
           <div class="feed-user-top-info" style="position: absolute"> posted {{ createdAt.split("T")[1].substring(0,5) + ", " + createdAt.split("T")[0]  }}</div>
@@ -167,22 +167,27 @@
                 </b-list-group-item>
               </b-card-text>
               <div v-if="this.instruction">
-                <div v-if="!collapsedFeed" class="mb-3">
+                <div class="mb-3">
                   <b-card-text>
                     {{ instruction }}
                   </b-card-text>
                 </div>
-                <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>
+<!--                <div v-if="!collapsedFeed" class="mb-3">
+                  <b-card-text>
+                    {{ instruction }}
+                  </b-card-text>
+                </div>
+                <div v-else class="mb-3"> {{ instruction.substring(0,200) + "..." }} </div>-->
               </div>
               <b-input-group style="width:50%" size="sm">
                 <b-form-rating show-value show-value-max :readonly="recipeOwner" @change="submitNewRating" v-model="newRating" variant="warning" class="mb-2"></b-form-rating>
               </b-input-group>
 
               <b-card-text class="mt-3">
-                <div v-if="this.instruction">
+<!--                <div v-if="this.instruction">
                   <b-icon-arrow-down-circle-fill class="icon h3" v-if="collapsedFeed" style="float: right" @click="collapsing"/>
                   <b-icon-arrow-up-circle-fill class="icon h3" v-else style="float: right" @click="collapsing"/>
-                </div>
+                </div>-->
                 <div v-if="this.level" class="receipt-attribute"> {{level}} </div>
                 <div v-if="this.time" class="receipt-attribute"> {{time}} </div>
               </b-card-text>

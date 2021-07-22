@@ -423,7 +423,7 @@ export default {
             this.firstname = res.firstname;
             this.surname = res.surname;
             this.createdAt = res.createdAt;
-            this.profileImgLink = "https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+            this.profileImgLink = ""//"https://images.pexels.com/photos/7120688/pexels-photo-7120688.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
             this.profileCoverLink = 'https://picsum.photos/1024/400/?image=' + this.getRandomIntInclusive(1,1084).toString();
           })
           .catch(err => console.log("error"))
