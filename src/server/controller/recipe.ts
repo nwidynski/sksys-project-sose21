@@ -236,6 +236,7 @@ namespace RecipeController {
             ],
           },
           include: {
+            Ingredients: true,
             User: true,
           },
         })
