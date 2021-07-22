@@ -19,8 +19,8 @@ const createRecipe = (
   isPrivate: boolean = true,
   instruction: string,
   time: string,
-  level: string,
-  ingredients: any[]
+  ingredients: any[],
+  level?: string
 ) => {
   return Prisma.validator<Prisma.RecipeCreateInput>()({
     name,
@@ -311,8 +311,8 @@ namespace RecipeController {
           isPrivate,
           instruction,
           time,
+          ingredients,
           level,
-          ingredients
         ),
       });
 
