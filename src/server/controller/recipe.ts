@@ -19,7 +19,7 @@ const createRecipe = (
   isPrivate: boolean = true,
   instruction: string,
   time: string,
-  level: number,
+  level: string,
   ingredients: any[]
 ) => {
   return Prisma.validator<Prisma.RecipeCreateInput>()({
@@ -186,7 +186,7 @@ namespace RecipeController {
         orderBy: {
           createdAt: sortOrder,
         },
-        include: { Ingredients: true },
+        include: { Ingredients: true, User: true },
       });
 
       if (searchedIngredients) {
@@ -199,7 +199,16 @@ namespace RecipeController {
         );
       }
 
-      res.status(200).json(recipes);
+      res.status(200).json(
+        recipes.map((recipe) => {
+          const { User, ...rest } = recipe;
+
+          return {
+            ...rest,
+            author: `${User.firstname} ${User.surname}`,
+          };
+        })
+      );
     } catch (err) {
       return next(err);
     }
@@ -218,16 +227,26 @@ namespace RecipeController {
       const user = req.user;
       const { id } = req.params;
 
-      const recipe = await prisma.recipe.findMany({
-        where: {
-          OR: [
-            { id, User: user },
-            { id, isPrivate: false },
-          ],
-        },
-      });
+      const recipe = await prisma.recipe
+        .findMany({
+          where: {
+            OR: [
+              { id, User: user },
+              { id, isPrivate: false },
+            ],
+          },
+          include: {
+            User: true,
+          },
+        })
+        .then((recipes) => recipes[0]);
 
-      res.status(200).json(recipe);
+      const { User, ...rest } = recipe;
+
+      res.status(200).json({
+        ...rest,
+        author: `${User.firstname} ${User.surname}`,
+      });
     } catch (err) {
       return next(err);
     }
