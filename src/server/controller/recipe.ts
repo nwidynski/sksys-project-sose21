@@ -298,21 +298,26 @@ namespace RecipeController {
       });
 
       if (!isUserOwned) {
-        res.status(401).send();
+        return res.status(401).send();
       }
 
       const recipe = await prisma.recipe.update({
         where: {
           id,
         },
-        data: updateRecipe(
+        data: {
           name,
           isPrivate,
           instruction,
+          level,
           time,
-          ingredients,
-          level
-        ),
+          Ingredients: {
+            connect: ingredients.map((ingredient: any) => {
+              return { name: ingredient.name };
+            }),
+            disconnect: {},
+          },
+        },
       });
 
       res.status(200).json(recipe);
