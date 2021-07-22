@@ -344,6 +344,7 @@ export default {
           rating: this.editRecipe.rating,
           ingredients: this.editRecipe.ingredients,
           author: this.editRecipe.author,
+          level:this.editRecipe.level,
           isPrivate: this.editRecipe.isPrivate,
           img: this.img
         }
