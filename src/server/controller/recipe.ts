@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { body, param } from "express-validator";
-import { Prisma, User } from "@prisma/client";
+import { Ingredients, Prisma, User } from "@prisma/client";
 
 import prisma from "@server/common/services/prisma.service";
 import { ValidationMessages } from "@server/common/enums/validationMessages.enum";
@@ -16,16 +16,37 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
 const createRecipe = (
   user: User,
   name: string,
-  isPrivate: boolean = true
+  isPrivate: boolean = true,
+  instruction: string,
+  time: string,
+  level: string,
+  ingredients: any[]
 ) => {
   return Prisma.validator<Prisma.RecipeCreateInput>()({
     name,
     isPrivate,
+    instruction,
+    level,
+    time,
     User: {
       connect: {
         id: user.id,
       },
     },
+    ...(ingredients && {
+      Ingredients: {
+        connectOrCreate: ingredients.map((ingredient) => {
+          return {
+            where: { name: ingredient.name },
+            create: {
+              name: ingredient.name,
+              amount: ingredient.amount,
+              unit: ingredient.unit,
+            },
+          };
+        }),
+      },
+    }),
   });
 };
 
@@ -36,10 +57,7 @@ const createRecipe = (
  * @param isPrivate
  * @return {*}
  */
-const updateRecipe = (
-  name: string,
-  isPrivate: boolean = true
-) => {
+const updateRecipe = (name: string, isPrivate: boolean = true) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
     name,
     isPrivate,
@@ -52,13 +70,11 @@ const updateRecipe = (
  * @param user
  * @return {*}
  */
-const saveRecipe = (
-    user: User
-) => {
+const saveRecipe = (user: User) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
     userProfiles: {
       connect: { id: user.id },
-    }
+    },
   });
 };
 
@@ -68,13 +84,11 @@ const saveRecipe = (
  * @param user
  * @return {*}
  */
-const removeSavedRecipe = (
-    user: User
-) => {
+const removeSavedRecipe = (user: User) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
     userProfiles: {
       disconnect: { id: user.id },
-    }
+    },
   });
 };
 
@@ -85,15 +99,12 @@ const removeSavedRecipe = (
  * @param reviewer
  * @return {*}
  */
-const rateRecipe = (
-    rating: number,
-    reviewer: User
-) => {
+const rateRecipe = (rating: number, reviewer: User) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
     rating,
     reviewers: {
       connect: { id: reviewer.id },
-    }
+    },
   });
 };
 
@@ -108,7 +119,7 @@ namespace RecipeController {
         .isString()
         .withMessage(ValidationMessages.WRONG_TYPE)
         .isUUID()
-        .withMessage(ValidationMessages.WRONG_FORMAT)
+        .withMessage(ValidationMessages.WRONG_FORMAT),
     ];
   };
 
@@ -136,11 +147,11 @@ namespace RecipeController {
   export const validateBodyRate = () => {
     return [
       body("rating", ValidationMessages.UNDEFINED)
-          .exists()
-          .isInt()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isInt({ min: 0, max: 5 })
-          .withMessage(ValidationMessages.WRONG_VALUE)
+        .exists()
+        .isInt()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isInt({ min: 0, max: 5 })
+        .withMessage(ValidationMessages.WRONG_VALUE),
     ];
   };
 
@@ -155,14 +166,49 @@ namespace RecipeController {
     next: NextFunction
   ) => {
     try {
-      const recipes = await prisma.recipe.findMany({
-        where: { isPrivate: false },
-        orderBy: {
-          createdAt: "desc",
+      const { orderBy, search } = req.query;
+
+      const sortOrder = orderBy?.toString() === "asc" ? "asc" : "desc";
+
+      const isIngredientSearch = search
+        ?.toString()
+        .includes("recipe-feature: ");
+
+      const searchedIngredients =
+        isIngredientSearch && search?.toString().split(" ");
+
+      let recipes = await prisma.recipe.findMany({
+        where: {
+          isPrivate: false,
+          ...(search &&
+            !isIngredientSearch && { name: { contains: search?.toString() } }),
         },
+        orderBy: {
+          createdAt: sortOrder,
+        },
+        include: { Ingredients: true, User: true },
       });
 
-      res.status(200).json(recipes);
+      if (searchedIngredients) {
+        recipes = recipes.filter((recipe) =>
+          recipe.Ingredients.find((ingredient) =>
+            searchedIngredients.find(
+              (searchedIngredient) => searchedIngredient === ingredient.name
+            )
+          )
+        );
+      }
+
+      res.status(200).json(
+        recipes.map((recipe) => {
+          const { User, ...rest } = recipe;
+
+          return {
+            ...rest,
+            author: `${User.firstname} ${User.surname}`,
+          };
+        })
+      );
     } catch (err) {
       return next(err);
     }
@@ -181,16 +227,26 @@ namespace RecipeController {
       const user = req.user;
       const { id } = req.params;
 
-      const recipe = await prisma.recipe.findMany({
-        where: {
-          OR: [
-            { id, User: user },
-            { id, isPrivate: false },
-          ],
-        },
-      });
+      const recipe = await prisma.recipe
+        .findMany({
+          where: {
+            OR: [
+              { id, User: user },
+              { id, isPrivate: false },
+            ],
+          },
+          include: {
+            User: true,
+          },
+        })
+        .then((recipes) => recipes[0]);
 
-      res.status(200).json(recipe);
+      const { User, ...rest } = recipe;
+
+      res.status(200).json({
+        ...rest,
+        author: `${User.firstname} ${User.surname}`,
+      });
     } catch (err) {
       return next(err);
     }
@@ -235,10 +291,26 @@ namespace RecipeController {
   ) => {
     try {
       const user = req.user;
-      const { name, isPrivate } = req.body;
+      const {
+        name,
+        isPrivate,
+        instruction,
+        time,
+        level,
+        ingredients,
+        img,
+      } = req.body;
 
       const recipe = await prisma.recipe.create({
-        data: createRecipe(user, name, isPrivate),
+        data: createRecipe(
+          user,
+          name,
+          isPrivate,
+          instruction,
+          time,
+          level,
+          ingredients
+        ),
       });
 
       res.status(200).json(recipe);
@@ -253,9 +325,9 @@ namespace RecipeController {
    * @return JSON Object
    */
   export const save = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -286,9 +358,9 @@ namespace RecipeController {
    * @return JSON Object
    */
   export const removeSaved = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -319,9 +391,9 @@ namespace RecipeController {
    * @return JSON Object
    */
   export const rate = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const reviewer = req.user;
@@ -339,11 +411,9 @@ namespace RecipeController {
 
       if (recipe == null) {
         res.status(404).json("Recipe not found.");
-      }
-      else if (reviewer.id == recipe.userId) {
-        res.status(403).json("You cannot rate your own recipe!")
-      }
-      else {
+      } else if (reviewer.id == recipe.userId) {
+        res.status(403).json("You cannot rate your own recipe!");
+      } else {
         let reviewers: Array<string> = [];
         recipe.reviewers.forEach(extractID);
 
@@ -357,9 +427,10 @@ namespace RecipeController {
 
         if (reviewers.includes(reviewer.id)) {
           res.status(403).json("You have already rated this recipe!");
-        }
-        else {
-          const newRating = (recipe.rating * reviewers.length + rating) / (reviewers.length + 1);
+        } else {
+          const newRating =
+            (recipe.rating * reviewers.length + rating) /
+            (reviewers.length + 1);
 
           const rated = await prisma.recipe.update({
             where: { id },
