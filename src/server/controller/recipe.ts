@@ -71,12 +71,14 @@ const updateRecipe = (
     instruction,
     level,
     time,
-    Ingredients: {
-      connect: ingredients.map((ingredient) => {
-        return { name: ingredient.name };
-      }),
-      disconnect: {},
-    },
+    ...(ingredients && {
+      Ingredients: {
+        connect: ingredients.map((ingredient) => {
+          return { name: ingredient.name };
+        }),
+        disconnect: {},
+      },
+    }),
   });
 };
 
@@ -305,19 +307,14 @@ namespace RecipeController {
         where: {
           id,
         },
-        data: {
+        data: updateRecipe(
           name,
           isPrivate,
           instruction,
-          level,
           time,
-          Ingredients: {
-            connect: ingredients.map((ingredient: any) => {
-              return { name: ingredient.name };
-            }),
-            disconnect: {},
-          },
-        },
+          ingredients,
+          level
+        ),
       });
 
       res.status(200).json(recipe);
