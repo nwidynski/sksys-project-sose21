@@ -76,7 +76,6 @@ const updateRecipe = (
         connect: ingredients.map((ingredient) => {
           return { name: ingredient.name };
         }),
-        disconnect: {},
       },
     }),
   });
@@ -302,6 +301,17 @@ namespace RecipeController {
       if (!isUserOwned) {
         return res.status(401).send();
       }
+
+      await prisma.recipe.update({
+        where: {
+          id,
+        },
+        data: {
+          Ingredients: {
+            disconnect: {},
+          },
+        },
+      });
 
       const recipe = await prisma.recipe.update({
         where: {
