@@ -76,7 +76,7 @@
           <div class="m-5">
             <b-row>
               <b-col v-for="obj in meetupArray" :key="obj.id" class="my-2" cols="12" lg="6">
-                <Meetup :meetObj="obj" :userId="loggedInUser.id" @delete-event="deleteMeetup" @edit-event="editMeetup" @join-event="joinMeetup" @leave-event="leaveMeetup" @creator-link="creatorLink"></Meetup>
+                <Meetup :meetObj="obj" :userId="loggedInUser.id" @delete-event="deleteMeetup" @edit-event="editMeetup" @join-event="joinMeetup" @leave-event="leaveMeetup"></Meetup>
               </b-col>
             </b-row>
           </div>
@@ -411,8 +411,8 @@ export default {
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min +1)) + min;
     },
-    getData(id) {
-      BackEndRouter.RequestRouter.EndPoints.LIST("/user/" + id)
+    getData() {
+      BackEndRouter.RequestRouter.EndPoints.LIST("/user/" + this.id)
           .then(res => {
             let hostedMeetUps = res.hostedMeetUps;
             this.hostedMeetUpsLength = hostedMeetUps.length;
@@ -511,11 +511,7 @@ export default {
     },
     pushEditMeetup(editMeetup) {
         this.getData();
-    },
-    creatorLink(id) {
-      this.$router.push({path: "/private/profile/" + id}).catch(()=> {});
-      this.getData(id)
-    },
+    }
 
   },
   created() {
@@ -527,7 +523,7 @@ export default {
     console.log("profile of: " + this.id);
     console.log("user loged in: " + this.loggedInUser.id)
     //Backend requests for meetups
-    this.getData(this.id)
+    this.getData()
     //Backend reqeuest for recipesOptions (recipes -> [{value: id, text: recipe.name}])
     this.setRecipeOptions()
   }

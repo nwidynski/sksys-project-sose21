@@ -57,7 +57,7 @@ export default {
             if(!this.userId) {
                 this.$router.push({path: "/"});
             } else {
-                this.$emit("creator-link", id)                
+                this.$router.push({path: "/private/profile/" + id});
             }
         }
     },
@@ -84,6 +84,5 @@ export default {
             }
         }
     }
-
 }
 </script>

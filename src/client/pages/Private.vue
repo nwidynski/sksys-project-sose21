@@ -81,7 +81,6 @@ export default {
       console.log("event: ", event)
       console.log("item: ",  item)
       console.log("node: ", node)
-
       if(event.target.innerText == "Logout" || (item != undefined && item.title == "Logout")) {
         UserStorage.deleteObj("user")
         console.log("Clicked on Logout")
@@ -89,9 +88,8 @@ export default {
       }
       else if(event.target.innerText == "Profile" || (item != undefined && item.title == "Profile")) {
         console.log("refresh")
-        this.$root.$refs.ProfileComponent.getData(UserStorage.readObj("user").id);
+        this.$root.$refs.ProfileComponent.getData();
       }
-
     }
   }
 }
