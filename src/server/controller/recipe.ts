@@ -57,10 +57,28 @@ const createRecipe = (
  * @param isPrivate
  * @return {*}
  */
-const updateRecipe = (name: string, isPrivate: boolean = true) => {
+const updateRecipe = (
+  name: string,
+  isPrivate: boolean = true,
+  instruction: string,
+  time: string,
+  ingredients: any[],
+  level?: string
+) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
     name,
     isPrivate,
+    instruction,
+    level,
+    time,
+    Ingredients: {
+      connect: ingredients.map((ingredient) => {
+        return { name: ingredient.name };
+      }),
+      disconnect: ingredients.map((ingredient) => {
+        return { name: ingredient.name };
+      }),
+    },
   });
 };
 
@@ -267,14 +285,29 @@ namespace RecipeController {
     try {
       const user = req.user;
       const { id } = req.params;
-      const { name, isPrivate } = req.body;
+      const {
+        name,
+        isPrivate,
+        instruction,
+        time,
+        level,
+        ingredients,
+        img,
+      } = req.body;
 
       const recipe = await prisma.recipe.updateMany({
         where: {
           id,
           User: user,
         },
-        data: updateRecipe(name, isPrivate),
+        data: updateRecipe(
+          name,
+          isPrivate,
+          instruction,
+          time,
+          ingredients,
+          level
+        ),
       });
 
       res.status(200).json(recipe);
@@ -312,7 +345,7 @@ namespace RecipeController {
           instruction,
           time,
           ingredients,
-          level,
+          level
         ),
       });
 
