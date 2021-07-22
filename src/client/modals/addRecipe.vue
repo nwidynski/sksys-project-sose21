@@ -94,7 +94,7 @@
             </b-form-group>
           </b-col>
         </b-row>
-        <b-form-file v-model="img" accept=".jpg, .png, .gif"></b-form-file>
+<!--        <b-form-file v-model="img" accept=".jpg, .png, .gif"></b-form-file>-->
       </form>
     </b-modal>
   </div>

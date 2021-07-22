@@ -108,7 +108,7 @@
               <div @click="levelClicked" class="receipt-attribute" style="cursor: pointer"> {{this.editRecipe.level ? this.editRecipe.level : "level"}} </div>
               <input @click="timeClicked" placeholder="-h -min" class="receipt-attribute" style="cursor: pointer;outline:none; border:1px solid black" v-model="editRecipe.time">
             </b-card-text>
-            <b-form-file class="mb-3" v-model="img" accept=".jpg, .png, .gif"></b-form-file>
+<!--            <b-form-file class="mb-3" v-model="img" accept=".jpg, .png, .gif"></b-form-file>-->
 
             <b-button class="mr-3" @click="editClicked">Save</b-button>
             <b-button @click="editCancel">Cancel</b-button>
