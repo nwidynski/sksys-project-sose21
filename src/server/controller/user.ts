@@ -305,7 +305,15 @@ namespace UserController {
           },
         });
 
-        res.status(200).json(data);
+        const { Recipes, ...rest } = data;
+
+        const recipes = Recipes.map((recipe) => {
+          const { Ingredients, ...rest } = recipe;
+
+          return { ...rest, ingredients: Ingredients };
+        });
+
+        res.status(200).json({ ...rest, Recipes: recipes });
       }
     } catch (err) {
       return next(err);
