@@ -398,6 +398,7 @@ export default {
       BackEndRouter.RequestRouter.EndPoints.CREATE('/recipes', newRecipe)
           .then(res => {
             this.recipes.push(res);
+            this.getData()
           })
           .catch(err => console.log("something went wrong"))
 
