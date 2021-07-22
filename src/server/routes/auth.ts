@@ -26,7 +26,9 @@ router.post(
 
 router.get("/logout", isAuthenticated, (req, res) => {
   req.logOut();
-  res.redirect(301, "http://localhost:8080/login");
+  req.session.destroy(function(err) {
+    res.redirect(301, "http://localhost:8080/login");
+  });
 });
 
 export default router;
