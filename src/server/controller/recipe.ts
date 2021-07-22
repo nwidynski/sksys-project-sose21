@@ -62,7 +62,6 @@ const updateRecipe = (
   isPrivate: boolean = true,
   instruction: string,
   time: string,
-  ingredients: any[],
   level?: string
 ) => {
   return Prisma.validator<Prisma.RecipeUpdateInput>()({
@@ -71,13 +70,6 @@ const updateRecipe = (
     instruction,
     level,
     time,
-    ...(ingredients && {
-      Ingredients: {
-        connect: ingredients.map((ingredient) => {
-          return { name: ingredient.name };
-        }),
-      },
-    }),
   });
 };
 
@@ -302,29 +294,11 @@ namespace RecipeController {
         return res.status(401).send();
       }
 
-      await prisma.recipe.update({
-        where: {
-          id,
-        },
-        data: {
-          Ingredients: {
-            disconnect: {},
-          },
-        },
-      });
-
       const recipe = await prisma.recipe.update({
         where: {
           id,
         },
-        data: updateRecipe(
-          name,
-          isPrivate,
-          instruction,
-          time,
-          ingredients,
-          level
-        ),
+        data: updateRecipe(name, isPrivate, instruction, time, level),
       });
 
       res.status(200).json(recipe);
