@@ -305,14 +305,19 @@ namespace RecipeController {
         where: {
           id,
         },
-        data: updateRecipe(
+        data: {
           name,
           isPrivate,
           instruction,
+          level,
           time,
-          ingredients,
-          level
-        ),
+          Ingredients: {
+            connect: ingredients.map((ingredient: any) => {
+              return { name: ingredient.name };
+            }),
+            disconnect: {},
+          },
+        },
       });
 
       res.status(200).json(recipe);
