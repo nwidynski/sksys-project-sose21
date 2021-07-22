@@ -293,10 +293,17 @@ namespace RecipeController {
         img,
       } = req.body;
 
-      const recipe = await prisma.recipe.updateMany({
+      const isUserOwned = await prisma.recipe.findFirst({
+        where: { id, User: user },
+      });
+
+      if (!isUserOwned) {
+        res.status(401).send();
+      }
+
+      const recipe = await prisma.recipe.update({
         where: {
           id,
-          User: user,
         },
         data: updateRecipe(
           name,
