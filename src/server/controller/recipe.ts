@@ -201,10 +201,11 @@ namespace RecipeController {
 
       res.status(200).json(
         recipes.map((recipe) => {
-          const { User, ...rest } = recipe;
+          const { User, Ingredients, ...rest } = recipe;
 
           return {
             ...rest,
+            ingredients: Ingredients,
             author: `${User.firstname} ${User.surname}`,
           };
         })
@@ -242,10 +243,11 @@ namespace RecipeController {
         })
         .then((recipes) => recipes[0]);
 
-      const { User, ...rest } = recipe;
+      const { User, Ingredients, ...rest } = recipe;
 
       res.status(200).json({
         ...rest,
+        ingredients: Ingredients,
         author: `${User.firstname} ${User.surname}`,
       });
     } catch (err) {
