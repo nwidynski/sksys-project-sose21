@@ -298,7 +298,7 @@ namespace RecipeController {
       });
 
       if (!isUserOwned) {
-        res.status(401).send();
+        return res.status(401).send();
       }
 
       const recipe = await prisma.recipe.update({
