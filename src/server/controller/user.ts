@@ -14,7 +14,12 @@ import { ValidationMessages } from "@server/common/enums/validationMessages.enum
  * @param password
  * @return {*}
  */
-const createUser = (email: string, firstname: string, surname: string, password: string) => {
+const createUser = (
+  email: string,
+  firstname: string,
+  surname: string,
+  password: string
+) => {
   return Prisma.validator<Prisma.UserCreateInput>()({
     email,
     firstname,
@@ -31,7 +36,7 @@ const createUser = (email: string, firstname: string, surname: string, password:
  */
 const updateUserEmail = (email?: string) => {
   return Prisma.validator<Prisma.UserUpdateInput>()({
-    email
+    email,
   });
 };
 
@@ -43,7 +48,7 @@ const updateUserEmail = (email?: string) => {
  */
 const updateUserPassword = (password?: string) => {
   return Prisma.validator<Prisma.UserUpdateInput>()({
-    password
+    password,
   });
 };
 
@@ -57,7 +62,7 @@ const updateUserPassword = (password?: string) => {
 const updateUserName = (firstname?: string, surname?: string) => {
   return Prisma.validator<Prisma.UserUpdateInput>()({
     firstname,
-    surname
+    surname,
   });
 };
 
@@ -67,11 +72,9 @@ const updateUserName = (firstname?: string, surname?: string) => {
  * @param hostName
  * @return {*}
  */
-const updateHostName = (
-    hostName: string
-) => {
+const updateHostName = (hostName: string) => {
   return Prisma.validator<Prisma.MeetUpUpdateInput>()({
-    hostName
+    hostName,
   });
 };
 
@@ -82,11 +85,11 @@ namespace UserController {
   export const validateParams = () => {
     return [
       param("id", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isUUID()
-          .withMessage(ValidationMessages.WRONG_FORMAT)
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isUUID()
+        .withMessage(ValidationMessages.WRONG_FORMAT),
     ];
   };
 
@@ -106,15 +109,15 @@ namespace UserController {
         .isString()
         .withMessage(ValidationMessages.WRONG_TYPE),
       body("surname", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE),
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE),
       body("password", ValidationMessages.UNDEFINED)
         .exists()
         .isString()
         .withMessage(ValidationMessages.WRONG_TYPE)
         .isStrongPassword()
-        .withMessage(ValidationMessages.WRONG_VALUE)
+        .withMessage(ValidationMessages.WRONG_VALUE),
     ];
   };
 
@@ -124,17 +127,17 @@ namespace UserController {
   export const validateBody = () => {
     return [
       body("email", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isEmail()
-          .withMessage(ValidationMessages.WRONG_VALUE),
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isEmail()
+        .withMessage(ValidationMessages.WRONG_VALUE),
       body("password", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isStrongPassword()
-          .withMessage(ValidationMessages.WRONG_VALUE)
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isStrongPassword()
+        .withMessage(ValidationMessages.WRONG_VALUE),
     ];
   };
 
@@ -144,17 +147,17 @@ namespace UserController {
   export const validateBodyUpdatePassword = () => {
     return [
       body("oldPassword", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isStrongPassword()
-          .withMessage(ValidationMessages.WRONG_VALUE),
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isStrongPassword()
+        .withMessage(ValidationMessages.WRONG_VALUE),
       body("newPassword", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isStrongPassword()
-          .withMessage(ValidationMessages.WRONG_VALUE)
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isStrongPassword()
+        .withMessage(ValidationMessages.WRONG_VALUE),
     ];
   };
 
@@ -164,13 +167,13 @@ namespace UserController {
   export const validateBodyUpdateName = () => {
     return [
       body("firstname", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE),
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE),
       body("surname", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE),
     ];
   };
 
@@ -180,11 +183,11 @@ namespace UserController {
   export const validateBodyDelete = () => {
     return [
       body("password", ValidationMessages.UNDEFINED)
-          .exists()
-          .isString()
-          .withMessage(ValidationMessages.WRONG_TYPE)
-          .isStrongPassword()
-          .withMessage(ValidationMessages.WRONG_VALUE)
+        .exists()
+        .isString()
+        .withMessage(ValidationMessages.WRONG_TYPE)
+        .isStrongPassword()
+        .withMessage(ValidationMessages.WRONG_VALUE),
     ];
   };
 
@@ -193,15 +196,15 @@ namespace UserController {
    * @return JSON Object
    */
   export const create = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const { email, firstname, surname, password } = req.body;
 
       const user = await prisma.user.create({
-        data: createUser(email, firstname, surname, password)
+        data: createUser(email, firstname, surname, password),
       });
 
       res.status(200).json({
@@ -209,7 +212,7 @@ namespace UserController {
         firstname: user.firstname,
         surname: user.surname,
         email: user.email,
-        createdAt: user.createdAt
+        createdAt: user.createdAt,
       });
     } catch (err) {
       return next(err);
@@ -231,7 +234,7 @@ namespace UserController {
       const loggedIn = await prisma.user.findUnique({
         where: {
           id: user.id,
-        }
+        },
       });
 
       res.status(200).json({
@@ -240,7 +243,7 @@ namespace UserController {
         surname: loggedIn?.surname,
         email: loggedIn?.email,
         createdAt: loggedIn?.createdAt,
-        updatedAt: loggedIn?.updatedAt
+        updatedAt: loggedIn?.updatedAt,
       });
     } catch (err) {
       return next(err);
@@ -253,9 +256,9 @@ namespace UserController {
    * @return JSON Object
    */
   export const getData = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -269,6 +272,7 @@ namespace UserController {
           createdAt: true,
           Recipes: {
             where: { OR: [{ User: user }, { isPrivate: false }] },
+            include: { Ingredients: true },
           },
           savedRecipes: true,
           MeetUps: {
@@ -313,9 +317,9 @@ namespace UserController {
    * @return  JSON Object
    */
   export const updateEmail = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -324,8 +328,8 @@ namespace UserController {
       const found = await prisma.user.findFirst({
         where: {
           id: user.id,
-          password: password
-        }
+          password: password,
+        },
       });
 
       if (found == null) {
@@ -333,9 +337,9 @@ namespace UserController {
       } else {
         const updated = await prisma.user.update({
           where: {
-            id: user.id
+            id: user.id,
           },
-          data: updateUserEmail(email)
+          data: updateUserEmail(email),
         });
 
         res.status(200).json({
@@ -344,7 +348,7 @@ namespace UserController {
           surname: updated.surname,
           email: updated.email,
           createdAt: updated.createdAt,
-          updatedAt: updated.updatedAt
+          updatedAt: updated.updatedAt,
         });
       }
     } catch (err) {
@@ -357,9 +361,9 @@ namespace UserController {
    * @return  JSON Object
    */
   export const updatePassword = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -368,8 +372,8 @@ namespace UserController {
       const found = await prisma.user.findFirst({
         where: {
           id: user.id,
-          password: oldPassword
-        }
+          password: oldPassword,
+        },
       });
 
       if (found == null) {
@@ -377,9 +381,9 @@ namespace UserController {
       } else {
         const updated = await prisma.user.update({
           where: {
-            id: user.id
+            id: user.id,
           },
-          data: updateUserPassword(newPassword)
+          data: updateUserPassword(newPassword),
         });
 
         res.status(200).json({
@@ -388,7 +392,7 @@ namespace UserController {
           surname: updated.surname,
           email: updated.email,
           createdAt: updated.createdAt,
-          updatedAt: updated.updatedAt
+          updatedAt: updated.updatedAt,
         });
       }
     } catch (err) {
@@ -401,9 +405,9 @@ namespace UserController {
    * @return  JSON Object
    */
   export const updateName = async (
-      req: Request,
-      res: Response,
-      next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ) => {
     try {
       const user = req.user;
@@ -411,7 +415,7 @@ namespace UserController {
 
       const updated = await prisma.user.update({
         where: { id: user.id },
-        data: updateUserName(firstname, surname)
+        data: updateUserName(firstname, surname),
       });
 
       await prisma.meetUp.updateMany({
@@ -425,7 +429,7 @@ namespace UserController {
         surname: updated.surname,
         email: updated.email,
         createdAt: updated.createdAt,
-        updatedAt: updated.updatedAt
+        updatedAt: updated.updatedAt,
       });
     } catch (err) {
       return next(err);
@@ -447,8 +451,8 @@ namespace UserController {
       const found = await prisma.user.findFirst({
         where: {
           id: user.id,
-          password: password
-        }
+          password: password,
+        },
       });
 
       if (found == null) {
@@ -456,8 +460,8 @@ namespace UserController {
       } else {
         await prisma.user.delete({
           where: {
-            id: user.id
-          }
+            id: user.id,
+          },
         });
 
         //TODO: CASCADE down
