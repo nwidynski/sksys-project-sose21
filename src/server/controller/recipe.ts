@@ -75,9 +75,7 @@ const updateRecipe = (
       connect: ingredients.map((ingredient) => {
         return { name: ingredient.name };
       }),
-      disconnect: ingredients.map((ingredient) => {
-        return { name: ingredient.name };
-      }),
+      disconnect: {},
     },
   });
 };
